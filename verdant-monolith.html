@@ -88,6 +88,177 @@
             background: linear-gradient(to bottom, rgba(23, 49, 36, 0.4), rgba(23, 49, 36, 0.1));
         }
 
+        /* ===== ANIMATIONS & MICRO-INTERACTIONS ===== */
+
+        /* Scroll reveal */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .reveal-left {
+            opacity: 0;
+            transform: translateX(-50px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal-left.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        .reveal-right {
+            opacity: 0;
+            transform: translateX(50px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal-right.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        .reveal-scale {
+            opacity: 0;
+            transform: scale(0.9);
+            transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal-scale.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* Stagger children */
+        .stagger > * { transition-delay: calc(var(--i, 0) * 0.12s); }
+
+        /* Hero parallax */
+        .hero-img {
+            transition: transform 0.1s linear;
+            will-change: transform;
+        }
+
+        /* Nav scroll effect */
+        nav { transition: background-color 0.3s, box-shadow 0.3s, padding 0.3s; }
+        nav.scrolled {
+            background-color: rgba(250, 250, 245, 0.95) !important;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.06);
+        }
+        nav.scrolled .flex { padding-top: 8px !important; padding-bottom: 8px !important; }
+        nav.scrolled #nav-logo { height: 3rem !important; transition: height 0.3s; }
+
+        /* Button hover ripple */
+        .btn-ripple {
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-ripple::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), rgba(255,255,255,0.3), transparent 60%);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .btn-ripple:hover::after { opacity: 1; }
+
+        /* Card lift */
+        .card-lift {
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
+        }
+        .card-lift:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 30px 60px rgba(26, 28, 25, 0.12);
+        }
+
+        /* Image zoom on hover */
+        .img-zoom { overflow: hidden; }
+        .img-zoom img {
+            transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .img-zoom:hover img { transform: scale(1.08); }
+
+        /* Feature icon pulse */
+        .icon-float {
+            transition: transform 0.4s ease;
+        }
+        .icon-float:hover {
+            transform: translateY(-4px);
+        }
+        .icon-float:hover .material-symbols-outlined {
+            animation: iconPop 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        @keyframes iconPop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.25); }
+            100% { transform: scale(1); }
+        }
+
+        /* Testimonial card hover */
+        .testimonial-card {
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+        }
+        .testimonial-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(26, 28, 25, 0.1);
+        }
+
+        /* Form input focus line */
+        .form-input-wrap {
+            position: relative;
+        }
+        .form-input-wrap::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 50%;
+            width: 0; height: 2px;
+            background: #173124;
+            transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1), left 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .form-input-wrap:focus-within::after {
+            width: 100%; left: 0;
+        }
+
+        /* Success toast */
+        .success-toast {
+            animation: toastSlideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        @keyframes toastSlideUp {
+            from { opacity: 0; transform: translateY(30px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        .success-check {
+            animation: checkPop 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
+        }
+        @keyframes checkPop {
+            0% { transform: scale(0) rotate(-45deg); opacity: 0; }
+            60% { transform: scale(1.2) rotate(5deg); }
+            100% { transform: scale(1) rotate(0); opacity: 1; }
+        }
+
+        /* Counter animation */
+        .count-up {
+            display: inline-block;
+        }
+
+        /* Smooth scroll */
+        html { scroll-behavior: smooth; }
+
+        /* Section divider line */
+        .section-line {
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #173124, transparent);
+            transition: width 1s cubic-bezier(0.16, 1, 0.3, 1) 0.3s;
+            margin: 0 auto;
+        }
+        .section-line.visible { width: 120px; }
+
+        /* Back to top smooth */
+        .back-to-top {
+            transition: transform 0.3s, opacity 0.3s;
+        }
+        .back-to-top:hover { transform: translateY(-4px); }
+
         /* Mobile Optimizations */
         @media (max-width: 767px) {
             /* Nav */
@@ -185,18 +356,18 @@
 </div>
 <div class="relative z-10 max-w-screen-2xl mx-auto px-8 w-full">
 <div class="max-w-3xl">
-<span class="inline-block font-label uppercase tracking-[0.2em] text-sm text-surface mb-6 bg-primary/40 backdrop-blur-md px-4 py-1">The Living Gallery</span>
-<h1 class="font-headline text-display-lg text-white text-6xl md:text-8xl leading-none tracking-tight mb-8">
+<span class="inline-block font-label uppercase tracking-[0.2em] text-sm text-surface mb-6 bg-primary/40 backdrop-blur-md px-4 py-1 reveal" style="transition-delay:0.2s">The Living Gallery</span>
+<h1 class="font-headline text-display-lg text-white text-6xl md:text-8xl leading-none tracking-tight mb-8 reveal" style="transition-delay:0.4s">
                     Own the Living Gallery <br/>in Noida
                 </h1>
-<p class="font-body text-xl text-surface-container-low max-w-xl mb-10 leading-relaxed">
+<p class="font-body text-xl text-surface-container-low max-w-xl mb-10 leading-relaxed reveal" style="transition-delay:0.6s">
                     Premium properties near the city's greenest parks starting at ₹75 Lakhs. Experience the silence of the forest within the heart of the NCR.
                 </p>
 <div class="flex gap-4">
-<button class="bg-primary text-on-primary px-8 py-4 rounded-md font-sans uppercase tracking-widest text-sm hover:bg-primary-container transition-all">
+<button class="btn-ripple bg-primary text-on-primary px-8 py-4 rounded-md font-sans uppercase tracking-widest text-sm hover:bg-primary-container transition-all reveal" style="transition-delay:0.8s">
                         Inquire Now
                     </button>
-<button class="border border-white/20 text-white backdrop-blur-sm px-8 py-4 rounded-md font-sans uppercase tracking-widest text-sm hover:bg-white/10 transition-all">
+<button class="btn-ripple border border-white/20 text-white backdrop-blur-sm px-8 py-4 rounded-md font-sans uppercase tracking-widest text-sm hover:bg-white/10 transition-all reveal" style="transition-delay:0.9s">
                         Explore Masterplan
                     </button>
 </div>
@@ -206,33 +377,33 @@
 <!-- Rooted in Nature: Benefits Section (Asymmetric Layout) -->
 <section class="py-32 px-8 bg-surface">
 <div class="max-w-screen-2xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-16 items-center">
-<div class="md:col-span-5 relative">
+<div class="md:col-span-5 relative reveal-left">
 <div class="absolute -top-12 -left-12 w-64 h-64 bg-secondary-container rounded-full opacity-20 blur-3xl"></div>
-<img class="rounded-xl shadow-ambient relative z-10 w-full aspect-[4/5] object-cover" data-alt="Minimalist modern interior with large windows looking out onto a lush private garden with mature trees and morning mist" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCPMck7ip76QWbLtRNn4H9v6T_Ccu-J4ltSzPrv5LswPVH0BG7LpJf84yDmTRMIu775aDPjKJjxZtrAdvGeceYtVMoJiq1WMNz60Q7fykhRktQn48y4nbGHzl_U8g8u0qYcTR0gUmTly8rGOAjtQ_xHCkR7PcfOpwVuD-SAUizRONq0P89uEnbZBhh4wJptW86q5y5Qm80w9XiB1jX-e0YX1Hw_X_g01lov2UaDbIIknohRjUOTkaEPH9yBRucTf_UumkTxCZiUG5J6"/>
+<img class="rounded-xl shadow-ambient relative z-10 w-full aspect-[4/5] object-cover img-zoom" data-alt="Minimalist modern interior with large windows looking out onto a lush private garden with mature trees and morning mist" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCPMck7ip76QWbLtRNn4H9v6T_Ccu-J4ltSzPrv5LswPVH0BG7LpJf84yDmTRMIu775aDPjKJjxZtrAdvGeceYtVMoJiq1WMNz60Q7fykhRktQn48y4nbGHzl_U8g8u0qYcTR0gUmTly8rGOAjtQ_xHCkR7PcfOpwVuD-SAUizRONq0P89uEnbZBhh4wJptW86q5y5Qm80w9XiB1jX-e0YX1Hw_X_g01lov2UaDbIIknohRjUOTkaEPH9yBRucTf_UumkTxCZiUG5J6"/>
 <div class="md:absolute md:-bottom-8 md:-right-8 relative mt-4 md:mt-0 bg-surface-container-lowest p-5 md:p-8 shadow-ambient z-20 max-w-xs rounded-xl">
 <p class="font-headline italic text-secondary text-xl">"A sanctuary where architecture breathes in harmony with the ancient trees."</p>
 </div>
 </div>
-<div class="md:col-span-7 md:pl-12">
+<div class="md:col-span-7 md:pl-12 reveal-right">
 <span class="font-label uppercase tracking-[0.15em] text-secondary text-sm block mb-4">Philosophy</span>
 <h2 class="font-headline text-5xl text-primary mb-12">Rooted in Nature</h2>
-<div class="grid grid-cols-1 sm:grid-cols-2 gap-12">
-<div class="space-y-4">
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-12 stagger">
+<div class="space-y-4 icon-float" style="--i:0">
 <span class="material-symbols-outlined text-4xl text-primary-container" data-icon="eco">eco</span>
 <h3 class="font-headline text-2xl text-primary">Eco-friendly Design</h3>
 <p class="text-on-surface-variant leading-relaxed">Passive solar cooling and sustainable timber sourced from managed forests, ensuring a net-zero footprint.</p>
 </div>
-<div class="space-y-4">
+<div class="space-y-4 icon-float" style="--i:1">
 <span class="material-symbols-outlined text-4xl text-primary-container" data-icon="air">air</span>
 <h3 class="font-headline text-2xl text-primary">Air Purification</h3>
 <p class="text-on-surface-variant leading-relaxed">Integrated botanical filtration systems that maintain indoor AQI levels below 20 year-round.</p>
 </div>
-<div class="space-y-4">
+<div class="space-y-4 icon-float" style="--i:2">
 <span class="material-symbols-outlined text-4xl text-primary-container" data-icon="forest">forest</span>
 <h3 class="font-headline text-2xl text-primary">Green Views</h3>
 <p class="text-on-surface-variant leading-relaxed">Every residence is oriented to offer 180-degree unobstructed views of Noida's protected parklands.</p>
 </div>
-<div class="space-y-4">
+<div class="space-y-4 icon-float" style="--i:3">
 <span class="material-symbols-outlined text-4xl text-primary-container" data-icon="water_drop">water_drop</span>
 <h3 class="font-headline text-2xl text-primary">Water Stewardship</h3>
 <p class="text-on-surface-variant leading-relaxed">On-site greywater recycling systems that nourish the sprawling central community gardens.</p>
@@ -247,7 +418,7 @@
 <div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
 <div>
 <span class="font-label uppercase tracking-[0.15em] text-secondary text-sm block mb-4">Curation</span>
-<h2 class="font-headline text-5xl text-primary">The Portfolio</h2>
+<h2 class="font-headline text-5xl text-primary reveal">The Portfolio</h2>
 </div>
 <div class="flex gap-4">
 <button class="p-4 rounded-full border border-outline-variant hover:bg-surface-container transition-colors">
@@ -260,7 +431,7 @@
 </div>
 <div class="grid grid-cols-1 md:grid-cols-12 gap-8">
 <!-- Large Featured Card -->
-<div class="md:col-span-8 group overflow-hidden rounded-xl bg-surface shadow-ambient">
+<div class="md:col-span-8 group overflow-hidden rounded-xl bg-surface shadow-ambient card-lift reveal-scale img-zoom">
 <div class="relative overflow-hidden aspect-[16/9]">
 <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="Stunning white modernist villa with infinity pool overlooking a sprawling tropical forest park under clear blue skies" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCczT_f7-34sa69IctHVblIBM5BQpqgq1pUn2a2Q_C5jQ9lkxPpVBwD_NNZ77kD9IXxzo3Ph9jY8e3oM94mUW82MDvKlJ_giAdOGjGJbWwEY82ByzdThYABHjgZ8CM1gIovbio5Me1j6i8Q4Y9ouUIdBtBLow3OKgT9VECPaavWndtTLbhp2HhsVDAqVu6r2kOVnKhzL7LLvRX_khm70a2ZlmT_ETRfvl_JN0oS2vG5bHHcvW8eNkSixE1rC7e76YqvmNvuJO0LYk35"/>
 <div class="absolute top-6 left-6 flex gap-2">
@@ -280,7 +451,7 @@
 </div>
 </div>
 <!-- Small Card 1 -->
-<div class="md:col-span-4 group overflow-hidden rounded-xl bg-surface shadow-ambient">
+<div class="md:col-span-4 group overflow-hidden rounded-xl bg-surface shadow-ambient card-lift reveal-scale img-zoom" style="transition-delay:0.15s">
 <div class="relative overflow-hidden aspect-square">
 <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="Contemporary dark-themed luxury house with vertical wooden slats surrounded by tall birch trees in an urban oasis" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBtuIrR7-ZOVUG9uUtNpm_k4q1G27leMzokoAP0xag3J5JR1xptKj8XdIIImPUn7yW-oZBtuZ8icBtn17s8S79l-9afCjzpI0KMLD1vUaA2Dylj5hB2Ok6x23n2xfTJnuF1mMcyZs2R2qKZ3Ru2th3zZFbbCtdOjwpKmVyNfc3IxoAfxNvVN7xDmwL2Deu5oSDxUOlN7DZbqobqSJOXVkfrSryDuu60_6D3cq7Yn7_lj0IunZLl3qrJi_HH58zEUB8HZa2b5-SNRVvx"/>
 </div>
@@ -291,7 +462,7 @@
 </div>
 </div>
 <!-- Small Card 2 -->
-<div class="md:col-span-4 group overflow-hidden rounded-xl bg-surface shadow-ambient">
+<div class="md:col-span-4 group overflow-hidden rounded-xl bg-surface shadow-ambient card-lift reveal-scale img-zoom" style="transition-delay:0.3s">
 <div class="relative overflow-hidden aspect-square">
 <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="Beautifully designed sustainable home with a grass-covered roof and massive glass windows integrated into a meadow landscape" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDAf89A6vZsshIqsSchXQUZVjS4fxehtadUPDnOHRf80VL_cqLsvqKXJQRFzei0e4nkJNPls76TB-cCGyBYLdtkmG1DFrTiXOVYXX_2rLltVP6B5c-1aPw5H0HSoyBYxTz9tE7r-8KjMVnMAx4QK1vm6dYaaKw5JtL2o4Sk1t982K9ZgEkgRNDQ5icXiDTbIhBpVaAzi6etIue1LNM68JuJTYq23RpPxbTfa7yd5Nbm1EKE90T5ybxgnH-fg_aRw49G6PITalRohdMO"/>
 </div>
@@ -302,7 +473,7 @@
 </div>
 </div>
 <!-- Horizontal Medium Card -->
-<div class="md:col-span-8 group overflow-hidden rounded-xl bg-surface shadow-ambient flex flex-col md:flex-row">
+<div class="md:col-span-8 group overflow-hidden rounded-xl bg-surface shadow-ambient card-lift reveal-scale img-zoom flex flex-col md:flex-row" style="transition-delay:0.2s">
 <div class="md:w-1/2 relative overflow-hidden">
 <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="Elegant luxury villa pool area at twilight with warm lighting and reflection of surrounding palm trees and modern architecture" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBwN1m3feYjBuWDYRhDnl5PuUx9YIcxkf64SZuUrKBm3-LnRL2YIMrKfyMSG7uP627SAyUnOH-IhetZHYn-AeFbQIJ-VYLtm4iWmSNIjm_Hi7uD8HPrsvqngc1d2T5WukecvJiHKA7ceG_my98B_qx0hFT6zsAl3vincLjB4a9a2mnYWI_mDjLKDX7q75DTQE4KCI_D1AGN2mYFyR6rhrFH1mpslywMZfYH8gR98OQDd7R1lZva8L9HEtIU8gp61YriKWUUiR5nJ6G-"/>
 </div>
@@ -320,10 +491,10 @@
 <section class="py-32 px-8 bg-surface">
 <div class="max-w-screen-xl mx-auto text-center mb-20">
 <span class="font-label uppercase tracking-[0.15em] text-secondary text-sm block mb-4">Testimonials</span>
-<h2 class="font-headline text-5xl text-primary">Hear from the Resident Collective</h2>
+<h2 class="font-headline text-5xl text-primary reveal">Hear from the Resident Collective</h2>
 </div>
 <div class="max-w-screen-2xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
-<div class="p-12 bg-surface-container-low rounded-xl relative">
+<div class="p-12 bg-surface-container-low rounded-xl relative testimonial-card reveal">
 <span class="material-symbols-outlined text-secondary/30 text-6xl absolute top-8 left-8" data-icon="format_quote">format_quote</span>
 <p class="relative z-10 font-body text-lg text-on-surface-variant mb-8 pt-12 italic leading-relaxed">
                     "Living at Verdant Monolith feels like a permanent retreat. The air quality indoors is noticeably better, and waking up to the sound of birds in Noida is something I never thought possible."
@@ -336,7 +507,7 @@
 </div>
 </div>
 </div>
-<div class="p-12 bg-surface-container-low rounded-xl relative md:mt-12">
+<div class="p-12 bg-surface-container-low rounded-xl relative md:mt-12 testimonial-card reveal" style="transition-delay:0.15s">
 <span class="material-symbols-outlined text-secondary/30 text-6xl absolute top-8 left-8" data-icon="format_quote">format_quote</span>
 <p class="relative z-10 font-body text-lg text-on-surface-variant mb-8 pt-12 italic leading-relaxed">
                     "The integration of sustainable technology with high-end luxury is seamless. It’s not just a home; it’s a statement of how we should live in the 21st century."
@@ -349,7 +520,7 @@
 </div>
 </div>
 </div>
-<div class="p-12 bg-surface-container-low rounded-xl relative">
+<div class="p-12 bg-surface-container-low rounded-xl relative testimonial-card reveal">
 <span class="material-symbols-outlined text-secondary/30 text-6xl absolute top-8 left-8" data-icon="format_quote">format_quote</span>
 <p class="relative z-10 font-body text-lg text-on-surface-variant mb-8 pt-12 italic leading-relaxed">
                     "The layout of the estate allows for genuine community interaction while preserving absolute privacy. The 'Living Gallery' is truly the most apt name for this place."
@@ -369,21 +540,21 @@
 <div class="max-w-screen-2xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-20">
 <div>
 <span class="font-label uppercase tracking-[0.15em] text-secondary text-sm block mb-4">Connection</span>
-<h2 class="font-headline text-5xl text-primary mb-8">Begin Your Journey</h2>
+<h2 class="font-headline text-5xl text-primary mb-8 reveal">Begin Your Journey</h2>
 <p class="text-on-surface-variant mb-12 text-lg leading-relaxed max-w-lg">
                     Schedule a private walkthrough of our model suites or request a digital portfolio of available residences. Our consultants are ready to help you find your niche in the gallery.
                 </p>
 <form class="space-y-8" id="inquiryForm" onsubmit="return submitInquiry(event)">
-<div class="relative">
+<div class="relative form-input-wrap">
 <input id="inq-name" class="w-full bg-transparent border-0 border-b border-outline-variant/30 py-4 focus:ring-0 focus:border-primary transition-all text-lg placeholder:text-outline" placeholder="Your Name" type="text" required/>
 </div>
-<div class="relative">
+<div class="relative form-input-wrap">
 <input id="inq-email" class="w-full bg-transparent border-0 border-b border-outline-variant/30 py-4 focus:ring-0 focus:border-primary transition-all text-lg placeholder:text-outline" placeholder="Email Address" type="email" required/>
 </div>
-<div class="relative">
+<div class="relative form-input-wrap">
 <input id="inq-phone" class="w-full bg-transparent border-0 border-b border-outline-variant/30 py-4 focus:ring-0 focus:border-primary transition-all text-lg placeholder:text-outline" placeholder="Phone Number" type="tel" required/>
 </div>
-<div class="relative">
+<div class="relative form-input-wrap">
 <select id="inq-property" class="w-full bg-transparent border-0 border-b border-outline-variant/30 py-4 focus:ring-0 focus:border-primary transition-all text-lg text-outline">
 <option>Preferred Property</option>
 <option>The Emerald Estate</option>
@@ -395,10 +566,13 @@
 <button type="submit" class="w-full md:w-auto bg-primary text-on-primary px-12 py-5 rounded-md font-sans uppercase tracking-[0.2em] text-sm hover:bg-primary-container transition-all shadow-ambient">
                         Inquire Now
                     </button>
-<div id="formSuccess" style="display:none" class="text-center py-4 px-6 bg-primary-fixed/20 rounded-xl">
-<span class="material-symbols-outlined text-primary text-3xl">check_circle</span>
-<p class="text-primary font-semibold mt-2">Thank you for your inquiry!</p>
-<p class="text-on-surface-variant text-sm">Our team will get back to you shortly.</p>
+<div id="formSuccess" style="display:none" class="success-toast text-center py-10 px-8 bg-gradient-to-br from-primary-fixed/30 to-surface-container-low rounded-2xl border border-primary-fixed/20">
+<div class="success-check inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 mb-4">
+<span class="material-symbols-outlined text-primary text-4xl">check_circle</span>
+</div>
+<h3 class="font-headline text-2xl text-primary mb-2">Thank You!</h3>
+<p class="text-on-surface-variant text-sm mb-1">Your inquiry has been submitted successfully.</p>
+<p class="text-on-surface-variant text-xs">Our consultants will reach out within 24 hours.</p>
 </div>
 </form>
 </div>
@@ -767,5 +941,78 @@
   }
 
 })();
+
+// ==================== MICRO-INTERACTIONS ====================
+
+// Scroll Reveal Observer
+var revealObserver = new IntersectionObserver(function(entries) {
+  entries.forEach(function(entry) {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale, .section-line').forEach(function(el) {
+  revealObserver.observe(el);
+});
+
+// Trigger hero animations immediately
+setTimeout(function() {
+  document.querySelectorAll('header .reveal').forEach(function(el) {
+    el.classList.add('visible');
+  });
+}, 100);
+
+// Nav scroll effect
+var nav = document.querySelector('nav');
+window.addEventListener('scroll', function() {
+  if (window.scrollY > 60) {
+    nav.classList.add('scrolled');
+  } else {
+    nav.classList.remove('scrolled');
+  }
+}, { passive: true });
+
+// Hero parallax
+var heroImg = document.querySelector('header .absolute.inset-0 img');
+if (heroImg) {
+  heroImg.classList.add('hero-img');
+  window.addEventListener('scroll', function() {
+    if (window.scrollY < window.innerHeight) {
+      heroImg.style.transform = 'translateY(' + (window.scrollY * 0.3) + 'px) scale(1.05)';
+    }
+  }, { passive: true });
+}
+
+// Button ripple effect (mouse position tracking)
+document.querySelectorAll('.btn-ripple').forEach(function(btn) {
+  btn.addEventListener('mousemove', function(e) {
+    var rect = btn.getBoundingClientRect();
+    btn.style.setProperty('--x', ((e.clientX - rect.left) / rect.width * 100) + '%');
+    btn.style.setProperty('--y', ((e.clientY - rect.top) / rect.height * 100) + '%');
+  });
+});
+
+// Back to top
+var backBtn = document.querySelector('footer button');
+if (backBtn) {
+  backBtn.classList.add('back-to-top');
+  backBtn.addEventListener('click', function() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+}
+
+// Smooth counter animation for hero price
+function animateValue(el, start, end, duration) {
+  var startTime = null;
+  function step(timestamp) {
+    if (!startTime) startTime = timestamp;
+    var progress = Math.min((timestamp - startTime) / duration, 1);
+    var eased = 1 - Math.pow(1 - progress, 3);
+    el.textContent = '₹' + Math.floor(eased * (end - start) + start).toLocaleString('en-IN');
+    if (progress < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
 </script>
 </body></html>
