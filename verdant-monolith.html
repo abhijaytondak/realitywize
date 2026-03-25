@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>VERDANT MONOLITH | Own the Living Gallery in Noida</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400&amp;family=Manrope:wght@300;400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-primary-fixed": "#062014",
+              "on-error": "#ffffff",
+              "secondary-container": "#f9dbb7",
+              "error": "#ba1a1a",
+              "inverse-surface": "#2f312e",
+              "surface-container-high": "#e8e8e3",
+              "surface-variant": "#e3e3de",
+              "on-secondary-container": "#755f42",
+              "secondary": "#715b3e",
+              "surface": "#fafaf5",
+              "on-tertiary-fixed": "#2e1414",
+              "on-surface-variant": "#424844",
+              "tertiary-fixed": "#ffdad9",
+              "on-secondary-fixed-variant": "#574329",
+              "secondary-fixed-dim": "#dfc29f",
+              "on-error-container": "#93000a",
+              "primary-fixed-dim": "#b0cdbb",
+              "on-tertiary": "#ffffff",
+              "primary-container": "#2d4739",
+              "inverse-primary": "#b0cdbb",
+              "inverse-on-surface": "#f1f1ec",
+              "tertiary-fixed-dim": "#eabbba",
+              "on-secondary": "#ffffff",
+              "surface-container-highest": "#e3e3de",
+              "surface-dim": "#dadad5",
+              "on-tertiary-container": "#d0a3a3",
+              "primary-fixed": "#ccead6",
+              "on-primary-container": "#98b5a3",
+              "tertiary": "#412424",
+              "error-container": "#ffdad6",
+              "on-secondary-fixed": "#281903",
+              "secondary-fixed": "#fcdeba",
+              "surface-container-lowest": "#ffffff",
+              "on-primary": "#ffffff",
+              "background": "#fafaf5",
+              "surface-container-low": "#f4f4ef",
+              "on-surface": "#1a1c19",
+              "outline-variant": "#c2c8c2",
+              "on-background": "#1a1c19",
+              "outline": "#727973",
+              "surface-tint": "#496455",
+              "primary": "#173124",
+              "on-primary-fixed-variant": "#324c3e",
+              "tertiary-container": "#5a3939",
+              "surface-bright": "#fafaf5",
+              "on-tertiary-fixed-variant": "#603e3e",
+              "surface-container": "#eeeee9"
+            },
+            fontFamily: {
+              "headline": ["Noto Serif"],
+              "body": ["Manrope"],
+              "label": ["Manrope"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .glass-nav {
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+        .shadow-ambient {
+            box-shadow: 0 20px 50px rgba(26, 28, 25, 0.06);
+        }
+        .hero-gradient {
+            background: linear-gradient(to bottom, rgba(23, 49, 36, 0.4), rgba(23, 49, 36, 0.1));
+        }
+
+        /* Mobile Optimizations */
+        @media (max-width: 767px) {
+            /* Nav */
+            nav .flex { padding: 10px 16px; }
+            nav .text-2xl { font-size: 1.1rem; }
+            nav button { padding: 8px 14px; font-size: 10px; }
+
+            /* Hero */
+            header { height: 75vh; }
+            header .px-8 { padding-left: 16px; padding-right: 16px; }
+            header h1 { font-size: 2.4rem !important; line-height: 1.1; margin-bottom: 16px; }
+            header .text-xl { font-size: 0.875rem; line-height: 1.5; margin-bottom: 20px; }
+            header .mb-6 { margin-bottom: 12px; }
+            header .text-sm { font-size: 0.7rem; }
+            header button { padding: 12px 20px; font-size: 0.65rem; }
+            header .flex.gap-4 { gap: 8px; }
+            header span.inline-block { font-size: 0.65rem; padding: 4px 10px; }
+
+            /* Sections */
+            section.py-32 { padding-top: 48px; padding-bottom: 48px; }
+            section.px-8, .px-8 { padding-left: 16px; padding-right: 16px; }
+
+            /* Section headings */
+            .text-5xl { font-size: 1.75rem !important; }
+            .text-3xl { font-size: 1.35rem !important; }
+            .text-2xl { font-size: 1.1rem !important; }
+            .text-xl { font-size: 0.95rem !important; }
+            .text-lg { font-size: 0.875rem !important; }
+
+            /* Rooted in Nature */
+            section .gap-16 { gap: 24px; }
+            section .gap-12 { gap: 16px; }
+            section .mb-12 { margin-bottom: 20px; }
+            section .md\:pl-12 { padding-left: 0; }
+            .absolute.-bottom-8 { position: relative; bottom: 0; right: 0; margin-top: 12px; }
+            .absolute.-bottom-8.-right-8 { position: relative; bottom: auto; right: auto; margin-top: 12px; max-width: 100%; }
+
+            /* Portfolio cards */
+            .grid .p-8 { padding: 16px; }
+            .grid .p-10 { padding: 16px; }
+            .grid .mb-6 { margin-bottom: 8px; }
+            .grid .mb-8 { margin-bottom: 12px; }
+            section .mb-16 { margin-bottom: 24px; }
+            .gap-8 { gap: 12px; }
+
+            /* Testimonials */
+            .p-12 { padding: 20px !important; }
+            .pt-12 { padding-top: 32px !important; }
+            .text-6xl { font-size: 2.5rem !important; }
+            .md\:mt-12 { margin-top: 0 !important; }
+
+            /* Form section */
+            section .gap-20 { gap: 32px; }
+            .space-y-8 > * + * { margin-top: 20px !important; }
+            .min-h-\[500px\] { min-height: 280px; }
+            form button { width: 100%; text-align: center; }
+            form input, form select { font-size: 0.95rem; padding-top: 12px; padding-bottom: 12px; }
+
+            /* Footer */
+            footer { padding: 32px 16px !important; }
+            footer .gap-12 { gap: 24px; }
+            footer .text-right { text-align: left; }
+            footer .justify-end { justify-content: flex-start; }
+
+            /* General readability */
+            body { font-size: 14px; line-height: 1.6; }
+            p { line-height: 1.6; }
+            .leading-relaxed { line-height: 1.6; }
+            .tracking-\[0\.2em\] { letter-spacing: 0.12em; }
+            .tracking-\[0\.15em\] { letter-spacing: 0.1em; }
+            .tracking-\[0\.1em\] { letter-spacing: 0.06em; }
+        }
+    </style>
+</head>
+<body class="bg-surface font-body text-on-surface">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-[#fafaf5]/70 backdrop-blur-md">
+<div class="flex justify-between items-center px-8 py-6 max-w-screen-2xl mx-auto">
+<div class="text-2xl font-serif font-bold tracking-tighter text-[#173124]">VERDANT MONOLITH</div>
+<div class="hidden md:flex gap-12">
+<a class="font-sans uppercase tracking-[0.1em] text-label-md text-[#173124] font-bold border-b border-[#173124]/20 transition-colors duration-300" href="#">Properties</a>
+<a class="font-sans uppercase tracking-[0.1em] text-label-md text-[#715b3e] font-medium hover:text-[#173124] transition-colors duration-300" href="#">Locations</a>
+<a class="font-sans uppercase tracking-[0.1em] text-label-md text-[#715b3e] font-medium hover:text-[#173124] transition-colors duration-300" href="#">Sustainability</a>
+</div>
+<button class="bg-primary text-on-primary px-6 py-3 rounded-md font-sans uppercase tracking-widest text-xs hover:bg-primary-container transition-all active:scale-95 duration-200 ease-in-out">
+                Book a Private Tour
+            </button>
+</div>
+</nav>
+<!-- Hero Section -->
+<header class="relative h-[921px] flex items-center overflow-hidden">
+<div class="absolute inset-0 z-0">
+<img class="w-full h-full object-cover" data-alt="Modern architectural masterpiece villa with floor-to-ceiling glass walls integrated into a dense forest landscape in Noida with soft dappled sunlight" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDENix6kyl3cuiaOqboPVrV8ceyGbru_NgZQ28DbkHZGPr_r6vjAqGwjt-dIRFQvfxtYCai9qTaVlYkyMyQ-5oZUSjdt1u7CNSI6gEeI2SHmkKKGO7ZHVunKJH7RSiCigF-lvrytskbKb2KYKWQMkZzzb1K_a4WIVo2EM_SdTAtqbtJh-crazNX3E61jYc5CsQ2CwGg13cSalf9NufOeXDdzduNd1fd_FoHMus7feud1Ahc3ZzGUfGIrlOiK-ACw3kTkn0PKTbOcfFo"/>
+<div class="absolute inset-0 hero-gradient"></div>
+</div>
+<div class="relative z-10 max-w-screen-2xl mx-auto px-8 w-full">
+<div class="max-w-3xl">
+<span class="inline-block font-label uppercase tracking-[0.2em] text-sm text-surface mb-6 bg-primary/40 backdrop-blur-md px-4 py-1">The Living Gallery</span>
+<h1 class="font-headline text-display-lg text-white text-6xl md:text-8xl leading-none tracking-tight mb-8">
+                    Own the Living Gallery <br/>in Noida
+                </h1>
+<p class="font-body text-xl text-surface-container-low max-w-xl mb-10 leading-relaxed">
+                    Premium properties near the city's greenest parks starting at ₹75 Lakhs. Experience the silence of the forest within the heart of the NCR.
+                </p>
+<div class="flex gap-4">
+<button class="bg-primary text-on-primary px-8 py-4 rounded-md font-sans uppercase tracking-widest text-sm hover:bg-primary-container transition-all">
+                        Inquire Now
+                    </button>
+<button class="border border-white/20 text-white backdrop-blur-sm px-8 py-4 rounded-md font-sans uppercase tracking-widest text-sm hover:bg-white/10 transition-all">
+                        Explore Masterplan
+                    </button>
+</div>
+</div>
+</div>
+</header>
+<!-- Rooted in Nature: Benefits Section (Asymmetric Layout) -->
+<section class="py-32 px-8 bg-surface">
+<div class="max-w-screen-2xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-16 items-center">
+<div class="md:col-span-5 relative">
+<div class="absolute -top-12 -left-12 w-64 h-64 bg-secondary-container rounded-full opacity-20 blur-3xl"></div>
+<img class="rounded-xl shadow-ambient relative z-10 w-full aspect-[4/5] object-cover" data-alt="Minimalist modern interior with large windows looking out onto a lush private garden with mature trees and morning mist" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCPMck7ip76QWbLtRNn4H9v6T_Ccu-J4ltSzPrv5LswPVH0BG7LpJf84yDmTRMIu775aDPjKJjxZtrAdvGeceYtVMoJiq1WMNz60Q7fykhRktQn48y4nbGHzl_U8g8u0qYcTR0gUmTly8rGOAjtQ_xHCkR7PcfOpwVuD-SAUizRONq0P89uEnbZBhh4wJptW86q5y5Qm80w9XiB1jX-e0YX1Hw_X_g01lov2UaDbIIknohRjUOTkaEPH9yBRucTf_UumkTxCZiUG5J6"/>
+<div class="md:absolute md:-bottom-8 md:-right-8 relative mt-4 md:mt-0 bg-surface-container-lowest p-5 md:p-8 shadow-ambient z-20 max-w-xs rounded-xl">
+<p class="font-headline italic text-secondary text-xl">"A sanctuary where architecture breathes in harmony with the ancient trees."</p>
+</div>
+</div>
+<div class="md:col-span-7 md:pl-12">
+<span class="font-label uppercase tracking-[0.15em] text-secondary text-sm block mb-4">Philosophy</span>
+<h2 class="font-headline text-5xl text-primary mb-12">Rooted in Nature</h2>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-12">
+<div class="space-y-4">
+<span class="material-symbols-outlined text-4xl text-primary-container" data-icon="eco">eco</span>
+<h3 class="font-headline text-2xl text-primary">Eco-friendly Design</h3>
+<p class="text-on-surface-variant leading-relaxed">Passive solar cooling and sustainable timber sourced from managed forests, ensuring a net-zero footprint.</p>
+</div>
+<div class="space-y-4">
+<span class="material-symbols-outlined text-4xl text-primary-container" data-icon="air">air</span>
+<h3 class="font-headline text-2xl text-primary">Air Purification</h3>
+<p class="text-on-surface-variant leading-relaxed">Integrated botanical filtration systems that maintain indoor AQI levels below 20 year-round.</p>
+</div>
+<div class="space-y-4">
+<span class="material-symbols-outlined text-4xl text-primary-container" data-icon="forest">forest</span>
+<h3 class="font-headline text-2xl text-primary">Green Views</h3>
+<p class="text-on-surface-variant leading-relaxed">Every residence is oriented to offer 180-degree unobstructed views of Noida's protected parklands.</p>
+</div>
+<div class="space-y-4">
+<span class="material-symbols-outlined text-4xl text-primary-container" data-icon="water_drop">water_drop</span>
+<h3 class="font-headline text-2xl text-primary">Water Stewardship</h3>
+<p class="text-on-surface-variant leading-relaxed">On-site greywater recycling systems that nourish the sprawling central community gardens.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- The Portfolio: Property Cards (Bento Style) -->
+<section class="py-32 px-8 bg-surface-container-low">
+<div class="max-w-screen-2xl mx-auto">
+<div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
+<div>
+<span class="font-label uppercase tracking-[0.15em] text-secondary text-sm block mb-4">Curation</span>
+<h2 class="font-headline text-5xl text-primary">The Portfolio</h2>
+</div>
+<div class="flex gap-4">
+<button class="p-4 rounded-full border border-outline-variant hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined" data-icon="arrow_back">arrow_back</span>
+</button>
+<button class="p-4 rounded-full border border-outline-variant hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-8">
+<!-- Large Featured Card -->
+<div class="md:col-span-8 group overflow-hidden rounded-xl bg-surface shadow-ambient">
+<div class="relative overflow-hidden aspect-[16/9]">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="Stunning white modernist villa with infinity pool overlooking a sprawling tropical forest park under clear blue skies" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCczT_f7-34sa69IctHVblIBM5BQpqgq1pUn2a2Q_C5jQ9lkxPpVBwD_NNZ77kD9IXxzo3Ph9jY8e3oM94mUW82MDvKlJ_giAdOGjGJbWwEY82ByzdThYABHjgZ8CM1gIovbio5Me1j6i8Q4Y9ouUIdBtBLow3OKgT9VECPaavWndtTLbhp2HhsVDAqVu6r2kOVnKhzL7LLvRX_khm70a2ZlmT_ETRfvl_JN0oS2vG5bHHcvW8eNkSixE1rC7e76YqvmNvuJO0LYk35"/>
+<div class="absolute top-6 left-6 flex gap-2">
+<span class="bg-surface/80 backdrop-blur-md px-3 py-1 text-[10px] font-label uppercase tracking-widest text-primary">Premium</span>
+<span class="bg-secondary-container/80 backdrop-blur-md px-3 py-1 text-[10px] font-label uppercase tracking-widest text-on-secondary-container">Eco-Certified</span>
+</div>
+</div>
+<div class="p-8 flex justify-between items-center">
+<div>
+<h3 class="font-headline text-3xl text-primary mb-2">The Emerald Estate</h3>
+<p class="text-on-surface-variant">Sector 150, Noida • Near Central Park</p>
+</div>
+<div class="text-right">
+<p class="font-headline text-2xl text-secondary">₹3.4 Cr</p>
+<p class="text-xs font-label uppercase text-outline tracking-tighter">Starting Price</p>
+</div>
+</div>
+</div>
+<!-- Small Card 1 -->
+<div class="md:col-span-4 group overflow-hidden rounded-xl bg-surface shadow-ambient">
+<div class="relative overflow-hidden aspect-square">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="Contemporary dark-themed luxury house with vertical wooden slats surrounded by tall birch trees in an urban oasis" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBtuIrR7-ZOVUG9uUtNpm_k4q1G27leMzokoAP0xag3J5JR1xptKj8XdIIImPUn7yW-oZBtuZ8icBtn17s8S79l-9afCjzpI0KMLD1vUaA2Dylj5hB2Ok6x23n2xfTJnuF1mMcyZs2R2qKZ3Ru2th3zZFbbCtdOjwpKmVyNfc3IxoAfxNvVN7xDmwL2Deu5oSDxUOlN7DZbqobqSJOXVkfrSryDuu60_6D3cq7Yn7_lj0IunZLl3qrJi_HH58zEUB8HZa2b5-SNRVvx"/>
+</div>
+<div class="p-8">
+<h3 class="font-headline text-2xl text-primary mb-1">Oakwood Residences</h3>
+<p class="text-on-surface-variant mb-6 text-sm">Sector 128 • Riverside Views</p>
+<p class="font-headline text-xl text-secondary">₹75 Lakhs</p>
+</div>
+</div>
+<!-- Small Card 2 -->
+<div class="md:col-span-4 group overflow-hidden rounded-xl bg-surface shadow-ambient">
+<div class="relative overflow-hidden aspect-square">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="Beautifully designed sustainable home with a grass-covered roof and massive glass windows integrated into a meadow landscape" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDAf89A6vZsshIqsSchXQUZVjS4fxehtadUPDnOHRf80VL_cqLsvqKXJQRFzei0e4nkJNPls76TB-cCGyBYLdtkmG1DFrTiXOVYXX_2rLltVP6B5c-1aPw5H0HSoyBYxTz9tE7r-8KjMVnMAx4QK1vm6dYaaKw5JtL2o4Sk1t982K9ZgEkgRNDQ5icXiDTbIhBpVaAzi6etIue1LNM68JuJTYq23RpPxbTfa7yd5Nbm1EKE90T5ybxgnH-fg_aRw49G6PITalRohdMO"/>
+</div>
+<div class="p-8">
+<h3 class="font-headline text-2xl text-primary mb-1">The Moss Pavilion</h3>
+<p class="text-on-surface-variant mb-6 text-sm">Sector 94 • Forest Edge</p>
+<p class="font-headline text-xl text-secondary">₹1.8 Cr</p>
+</div>
+</div>
+<!-- Horizontal Medium Card -->
+<div class="md:col-span-8 group overflow-hidden rounded-xl bg-surface shadow-ambient flex flex-col md:flex-row">
+<div class="md:w-1/2 relative overflow-hidden">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="Elegant luxury villa pool area at twilight with warm lighting and reflection of surrounding palm trees and modern architecture" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBwN1m3feYjBuWDYRhDnl5PuUx9YIcxkf64SZuUrKBm3-LnRL2YIMrKfyMSG7uP627SAyUnOH-IhetZHYn-AeFbQIJ-VYLtm4iWmSNIjm_Hi7uD8HPrsvqngc1d2T5WukecvJiHKA7ceG_my98B_qx0hFT6zsAl3vincLjB4a9a2mnYWI_mDjLKDX7q75DTQE4KCI_D1AGN2mYFyR6rhrFH1mpslywMZfYH8gR98OQDd7R1lZva8L9HEtIU8gp61YriKWUUiR5nJ6G-"/>
+</div>
+<div class="p-10 md:w-1/2 flex flex-col justify-center">
+<span class="text-secondary-container bg-primary-container px-3 py-1 text-[10px] font-label uppercase tracking-widest inline-block w-fit mb-6">Limited Edition</span>
+<h3 class="font-headline text-3xl text-primary mb-4">Verdant Sky-Villas</h3>
+<p class="text-on-surface-variant mb-8 leading-relaxed">Duplex penthouses with private terrace gardens and panoramic views of the city skyline draped in green.</p>
+<p class="font-headline text-2xl text-secondary">₹5.2 Cr</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Testimonials Section -->
+<section class="py-32 px-8 bg-surface">
+<div class="max-w-screen-xl mx-auto text-center mb-20">
+<span class="font-label uppercase tracking-[0.15em] text-secondary text-sm block mb-4">Testimonials</span>
+<h2 class="font-headline text-5xl text-primary">Hear from the Resident Collective</h2>
+</div>
+<div class="max-w-screen-2xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
+<div class="p-12 bg-surface-container-low rounded-xl relative">
+<span class="material-symbols-outlined text-secondary/30 text-6xl absolute top-8 left-8" data-icon="format_quote">format_quote</span>
+<p class="relative z-10 font-body text-lg text-on-surface-variant mb-8 pt-12 italic leading-relaxed">
+                    "Living at Verdant Monolith feels like a permanent retreat. The air quality indoors is noticeably better, and waking up to the sound of birds in Noida is something I never thought possible."
+                </p>
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-primary-fixed"></div>
+<div>
+<p class="font-bold text-primary">Aditya Sharma</p>
+<p class="text-xs text-secondary font-label uppercase tracking-widest">Architect</p>
+</div>
+</div>
+</div>
+<div class="p-12 bg-surface-container-low rounded-xl relative md:mt-12">
+<span class="material-symbols-outlined text-secondary/30 text-6xl absolute top-8 left-8" data-icon="format_quote">format_quote</span>
+<p class="relative z-10 font-body text-lg text-on-surface-variant mb-8 pt-12 italic leading-relaxed">
+                    "The integration of sustainable technology with high-end luxury is seamless. It’s not just a home; it’s a statement of how we should live in the 21st century."
+                </p>
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-secondary-fixed"></div>
+<div>
+<p class="font-bold text-primary">Meera Kapoor</p>
+<p class="text-xs text-secondary font-label uppercase tracking-widest">Sustainability Consultant</p>
+</div>
+</div>
+</div>
+<div class="p-12 bg-surface-container-low rounded-xl relative">
+<span class="material-symbols-outlined text-secondary/30 text-6xl absolute top-8 left-8" data-icon="format_quote">format_quote</span>
+<p class="relative z-10 font-body text-lg text-on-surface-variant mb-8 pt-12 italic leading-relaxed">
+                    "The layout of the estate allows for genuine community interaction while preserving absolute privacy. The 'Living Gallery' is truly the most apt name for this place."
+                </p>
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-primary-fixed-dim"></div>
+<div>
+<p class="font-bold text-primary">Rohan Verma</p>
+<p class="text-xs text-secondary font-label uppercase tracking-widest">Entrepreneur</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Inquiry Section: Form & Map -->
+<section class="py-32 px-8 bg-surface-container">
+<div class="max-w-screen-2xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-20">
+<div>
+<span class="font-label uppercase tracking-[0.15em] text-secondary text-sm block mb-4">Connection</span>
+<h2 class="font-headline text-5xl text-primary mb-8">Begin Your Journey</h2>
+<p class="text-on-surface-variant mb-12 text-lg leading-relaxed max-w-lg">
+                    Schedule a private walkthrough of our model suites or request a digital portfolio of available residences. Our consultants are ready to help you find your niche in the gallery.
+                </p>
+<form class="space-y-8">
+<div class="relative">
+<input class="w-full bg-transparent border-0 border-b border-outline-variant/30 py-4 focus:ring-0 focus:border-primary transition-all text-lg placeholder:text-outline" placeholder="Your Name" type="text"/>
+</div>
+<div class="relative">
+<input class="w-full bg-transparent border-0 border-b border-outline-variant/30 py-4 focus:ring-0 focus:border-primary transition-all text-lg placeholder:text-outline" placeholder="Email Address" type="email"/>
+</div>
+<div class="relative">
+<input class="w-full bg-transparent border-0 border-b border-outline-variant/30 py-4 focus:ring-0 focus:border-primary transition-all text-lg placeholder:text-outline" placeholder="Phone Number" type="tel"/>
+</div>
+<div class="relative">
+<select class="w-full bg-transparent border-0 border-b border-outline-variant/30 py-4 focus:ring-0 focus:border-primary transition-all text-lg text-outline">
+<option>Preferred Property</option>
+<option>The Emerald Estate</option>
+<option>Oakwood Residences</option>
+<option>The Moss Pavilion</option>
+<option>Verdant Sky-Villas</option>
+</select>
+</div>
+<button class="w-full md:w-auto bg-primary text-on-primary px-12 py-5 rounded-md font-sans uppercase tracking-[0.2em] text-sm hover:bg-primary-container transition-all shadow-ambient">
+                        Inquire Now
+                    </button>
+</form>
+</div>
+<div class="relative rounded-xl overflow-hidden shadow-ambient min-h-[500px]">
+<img class="w-full h-full object-cover" data-alt="Stylized artistic aerial map view of Noida's green belts and park system in muted earthy green and gold tones" data-location="Noida" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCCvuwUl3Mlu-jAySP1okGJatf4eAxytHAEkG2t6-tudAQK2mptcW_Y6_u4rTowbrcuIoi-KuuTdAm1B63Tgg9U1AZbx84aeG9Lxai0FDltomzMaML0MIMCY3Dqedo-8m4O1fhVaod7ptjlEknjefksjsPh3YAEQWe11h4nq99Bvw8DwPjP1NtzZV8OPt1CJT0fqAgltrLa_izrABzfYvyt8xzHR218ChGZVp0viOBeXgWQCu7j7kjfN4B2Q_ZhTFRRrw4kiilBeluS"/>
+<div class="absolute inset-0 bg-primary/20 backdrop-blur-[2px]"></div>
+<div class="absolute inset-0 flex items-center justify-center">
+<div class="bg-surface/90 p-8 rounded-xl shadow-ambient max-w-xs text-center backdrop-blur-md">
+<span class="material-symbols-outlined text-primary text-4xl mb-4" data-icon="location_on">location_on</span>
+<h4 class="font-headline text-2xl text-primary mb-2">Experience Center</h4>
+<p class="text-sm text-on-surface-variant mb-4">Plot 22, Sector 150, Noida Express Way, UP 201310</p>
+<a class="text-secondary font-bold text-sm underline underline-offset-4" href="#">Get Directions</a>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Footer -->
+<footer class="w-full py-20 px-12" style="background-color: #2D4739;">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-12 items-start max-w-screen-2xl mx-auto">
+<div class="space-y-6">
+<div class="font-serif text-xl font-black" style="color: #F5F5F0;">VERDANT MONOLITH</div>
+<p class="font-serif italic text-xl" style="color: #F5F5F0;">Rooted in Nature.</p>
+<div class="flex gap-4">
+<span class="material-symbols-outlined cursor-pointer hover:text-primary transition-colors text-[#F5F5F0]" data-icon="language">language</span>
+<span class="material-symbols-outlined cursor-pointer hover:text-primary transition-colors text-[#F5F5F0]" data-icon="mail">mail</span>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-8">
+<div class="space-y-4">
+<p class="font-sans uppercase tracking-widest text-xs font-bold" style="color: #F5F5F0;">Discover</p>
+<a class="block font-sans text-sm tracking-wide transition-colors duration-300" href="#" style="color: #F5F5F0; opacity: 0.8;">Portfolio</a>
+<a class="block font-sans text-sm tracking-wide transition-colors duration-300" href="#" style="color: #F5F5F0; opacity: 0.8;">Sustainability</a>
+<a class="block font-sans text-sm tracking-wide transition-colors duration-300" href="#" style="color: #F5F5F0; opacity: 0.8;">Gallery</a>
+</div>
+<div class="space-y-4">
+<p class="font-sans uppercase tracking-widest text-xs font-bold" style="color: #F5F5F0;">Legal</p>
+<a class="block font-sans text-sm tracking-wide transition-colors duration-300" href="#" style="color: #F5F5F0; opacity: 0.8;">Privacy Policy</a>
+<a class="block font-sans text-sm tracking-wide transition-colors duration-300" href="#" style="color: #F5F5F0; opacity: 0.8;">Terms of Use</a>
+<a class="block font-sans text-sm tracking-wide transition-colors duration-300" href="#" style="color: #F5F5F0; opacity: 0.8;">RERA Info</a>
+</div>
+</div>
+<div class="text-right md:text-right flex flex-col justify-between h-full">
+<p class="text-sm tracking-wide" style="color: #F5F5F0; opacity: 0.7;">© 2024 VERDANT MONOLITH.<br/>Rooted in Nature.</p>
+<button class="mt-8 font-sans uppercase tracking-widest text-xs font-bold flex items-center justify-end gap-2 group" style="color: #F5F5F0;">
+                    Back to Top 
+                    <span class="material-symbols-outlined transition-transform group-hover:-translate-y-1 text-[#F5F5F0]" data-icon="north">north</span>
+</button>
+</div>
+</div>
+</footer>
+<!-- Admin Button (localhost only) -->
+<a id="admin-fab" href="admin.html" style="display:none;position:fixed;bottom:24px;right:24px;z-index:9999;width:48px;height:48px;background:#2D4739;border-radius:50%;box-shadow:0 4px 16px rgba(0,0,0,0.18);color:#fff;text-decoration:none;align-items:center;justify-content:center;transition:transform 0.2s,box-shadow 0.2s;" onmouseenter="this.style.transform='scale(1.1)';this.style.boxShadow='0 6px 20px rgba(0,0,0,0.25)'" onmouseleave="this.style.transform='scale(1)';this.style.boxShadow='0 4px 16px rgba(0,0,0,0.18)'">
+  <span class="material-symbols-outlined" style="font-size:24px;line-height:48px;text-align:center;display:block;">settings</span>
+</a>
+
+<script>
+(function() {
+  // Show admin button only on localhost
+  var fab = document.getElementById('admin-fab');
+  if (location.hostname === 'localhost' || location.hostname === '127.0.0.1' || location.protocol === 'file:') {
+    fab.style.display = 'flex';
+  }
+
+  // ==================== DEFAULT DATA (matches admin.html) ====================
+  var DEFAULT_DATA = {
+    nav: { brand: "VERDANT MONOLITH", cta: "Book a Private Tour" },
+    hero: {
+      badge: "The Living Gallery",
+      headline: "Own the Living Gallery <br/>in Noida",
+      description: "Premium properties near the city\u2019s greenest parks starting at \u20B975 Lakhs. Experience the silence of the forest within the heart of the NCR.",
+      image: "https://lh3.googleusercontent.com/aida-public/AB6AXuDENix6kyl3cuiaOqboPVrV8ceyGbru_NgZQ28DbkHZGPr_r6vjAqGwjt-dIRFQvfxtYCai9qTaVlYkyMyQ-5oZUSjdt1u7CNSI6gEeI2SHmkKKGO7ZHVunKJH7RSiCigF-lvrytskbKb2KYKWQMkZzzb1K_a4WIVo2EM_SdTAtqbtJh-crazNX3E61jYc5CsQ2CwGg13cSalf9NufOeXDdzduNd1fd_FoHMus7feud1Ahc3ZzGUfGIrlOiK-ACw3kTkn0PKTbOcfFo",
+      btn1: "Inquire Now",
+      btn2: "Explore Masterplan"
+    },
+    philosophy: {
+      label: "Philosophy",
+      title: "Rooted in Nature",
+      quote: "A sanctuary where architecture breathes in harmony with the ancient trees.",
+      image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCPMck7ip76QWbLtRNn4H9v6T_Ccu-J4ltSzPrv5LswPVH0BG7LpJf84yDmTRMIu775aDPjKJjxZtrAdvGeceYtVMoJiq1WMNz60Q7fykhRktQn48y4nbGHzl_U8g8u0qYcTR0gUmTly8rGOAjtQ_xHCkR7PcfOpwVuD-SAUizRONq0P89uEnbZBhh4wJptW86q5y5Qm80w9XiB1jX-e0YX1Hw_X_g01lov2UaDbIIknohRjUOTkaEPH9yBRucTf_UumkTxCZiUG5J6",
+      cards: [
+        { icon: "eco", title: "Eco-friendly Design", description: "Passive solar cooling and sustainable timber sourced from managed forests, ensuring a net-zero footprint." },
+        { icon: "air", title: "Air Purification", description: "Integrated botanical filtration systems that maintain indoor AQI levels below 20 year-round." },
+        { icon: "forest", title: "Green Views", description: "Every residence is oriented to offer 180-degree unobstructed views of Noida\u2019s protected parklands." },
+        { icon: "water_drop", title: "Water Stewardship", description: "On-site greywater recycling systems that nourish the sprawling central community gardens." }
+      ]
+    },
+    properties: [
+      { title: "The Emerald Estate", location: "Sector 150, Noida \u2022 Near Central Park", price: "\u20B93.4 Cr", image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCczT_f7-34sa69IctHVblIBM5BQpqgq1pUn2a2Q_C5jQ9lkxPpVBwD_NNZ77kD9IXxzo3Ph9jY8e3oM94mUW82MDvKlJ_giAdOGjGJbWwEY82ByzdThYABHjgZ8CM1gIovbio5Me1j6i8Q4Y9ouUIdBtBLow3OKgT9VECPaavWndtTLbhp2HhsVDAqVu6r2kOVnKhzL7LLvRX_khm70a2ZlmT_ETRfvl_JN0oS2vG5bHHcvW8eNkSixE1rC7e76YqvmNvuJO0LYk35", tags: ["Premium", "Eco-Certified"], description: "" },
+      { title: "Oakwood Residences", location: "Sector 128 \u2022 Riverside Views", price: "\u20B975 Lakhs", image: "https://lh3.googleusercontent.com/aida-public/AB6AXuBtuIrR7-ZOVUG9uUtNpm_k4q1G27leMzokoAP0xag3J5JR1xptKj8XdIIImPUn7yW-oZBtuZ8icBtn17s8S79l-9afCjzpI0KMLD1vUaA2Dylj5hB2Ok6x23n2xfTJnuF1mMcyZs2R2qKZ3Ru2th3zZFbbCtdOjwpKmVyNfc3IxoAfxNvVN7xDmwL2Deu5oSDxUOlN7DZbqobqSJOXVkfrSryDuu60_6D3cq7Yn7_lj0IunZLl3qrJi_HH58zEUB8HZa2b5-SNRVvx", tags: [], description: "" },
+      { title: "The Moss Pavilion", location: "Sector 94 \u2022 Forest Edge", price: "\u20B91.8 Cr", image: "https://lh3.googleusercontent.com/aida-public/AB6AXuDAf89A6vZsshIqsSchXQUZVjS4fxehtadUPDnOHRf80VL_cqLsvqKXJQRFzei0e4nkJNPls76TB-cCGyBYLdtkmG1DFrTiXOVYXX_2rLltVP6B5c-1aPw5H0HSoyBYxTz9tE7r-8KjMVnMAx4QK1vm6dYaaKw5JtL2o4Sk1t982K9ZgEkgRNDQ5icXiDTbIhBpVaAzi6etIue1LNM68JuJTYq23RpPxbTfa7yd5Nbm1EKE90T5ybxgnH-fg_aRw49G6PITalRohdMO", tags: [], description: "" },
+      { title: "Verdant Sky-Villas", location: "", price: "\u20B95.2 Cr", image: "https://lh3.googleusercontent.com/aida-public/AB6AXuBwN1m3feYjBuWDYRhDnl5PuUx9YIcxkf64SZuUrKBm3-LnRL2YIMrKfyMSG7uP627SAyUnOH-IhetZHYn-AeFbQIJ-VYLtm4iWmSNIjm_Hi7uD8HPrsvqngc1d2T5WukecvJiHKA7ceG_my98B_qx0hFT6zsAl3vincLjB4a9a2mnYWI_mDjLKDX7q75DTQE4KCI_D1AGN2mYFyR6rhrFH1mpslywMZfYH8gR98OQDd7R1lZva8L9HEtIU8gp61YriKWUUiR5nJ6G-", tags: ["Limited Edition"], description: "Duplex penthouses with private terrace gardens and panoramic views of the city skyline draped in green." }
+    ],
+    testimonials: [
+      { quote: "Living at Verdant Monolith feels like a permanent retreat. The air quality indoors is noticeably better, and waking up to the sound of birds in Noida is something I never thought possible.", name: "Aditya Sharma", role: "Architect", avatarColor: "bg-primary-fixed" },
+      { quote: "The integration of sustainable technology with high-end luxury is seamless. It\u2019s not just a home; it\u2019s a statement of how we should live in the 21st century.", name: "Meera Kapoor", role: "Sustainability Consultant", avatarColor: "bg-secondary-fixed" },
+      { quote: "The layout of the estate allows for genuine community interaction while preserving absolute privacy. The \u2018Living Gallery\u2019 is truly the most apt name for this place.", name: "Rohan Verma", role: "Entrepreneur", avatarColor: "bg-primary-fixed-dim" }
+    ],
+    inquiry: {
+      label: "Connection",
+      title: "Begin Your Journey",
+      description: "Schedule a private walkthrough of our model suites or request a digital portfolio of available residences. Our consultants are ready to help you find your niche in the gallery.",
+      locationTitle: "Experience Center",
+      locationAddress: "Plot 22, Sector 150, Noida Express Way, UP 201310",
+      locationLink: "Get Directions",
+      mapImage: "https://lh3.googleusercontent.com/aida-public/AB6AXuCCvuwUl3Mlu-jAySP1okGJatf4eAxytHAEkG2t6-tudAQK2mptcW_Y6_u4rTowbrcuIoi-KuuTdAm1B63Tgg9U1AZbx84aeG9Lxai0FDltomzMaML0MIMCY3Dqedo-8m4O1fhVaod7ptjlEknjefksjsPh3YAEQWe11h4nq99Bvw8DwPjP1NtzZV8OPt1CJT0fqAgltrLa_izrABzfYvyt8xzHR218ChGZVp0viOBeXgWQCu7j7kjfN4B2Q_ZhTFRRrw4kiilBeluS"
+    },
+    footer: {
+      brand: "VERDANT MONOLITH",
+      tagline: "Rooted in Nature.",
+      copyright: "\u00A9 2024 VERDANT MONOLITH.\nRooted in Nature.",
+      discoverLinks: ["Portfolio", "Sustainability", "Gallery"],
+      legalLinks: ["Privacy Policy", "Terms of Use", "RERA Info"]
+    }
+  };
+
+  // ==================== LOAD DATA ====================
+  var stored = localStorage.getItem('verdantMonolithData');
+  var data;
+  if (stored) {
+    try { data = JSON.parse(stored); } catch(e) { data = null; }
+  }
+  if (!data) return; // Use hardcoded HTML as-is
+
+  // ==================== APPLY DATA ====================
+  function esc(s) { var d = document.createElement('div'); d.textContent = s || ''; return d.innerHTML; }
+
+  // --- Navigation ---
+  var navBrand = document.querySelector('nav .font-serif');
+  if (navBrand) navBrand.textContent = data.nav.brand;
+  var navCta = document.querySelector('nav button');
+  if (navCta) navCta.textContent = data.nav.cta;
+
+  // --- Hero ---
+  if (data.hero) {
+    var heroBadge = document.querySelector('header span.inline-block');
+    if (heroBadge) heroBadge.textContent = data.hero.badge;
+
+    var heroH1 = document.querySelector('header h1');
+    if (heroH1) heroH1.innerHTML = data.hero.headline;
+
+    var heroDesc = document.querySelector('header p.font-body');
+    if (heroDesc) heroDesc.textContent = data.hero.description;
+
+    var heroImg = document.querySelector('header .absolute.inset-0 img');
+    if (heroImg) heroImg.src = data.hero.image;
+
+    var heroBtns = document.querySelectorAll('header .flex.gap-4 button');
+    if (heroBtns[0]) heroBtns[0].textContent = data.hero.btn1;
+    if (heroBtns[1]) heroBtns[1].textContent = data.hero.btn2;
+  }
+
+  // --- Philosophy ---
+  if (data.philosophy) {
+    var philSection = document.querySelectorAll('section.py-32')[0];
+    if (philSection) {
+      var philLabel = philSection.querySelector('span.font-label');
+      if (philLabel) philLabel.textContent = data.philosophy.label;
+
+      var philTitle = philSection.querySelector('h2');
+      if (philTitle) philTitle.textContent = data.philosophy.title;
+
+      var philQuote = philSection.querySelector('.font-headline.italic');
+      if (philQuote) philQuote.textContent = '"' + data.philosophy.quote + '"';
+
+      var philImg = philSection.querySelector('img');
+      if (philImg) philImg.src = data.philosophy.image;
+
+      var cardDivs = philSection.querySelectorAll('.grid.grid-cols-1.sm\\:grid-cols-2 .space-y-4');
+      if (data.philosophy.cards) {
+        data.philosophy.cards.forEach(function(card, i) {
+          if (cardDivs[i]) {
+            var icon = cardDivs[i].querySelector('.material-symbols-outlined');
+            if (icon) { icon.textContent = card.icon; icon.setAttribute('data-icon', card.icon); }
+            var h3 = cardDivs[i].querySelector('h3');
+            if (h3) h3.textContent = card.title;
+            var p = cardDivs[i].querySelector('p');
+            if (p) p.textContent = card.description;
+          }
+        });
+      }
+    }
+  }
+
+  // --- Properties (dynamic render) ---
+  if (data.properties) {
+    var propSection = document.querySelector('section.py-32.px-8.bg-surface-container-low');
+    if (propSection) {
+      var propGrid = propSection.querySelector('.grid.grid-cols-1.md\\:grid-cols-12');
+      if (propGrid) {
+        propGrid.innerHTML = '';
+        data.properties.forEach(function(prop, i) {
+          var tagsHtml = (prop.tags || []).map(function(t, ti) {
+            var bgClass = ti === 0 ? 'bg-surface/80' : 'bg-secondary-container/80';
+            var textClass = ti === 0 ? 'text-primary' : 'text-on-secondary-container';
+            return '<span class="' + bgClass + ' backdrop-blur-md px-3 py-1 text-[10px] font-label uppercase tracking-widest ' + textClass + '">' + esc(t) + '</span>';
+          }).join('');
+
+          if (i === 0) {
+            // Large featured card (8-col)
+            propGrid.innerHTML += '<div class="md:col-span-8 group overflow-hidden rounded-xl bg-surface shadow-ambient">' +
+              '<div class="relative overflow-hidden aspect-[16/9]">' +
+                '<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" src="' + esc(prop.image) + '"/>' +
+                (tagsHtml ? '<div class="absolute top-6 left-6 flex gap-2">' + tagsHtml + '</div>' : '') +
+              '</div>' +
+              '<div class="p-8 flex justify-between items-center">' +
+                '<div><h3 class="font-headline text-3xl text-primary mb-2">' + esc(prop.title) + '</h3>' +
+                '<p class="text-on-surface-variant">' + esc(prop.location) + '</p></div>' +
+                '<div class="text-right"><p class="font-headline text-2xl text-secondary">' + esc(prop.price) + '</p>' +
+                '<p class="text-xs font-label uppercase text-outline tracking-tighter">Starting Price</p></div>' +
+              '</div></div>';
+          } else if (i === 1 || i === 2) {
+            // Small cards (4-col each)
+            propGrid.innerHTML += '<div class="md:col-span-4 group overflow-hidden rounded-xl bg-surface shadow-ambient">' +
+              '<div class="relative overflow-hidden aspect-square">' +
+                '<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" src="' + esc(prop.image) + '"/>' +
+                (tagsHtml ? '<div class="absolute top-6 left-6 flex gap-2">' + tagsHtml + '</div>' : '') +
+              '</div>' +
+              '<div class="p-8"><h3 class="font-headline text-2xl text-primary mb-1">' + esc(prop.title) + '</h3>' +
+              '<p class="text-on-surface-variant mb-6 text-sm">' + esc(prop.location) + '</p>' +
+              '<p class="font-headline text-xl text-secondary">' + esc(prop.price) + '</p></div></div>';
+          } else {
+            // Horizontal medium cards (8-col)
+            propGrid.innerHTML += '<div class="md:col-span-8 group overflow-hidden rounded-xl bg-surface shadow-ambient flex flex-col md:flex-row">' +
+              '<div class="md:w-1/2 relative overflow-hidden">' +
+                '<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" src="' + esc(prop.image) + '"/>' +
+              '</div>' +
+              '<div class="p-10 md:w-1/2 flex flex-col justify-center">' +
+                (tagsHtml ? '<span class="text-secondary-container bg-primary-container px-3 py-1 text-[10px] font-label uppercase tracking-widest inline-block w-fit mb-6">' + (prop.tags && prop.tags[0] ? esc(prop.tags[0]) : '') + '</span>' : '') +
+                '<h3 class="font-headline text-3xl text-primary mb-4">' + esc(prop.title) + '</h3>' +
+                (prop.description ? '<p class="text-on-surface-variant mb-8 leading-relaxed">' + esc(prop.description) + '</p>' : '') +
+                '<p class="font-headline text-2xl text-secondary">' + esc(prop.price) + '</p>' +
+              '</div></div>';
+          }
+        });
+      }
+
+      // Update property dropdown in inquiry form
+      var propSelect = document.querySelector('form select');
+      if (propSelect) {
+        propSelect.innerHTML = '<option>Preferred Property</option>';
+        data.properties.forEach(function(prop) {
+          propSelect.innerHTML += '<option>' + esc(prop.title) + '</option>';
+        });
+      }
+    }
+  }
+
+  // --- Testimonials (dynamic render) ---
+  if (data.testimonials) {
+    var testSection = document.querySelectorAll('section.py-32.px-8.bg-surface')[1];
+    if (testSection) {
+      var testGrid = testSection.querySelector('.grid.grid-cols-1.md\\:grid-cols-3');
+      if (testGrid) {
+        testGrid.innerHTML = '';
+        data.testimonials.forEach(function(t, i) {
+          var mtClass = i === 1 ? ' md:mt-12' : '';
+          testGrid.innerHTML += '<div class="p-12 bg-surface-container-low rounded-xl relative' + mtClass + '">' +
+            '<span class="material-symbols-outlined text-secondary/30 text-6xl absolute top-8 left-8" data-icon="format_quote">format_quote</span>' +
+            '<p class="relative z-10 font-body text-lg text-on-surface-variant mb-8 pt-12 italic leading-relaxed">"' + esc(t.quote) + '"</p>' +
+            '<div class="flex items-center gap-4">' +
+              '<div class="w-12 h-12 rounded-full ' + esc(t.avatarColor) + '"></div>' +
+              '<div><p class="font-bold text-primary">' + esc(t.name) + '</p>' +
+              '<p class="text-xs text-secondary font-label uppercase tracking-widest">' + esc(t.role) + '</p></div>' +
+            '</div></div>';
+        });
+      }
+    }
+  }
+
+  // --- Inquiry ---
+  if (data.inquiry) {
+    var inqSection = document.querySelector('section.py-32.px-8.bg-surface-container');
+    if (inqSection) {
+      var inqLabel = inqSection.querySelector('span.font-label');
+      if (inqLabel) inqLabel.textContent = data.inquiry.label;
+
+      var inqTitle = inqSection.querySelector('h2');
+      if (inqTitle) inqTitle.textContent = data.inquiry.title;
+
+      var inqDesc = inqSection.querySelector('p.text-on-surface-variant');
+      if (inqDesc) inqDesc.textContent = data.inquiry.description;
+
+      var locTitle = inqSection.querySelector('h4.font-headline');
+      if (locTitle) locTitle.textContent = data.inquiry.locationTitle;
+
+      var locAddr = inqSection.querySelector('.max-w-xs p.text-sm');
+      if (locAddr) locAddr.textContent = data.inquiry.locationAddress;
+
+      var locLink = inqSection.querySelector('.max-w-xs a');
+      if (locLink) locLink.textContent = data.inquiry.locationLink;
+
+      var mapImg = inqSection.querySelector('.relative.rounded-xl > img');
+      if (mapImg) mapImg.src = data.inquiry.mapImage;
+    }
+  }
+
+  // --- Footer ---
+  if (data.footer) {
+    var footer = document.querySelector('footer');
+    if (footer) {
+      var fBrand = footer.querySelector('.font-serif.text-xl.font-black');
+      if (fBrand) fBrand.textContent = data.footer.brand;
+
+      var fTagline = footer.querySelector('.font-serif.italic');
+      if (fTagline) fTagline.textContent = data.footer.tagline;
+
+      var fCopy = footer.querySelector('.text-sm.tracking-wide');
+      if (fCopy) fCopy.innerHTML = esc(data.footer.copyright).replace(/\n/g, '<br/>');
+
+      // Update link columns
+      var linkCols = footer.querySelectorAll('.grid.grid-cols-2 .space-y-4');
+      if (linkCols[0] && data.footer.discoverLinks) {
+        var heading0 = linkCols[0].querySelector('p');
+        var html0 = heading0 ? heading0.outerHTML : '';
+        linkCols[0].innerHTML = html0;
+        data.footer.discoverLinks.forEach(function(link) {
+          linkCols[0].innerHTML += '<a class="block font-sans text-sm tracking-wide transition-colors duration-300" href="#" style="color: #F5F5F0; opacity: 0.8;">' + esc(link) + '</a>';
+        });
+      }
+      if (linkCols[1] && data.footer.legalLinks) {
+        var heading1 = linkCols[1].querySelector('p');
+        var html1 = heading1 ? heading1.outerHTML : '';
+        linkCols[1].innerHTML = html1;
+        data.footer.legalLinks.forEach(function(link) {
+          linkCols[1].innerHTML += '<a class="block font-sans text-sm tracking-wide transition-colors duration-300" href="#" style="color: #F5F5F0; opacity: 0.8;">' + esc(link) + '</a>';
+        });
+      }
+    }
+  }
+
+  // --- Update page title with brand name ---
+  if (data.nav && data.nav.brand) {
+    document.title = data.nav.brand + ' | Own the Living Gallery in Noida';
+  }
+
+})();
+</script>
+</body></html>

@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Verdant Monolith — Admin Panel</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<style>
+body { font-family: 'Manrope', sans-serif; }
+.material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24; vertical-align: middle; }
+.toast { animation: slideIn 0.3s ease, fadeOut 0.3s ease 2.7s; }
+@keyframes slideIn { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+@keyframes fadeOut { from { opacity: 1; } to { opacity: 0; } }
+.section-body { transition: max-height 0.3s ease, opacity 0.2s ease; overflow: hidden; }
+.section-body.collapsed { max-height: 0 !important; opacity: 0; padding-top: 0; padding-bottom: 0; }
+.img-preview { width: 80px; height: 60px; object-fit: cover; border-radius: 6px; border: 1px solid #e5e7eb; }
+</style>
+</head>
+<body class="bg-gray-50 text-gray-900 min-h-screen">
+
+<!-- Toast Container -->
+<div id="toast-container" class="fixed top-6 right-6 z-[100] flex flex-col gap-2"></div>
+
+<!-- Layout -->
+<div class="flex min-h-screen">
+<!-- Sidebar -->
+<aside id="sidebar" class="w-64 bg-white border-r border-gray-200 fixed h-full z-40 flex flex-col transition-transform lg:translate-x-0 -translate-x-full">
+  <div class="p-6 border-b border-gray-100">
+    <h1 class="text-lg font-bold text-emerald-900 tracking-tight">VERDANT MONOLITH</h1>
+    <p class="text-xs text-gray-400 mt-1">Content Management</p>
+  </div>
+  <nav class="flex-1 p-4 space-y-1 overflow-y-auto">
+    <a href="#nav-section" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors">
+      <span class="material-symbols-outlined text-[20px]">menu</span> Navigation
+    </a>
+    <a href="#hero-section" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors">
+      <span class="material-symbols-outlined text-[20px]">image</span> Hero
+    </a>
+    <a href="#philosophy-section" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors">
+      <span class="material-symbols-outlined text-[20px]">eco</span> Philosophy
+    </a>
+    <a href="#properties-section" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors">
+      <span class="material-symbols-outlined text-[20px]">apartment</span> Properties
+      <span id="sidebar-prop-count" class="ml-auto bg-emerald-100 text-emerald-700 text-[10px] font-bold px-2 py-0.5 rounded-full">4</span>
+    </a>
+    <a href="#testimonials-section" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors">
+      <span class="material-symbols-outlined text-[20px]">format_quote</span> Testimonials
+    </a>
+    <a href="#inquiry-section" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors">
+      <span class="material-symbols-outlined text-[20px]">mail</span> Inquiry
+    </a>
+    <a href="#footer-section" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors">
+      <span class="material-symbols-outlined text-[20px]">bottom_navigation</span> Footer
+    </a>
+  </nav>
+  <div class="p-4 border-t border-gray-100 space-y-2">
+    <button onclick="saveData()" class="w-full bg-emerald-700 text-white py-2.5 px-4 rounded-lg text-sm font-semibold hover:bg-emerald-800 transition-colors flex items-center justify-center gap-2">
+      <span class="material-symbols-outlined text-[18px]">save</span> Save Changes
+    </button>
+    <button onclick="window.open('verdant-monolith.html','_blank')" class="w-full bg-white border border-gray-200 text-gray-700 py-2.5 px-4 rounded-lg text-sm font-medium hover:bg-gray-50 transition-colors flex items-center justify-center gap-2">
+      <span class="material-symbols-outlined text-[18px]">open_in_new</span> Preview Site
+    </button>
+    <button onclick="resetData()" class="w-full text-red-500 py-2 px-4 rounded-lg text-xs font-medium hover:bg-red-50 transition-colors">
+      Reset to Defaults
+    </button>
+  </div>
+</aside>
+
+<!-- Mobile Header -->
+<div class="lg:hidden fixed top-0 left-0 right-0 bg-white border-b border-gray-200 z-30 flex items-center justify-between p-4">
+  <button onclick="document.getElementById('sidebar').classList.toggle('-translate-x-full')" class="p-2 hover:bg-gray-100 rounded-lg">
+    <span class="material-symbols-outlined">menu</span>
+  </button>
+  <span class="font-bold text-emerald-900 text-sm">Admin Panel</span>
+  <button onclick="saveData()" class="p-2 bg-emerald-700 text-white rounded-lg">
+    <span class="material-symbols-outlined text-[18px]">save</span>
+  </button>
+</div>
+
+<!-- Overlay for mobile sidebar -->
+<div id="sidebar-overlay" class="lg:hidden fixed inset-0 bg-black/30 z-30 hidden" onclick="document.getElementById('sidebar').classList.add('-translate-x-full');this.classList.add('hidden')"></div>
+
+<!-- Main Content -->
+<main class="flex-1 lg:ml-64 p-6 lg:p-10 mt-16 lg:mt-0">
+  <div class="max-w-4xl mx-auto space-y-8">
+
+    <div class="flex items-center justify-between mb-2">
+      <div>
+        <h2 class="text-2xl font-bold text-gray-900">Site Content Editor</h2>
+        <p class="text-sm text-gray-400 mt-1">Edit all sections of the Verdant Monolith website</p>
+      </div>
+      <div class="hidden md:flex gap-2">
+        <button onclick="saveData()" class="bg-emerald-700 text-white py-2.5 px-5 rounded-lg text-sm font-semibold hover:bg-emerald-800 transition-colors flex items-center gap-2">
+          <span class="material-symbols-outlined text-[18px]">save</span> Save
+        </button>
+        <button onclick="window.open('verdant-monolith.html','_blank')" class="bg-white border border-gray-200 text-gray-700 py-2.5 px-5 rounded-lg text-sm font-medium hover:bg-gray-50 transition-colors flex items-center gap-2">
+          <span class="material-symbols-outlined text-[18px]">open_in_new</span> Preview
+        </button>
+      </div>
+    </div>
+
+    <!-- NAVIGATION SECTION -->
+    <div id="nav-section" class="bg-white rounded-xl border border-gray-200 overflow-hidden">
+      <button onclick="toggleSection(this)" class="w-full flex items-center justify-between p-6 hover:bg-gray-50 transition-colors">
+        <div class="flex items-center gap-3">
+          <span class="material-symbols-outlined text-emerald-700">menu</span>
+          <h3 class="text-lg font-semibold">Navigation</h3>
+        </div>
+        <span class="material-symbols-outlined text-gray-400 section-chevron transition-transform">expand_more</span>
+      </button>
+      <div class="section-body px-6 pb-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-medium text-gray-500 mb-1.5">Brand Name</label>
+            <input id="nav-brand" type="text" class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-emerald-200 focus:border-emerald-400 outline-none transition-all"/>
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-gray-500 mb-1.5">CTA Button Text</label>
+            <input id="nav-cta" type="text" class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-emerald-200 focus:border-emerald-400 outline-none transition-all"/>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- HERO SECTION -->
+    <div id="hero-section" class="bg-white rounded-xl border border-gray-200 overflow-hidden">
+      <button onclick="toggleSection(this)" class="w-full flex items-center justify-between p-6 hover:bg-gray-50 transition-colors">
+        <div class="flex items-center gap-3">
+          <span class="material-symbols-outlined text-emerald-700">image</span>
+          <h3 class="text-lg font-semibold">Hero Section</h3>
+        </div>
+        <span class="material-symbols-outlined text-gray-400 section-chevron transition-transform">expand_more</span>
+      </button>
+      <div class="section-body px-6 pb-6 space-y-4">
+        <div>
+          <label class="block text-xs font-medium text-gray-500 mb-1.5">Badge Text</label>
+          <input id="hero-badge" type="text" class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-emerald-200 focus:border-emerald-400 outline-none"/>
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-gray-500 mb-1.5">Headline (use &lt;br/&gt; for line breaks)</label>
+          <input id="hero-headline" type="text" class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-emerald-200 focus:border-emerald-400 outline-none"/>
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-gray-500 mb-1.5">Description</label>
+          <textarea id="hero-description" rows="3" class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-emerald-200 focus:border-emerald-400 outline-none resize-none"></textarea>
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-gray-500 mb-1.5">Background Image URL</label>
+          <div class="flex gap-3 items-start">
+            <input id="hero-image" type="text" class="flex-1 border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-emerald-200 focus:border-emerald-400 outline-none" oninput="updatePreview(this,'hero-image-preview')"/>
+            <img id="hero-image-preview" class="img-preview" src="" onerror="this.style.display='none'" onload="this.style.display='block'"/>
+          </div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-medium text-gray-500 mb-1.5">Primary Button Text</label>
+            <input id="hero-btn1" type="text" class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-emerald-200 focus:border-emerald-400 outline-none"/>
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-gray-500 mb-1.5">Secondary Button Text</label>
+            <input id="hero-btn2" type="text" class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-emerald-200 focus:border-emerald-400 outline-none"/>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHILOSOPHY SECTION -->
+    <div id="philosophy-section" class="bg-white rounded-xl border border-gray-200 overflow-hidden">
+      <button onclick="toggleSection(this)" class="w-full flex items-center justify-between p-6 hover:bg-gray-50 transition-colors">
+        <div class="flex items-center gap-3">
+          <span class="material-symbols-outlined text-emerald-700">eco</span>
+          <h3 class="text-lg font-semibold">Philosophy (Rooted in Nature)</h3>
+        </div>
+        <span class="material-symbols-outlined text-gray-400 section-chevron transition-transform">expand_more</span>
+      </button>
+      <div class="section-body px-6 pb-6 space-y-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-medium text-gray-500 mb-1.5">Section Label</label>
+            <input id="phil-label" type="text" class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-emerald-200 focus:border-emerald-400 outline-none"/>
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-gray-500 mb-1.5">Section Title</label>
+            <input id="phil-title" type="text" class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-emerald-200 focus:border-emerald-400 outline-none"/>
+          </div>
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-gray-500 mb-1.5">Quote Text</label>
+          <textarea id="phil-quote" rows="2" class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-emerald-200 focus:border-emerald-400 outline-none resize-none"></textarea>
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-gray-500 mb-1.5">Section Image URL</label>
+          <div class="flex gap-3 items-start">
+            <input id="phil-image" type="text" class="flex-1 border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-emerald-200 focus:border-emerald-400 outline-none" oninput="updatePreview(this,'phil-image-preview')"/>
+            <img id="phil-image-preview" class="img-preview" src="" onerror="this.style.display='none'" onload="this.style.display='block'"/>
+          </div>
+        </div>
+        <h4 class="text-sm font-semibold text-gray-700 pt-2 border-t border-gray-100">Feature Cards</h4>
+        <div id="phil-cards-container" class="space-y-4"></div>
+      </div>
+    </div>
+
+    <!-- PROPERTIES SECTION -->
+    <div id="properties-section" class="bg-white rounded-xl border border-gray-200 overflow-hidden">
+      <button onclick="toggleSection(this)" class="w-full flex items-center justify-between p-6 hover:bg-gray-50 transition-colors">
+        <div class="flex items-center gap-3">
+          <span class="material-symbols-outlined text-emerald-700">apartment</span>
+          <h3 class="text-lg font-semibold">Properties</h3>
+          <span id="prop-count-badge" class="bg-emerald-100 text-emerald-700 text-[10px] font-bold px-2 py-0.5 rounded-full">4</span>
+        </div>
+        <span class="material-symbols-outlined text-gray-400 section-chevron transition-transform">expand_more</span>
+      </button>
+      <div class="section-body px-6 pb-6">
+        <div class="flex items-center justify-between mb-4">
+          <p class="text-xs text-gray-400">Layout: 1st = large (8-col), 2nd & 3rd = small (4-col each), 4th+ = horizontal (8-col)</p>
+          <button onclick="addProperty()" class="bg-emerald-50 text-emerald-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-emerald-100 transition-colors flex items-center gap-1">
+            <span class="material-symbols-outlined text-[18px]">add</span> Add Property
+          </button>
+        </div>
+        <div id="properties-container" class="space-y-4"></div>
+      </div>
+    </div>
+
+    <!-- TESTIMONIALS SECTION -->
+    <div id="testimonials-section" class="bg-white rounded-xl border border-gray-200 overflow-hidden">
+      <button onclick="toggleSection(this)" class="w-full flex items-center justify-between p-6 hover:bg-gray-50 transition-colors">
+        <div class="flex items-center gap-3">
+          <span class="material-symbols-outlined text-emerald-700">format_quote</span>
+          <h3 class="text-lg font-semibold">Testimonials</h3>
+        </div>
+        <span class="material-symbols-outlined text-gray-400 section-chevron transition-transform">expand_more</span>
+      </button>
+      <div class="section-body px-6 pb-6">
+        <div class="flex justify-end mb-4">
+          <button onclick="addTestimonial()" class="bg-emerald-50 text-emerald-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-emerald-100 transition-colors flex items-center gap-1">
+            <span class="material-symbols-outlined text-[18px]">add</span> Add Testimonial
+          </button>
+        </div>
+        <div id="testimonials-container" class="space-y-4"></div>
+      </div>
+    </div>
+
+    <!-- INQUIRY SECTION -->
+    <div id="inquiry-section" class="bg-white rounded-xl border border-gray-200 overflow-hidden">
+      <button onclick="toggleSection(this)" class="w-full flex items-center justify-between p-6 hover:bg-gray-50 transition-colors">
+        <div class="flex items-center gap-3">
+          <span class="material-symbols-outlined text-emerald-700">mail</span>
+          <h3 class="text-lg font-semibold">Inquiry Section</h3>
+        </div>
+        <span class="material-symbols-outlined text-gray-400 section-chevron transition-transform">expand_more</span>
+      </button>
+      <div class="section-body px-6 pb-6 space-y-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-medium text-gray-500 mb-1.5">Section Label</label>
+            <input id="inq-label" type="text" class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-emerald-200 focus:border-emerald-400 outline-none"/>
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-gray-500 mb-1.5">Section Title</label>
+            <input id="inq-title" type="text" class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-emerald-200 focus:border-emerald-400 outline-none"/>
+          </div>
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-gray-500 mb-1.5">Description</label>
+          <textarea id="inq-desc" rows="3" class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-emerald-200 focus:border-emerald-400 outline-none resize-none"></textarea>
+        </div>
+        <h4 class="text-sm font-semibold text-gray-700 pt-2 border-t border-gray-100">Location Card</h4>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-medium text-gray-500 mb-1.5">Card Title</label>
+            <input id="inq-loc-title" type="text" class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-emerald-200 focus:border-emerald-400 outline-none"/>
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-gray-500 mb-1.5">Link Text</label>
+            <input id="inq-loc-link" type="text" class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-emerald-200 focus:border-emerald-400 outline-none"/>
+          </div>
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-gray-500 mb-1.5">Address</label>
+          <input id="inq-loc-address" type="text" class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-emerald-200 focus:border-emerald-400 outline-none"/>
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-gray-500 mb-1.5">Map Image URL</label>
+          <div class="flex gap-3 items-start">
+            <input id="inq-map-image" type="text" class="flex-1 border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-emerald-200 focus:border-emerald-400 outline-none" oninput="updatePreview(this,'inq-map-preview')"/>
+            <img id="inq-map-preview" class="img-preview" src="" onerror="this.style.display='none'" onload="this.style.display='block'"/>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FOOTER SECTION -->
+    <div id="footer-section" class="bg-white rounded-xl border border-gray-200 overflow-hidden">
+      <button onclick="toggleSection(this)" class="w-full flex items-center justify-between p-6 hover:bg-gray-50 transition-colors">
+        <div class="flex items-center gap-3">
+          <span class="material-symbols-outlined text-emerald-700">bottom_navigation</span>
+          <h3 class="text-lg font-semibold">Footer</h3>
+        </div>
+        <span class="material-symbols-outlined text-gray-400 section-chevron transition-transform">expand_more</span>
+      </button>
+      <div class="section-body px-6 pb-6 space-y-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-medium text-gray-500 mb-1.5">Brand Name</label>
+            <input id="footer-brand" type="text" class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-emerald-200 focus:border-emerald-400 outline-none"/>
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-gray-500 mb-1.5">Tagline</label>
+            <input id="footer-tagline" type="text" class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-emerald-200 focus:border-emerald-400 outline-none"/>
+          </div>
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-gray-500 mb-1.5">Copyright Text</label>
+          <input id="footer-copyright" type="text" class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-emerald-200 focus:border-emerald-400 outline-none"/>
+        </div>
+        <h4 class="text-sm font-semibold text-gray-700 pt-2 border-t border-gray-100">Discover Column Links</h4>
+        <div id="footer-discover-container" class="space-y-2"></div>
+        <button onclick="addFooterLink('discover')" class="text-emerald-600 text-xs font-medium hover:text-emerald-800 flex items-center gap-1">
+          <span class="material-symbols-outlined text-[16px]">add</span> Add Link
+        </button>
+        <h4 class="text-sm font-semibold text-gray-700 pt-2 border-t border-gray-100">Legal Column Links</h4>
+        <div id="footer-legal-container" class="space-y-2"></div>
+        <button onclick="addFooterLink('legal')" class="text-emerald-600 text-xs font-medium hover:text-emerald-800 flex items-center gap-1">
+          <span class="material-symbols-outlined text-[16px]">add</span> Add Link
+        </button>
+      </div>
+    </div>
+
+    <div class="h-8"></div>
+  </div>
+</main>
+</div>
+
+<script>
+// ==================== DEFAULT DATA ====================
+const DEFAULT_DATA = {
+  nav: {
+    brand: "VERDANT MONOLITH",
+    cta: "Book a Private Tour"
+  },
+  hero: {
+    badge: "The Living Gallery",
+    headline: "Own the Living Gallery <br/>in Noida",
+    description: "Premium properties near the city's greenest parks starting at ₹75 Lakhs. Experience the silence of the forest within the heart of the NCR.",
+    image: "https://lh3.googleusercontent.com/aida-public/AB6AXuDENix6kyl3cuiaOqboPVrV8ceyGbru_NgZQ28DbkHZGPr_r6vjAqGwjt-dIRFQvfxtYCai9qTaVlYkyMyQ-5oZUSjdt1u7CNSI6gEeI2SHmkKKGO7ZHVunKJH7RSiCigF-lvrytskbKb2KYKWQMkZzzb1K_a4WIVo2EM_SdTAtqbtJh-crazNX3E61jYc5CsQ2CwGg13cSalf9NufOeXDdzduNd1fd_FoHMus7feud1Ahc3ZzGUfGIrlOiK-ACw3kTkn0PKTbOcfFo",
+    btn1: "Inquire Now",
+    btn2: "Explore Masterplan"
+  },
+  philosophy: {
+    label: "Philosophy",
+    title: "Rooted in Nature",
+    quote: "A sanctuary where architecture breathes in harmony with the ancient trees.",
+    image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCPMck7ip76QWbLtRNn4H9v6T_Ccu-J4ltSzPrv5LswPVH0BG7LpJf84yDmTRMIu775aDPjKJjxZtrAdvGeceYtVMoJiq1WMNz60Q7fykhRktQn48y4nbGHzl_U8g8u0qYcTR0gUmTly8rGOAjtQ_xHCkR7PcfOpwVuD-SAUizRONq0P89uEnbZBhh4wJptW86q5y5Qm80w9XiB1jX-e0YX1Hw_X_g01lov2UaDbIIknohRjUOTkaEPH9yBRucTf_UumkTxCZiUG5J6",
+    cards: [
+      { icon: "eco", title: "Eco-friendly Design", description: "Passive solar cooling and sustainable timber sourced from managed forests, ensuring a net-zero footprint." },
+      { icon: "air", title: "Air Purification", description: "Integrated botanical filtration systems that maintain indoor AQI levels below 20 year-round." },
+      { icon: "forest", title: "Green Views", description: "Every residence is oriented to offer 180-degree unobstructed views of Noida's protected parklands." },
+      { icon: "water_drop", title: "Water Stewardship", description: "On-site greywater recycling systems that nourish the sprawling central community gardens." }
+    ]
+  },
+  properties: [
+    {
+      title: "The Emerald Estate",
+      location: "Sector 150, Noida \u2022 Near Central Park",
+      price: "\u20B93.4 Cr",
+      image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCczT_f7-34sa69IctHVblIBM5BQpqgq1pUn2a2Q_C5jQ9lkxPpVBwD_NNZ77kD9IXxzo3Ph9jY8e3oM94mUW82MDvKlJ_giAdOGjGJbWwEY82ByzdThYABHjgZ8CM1gIovbio5Me1j6i8Q4Y9ouUIdBtBLow3OKgT9VECPaavWndtTLbhp2HhsVDAqVu6r2kOVnKhzL7LLvRX_khm70a2ZlmT_ETRfvl_JN0oS2vG5bHHcvW8eNkSixE1rC7e76YqvmNvuJO0LYk35",
+      tags: ["Premium", "Eco-Certified"],
+      description: ""
+    },
+    {
+      title: "Oakwood Residences",
+      location: "Sector 128 \u2022 Riverside Views",
+      price: "\u20B975 Lakhs",
+      image: "https://lh3.googleusercontent.com/aida-public/AB6AXuBtuIrR7-ZOVUG9uUtNpm_k4q1G27leMzokoAP0xag3J5JR1xptKj8XdIIImPUn7yW-oZBtuZ8icBtn17s8S79l-9afCjzpI0KMLD1vUaA2Dylj5hB2Ok6x23n2xfTJnuF1mMcyZs2R2qKZ3Ru2th3zZFbbCtdOjwpKmVyNfc3IxoAfxNvVN7xDmwL2Deu5oSDxUOlN7DZbqobqSJOXVkfrSryDuu60_6D3cq7Yn7_lj0IunZLl3qrJi_HH58zEUB8HZa2b5-SNRVvx",
+      tags: [],
+      description: ""
+    },
+    {
+      title: "The Moss Pavilion",
+      location: "Sector 94 \u2022 Forest Edge",
+      price: "\u20B91.8 Cr",
+      image: "https://lh3.googleusercontent.com/aida-public/AB6AXuDAf89A6vZsshIqsSchXQUZVjS4fxehtadUPDnOHRf80VL_cqLsvqKXJQRFzei0e4nkJNPls76TB-cCGyBYLdtkmG1DFrTiXOVYXX_2rLltVP6B5c-1aPw5H0HSoyBYxTz9tE7r-8KjMVnMAx4QK1vm6dYaaKw5JtL2o4Sk1t982K9ZgEkgRNDQ5icXiDTbIhBpVaAzi6etIue1LNM68JuJTYq23RpPxbTfa7yd5Nbm1EKE90T5ybxgnH-fg_aRw49G6PITalRohdMO",
+      tags: [],
+      description: ""
+    },
+    {
+      title: "Verdant Sky-Villas",
+      location: "",
+      price: "\u20B95.2 Cr",
+      image: "https://lh3.googleusercontent.com/aida-public/AB6AXuBwN1m3feYjBuWDYRhDnl5PuUx9YIcxkf64SZuUrKBm3-LnRL2YIMrKfyMSG7uP627SAyUnOH-IhetZHYn-AeFbQIJ-VYLtm4iWmSNIjm_Hi7uD8HPrsvqngc1d2T5WukecvJiHKA7ceG_my98B_qx0hFT6zsAl3vincLjB4a9a2mnYWI_mDjLKDX7q75DTQE4KCI_D1AGN2mYFyR6rhrFH1mpslywMZfYH8gR98OQDd7R1lZva8L9HEtIU8gp61YriKWUUiR5nJ6G-",
+      tags: ["Limited Edition"],
+      description: "Duplex penthouses with private terrace gardens and panoramic views of the city skyline draped in green."
+    }
+  ],
+  testimonials: [
+    {
+      quote: "Living at Verdant Monolith feels like a permanent retreat. The air quality indoors is noticeably better, and waking up to the sound of birds in Noida is something I never thought possible.",
+      name: "Aditya Sharma",
+      role: "Architect",
+      avatarColor: "bg-primary-fixed"
+    },
+    {
+      quote: "The integration of sustainable technology with high-end luxury is seamless. It's not just a home; it's a statement of how we should live in the 21st century.",
+      name: "Meera Kapoor",
+      role: "Sustainability Consultant",
+      avatarColor: "bg-secondary-fixed"
+    },
+    {
+      quote: "The layout of the estate allows for genuine community interaction while preserving absolute privacy. The 'Living Gallery' is truly the most apt name for this place.",
+      name: "Rohan Verma",
+      role: "Entrepreneur",
+      avatarColor: "bg-primary-fixed-dim"
+    }
+  ],
+  inquiry: {
+    label: "Connection",
+    title: "Begin Your Journey",
+    description: "Schedule a private walkthrough of our model suites or request a digital portfolio of available residences. Our consultants are ready to help you find your niche in the gallery.",
+    locationTitle: "Experience Center",
+    locationAddress: "Plot 22, Sector 150, Noida Express Way, UP 201310",
+    locationLink: "Get Directions",
+    mapImage: "https://lh3.googleusercontent.com/aida-public/AB6AXuCCvuwUl3Mlu-jAySP1okGJatf4eAxytHAEkG2t6-tudAQK2mptcW_Y6_u4rTowbrcuIoi-KuuTdAm1B63Tgg9U1AZbx84aeG9Lxai0FDltomzMaML0MIMCY3Dqedo-8m4O1fhVaod7ptjlEknjefksjsPh3YAEQWe11h4nq99Bvw8DwPjP1NtzZV8OPt1CJT0fqAgltrLa_izrABzfYvyt8xzHR218ChGZVp0viOBeXgWQCu7j7kjfN4B2Q_ZhTFRRrw4kiilBeluS"
+  },
+  footer: {
+    brand: "VERDANT MONOLITH",
+    tagline: "Rooted in Nature.",
+    copyright: "\u00A9 2024 VERDANT MONOLITH.\nRooted in Nature.",
+    discoverLinks: ["Portfolio", "Sustainability", "Gallery"],
+    legalLinks: ["Privacy Policy", "Terms of Use", "RERA Info"]
+  }
+};
+
+// ==================== STATE ====================
+let siteData = {};
+
+function loadData() {
+  const stored = localStorage.getItem('verdantMonolithData');
+  if (stored) {
+    try {
+      siteData = JSON.parse(stored);
+      // Ensure all keys exist by merging with defaults
+      siteData = deepMerge(JSON.parse(JSON.stringify(DEFAULT_DATA)), siteData);
+    } catch(e) {
+      siteData = JSON.parse(JSON.stringify(DEFAULT_DATA));
+    }
+  } else {
+    siteData = JSON.parse(JSON.stringify(DEFAULT_DATA));
+  }
+}
+
+function deepMerge(target, source) {
+  for (const key in source) {
+    if (source[key] && typeof source[key] === 'object' && !Array.isArray(source[key])) {
+      if (!target[key]) target[key] = {};
+      deepMerge(target[key], source[key]);
+    } else {
+      target[key] = source[key];
+    }
+  }
+  return target;
+}
+
+// ==================== UI HELPERS ====================
+function showToast(message, type = 'success') {
+  const container = document.getElementById('toast-container');
+  const toast = document.createElement('div');
+  const bg = type === 'success' ? 'bg-emerald-700' : type === 'error' ? 'bg-red-600' : 'bg-amber-600';
+  toast.className = `toast ${bg} text-white px-5 py-3 rounded-lg shadow-lg text-sm font-medium flex items-center gap-2`;
+  const icon = type === 'success' ? 'check_circle' : type === 'error' ? 'error' : 'warning';
+  toast.innerHTML = `<span class="material-symbols-outlined text-[18px]">${icon}</span> ${message}`;
+  container.appendChild(toast);
+  setTimeout(() => toast.remove(), 3000);
+}
+
+function toggleSection(btn) {
+  const body = btn.nextElementSibling;
+  const chevron = btn.querySelector('.section-chevron');
+  body.classList.toggle('collapsed');
+  chevron.style.transform = body.classList.contains('collapsed') ? 'rotate(-90deg)' : '';
+}
+
+function updatePreview(input, previewId) {
+  const img = document.getElementById(previewId);
+  if (img) { img.src = input.value; }
+}
+
+// ==================== POPULATE FORMS ====================
+function populateForms() {
+  // Nav
+  document.getElementById('nav-brand').value = siteData.nav.brand;
+  document.getElementById('nav-cta').value = siteData.nav.cta;
+
+  // Hero
+  document.getElementById('hero-badge').value = siteData.hero.badge;
+  document.getElementById('hero-headline').value = siteData.hero.headline;
+  document.getElementById('hero-description').value = siteData.hero.description;
+  document.getElementById('hero-image').value = siteData.hero.image;
+  document.getElementById('hero-image-preview').src = siteData.hero.image;
+  document.getElementById('hero-btn1').value = siteData.hero.btn1;
+  document.getElementById('hero-btn2').value = siteData.hero.btn2;
+
+  // Philosophy
+  document.getElementById('phil-label').value = siteData.philosophy.label;
+  document.getElementById('phil-title').value = siteData.philosophy.title;
+  document.getElementById('phil-quote').value = siteData.philosophy.quote;
+  document.getElementById('phil-image').value = siteData.philosophy.image;
+  document.getElementById('phil-image-preview').src = siteData.philosophy.image;
+  renderPhilosophyCards();
+
+  // Properties
+  renderProperties();
+
+  // Testimonials
+  renderTestimonials();
+
+  // Inquiry
+  document.getElementById('inq-label').value = siteData.inquiry.label;
+  document.getElementById('inq-title').value = siteData.inquiry.title;
+  document.getElementById('inq-desc').value = siteData.inquiry.description;
+  document.getElementById('inq-loc-title').value = siteData.inquiry.locationTitle;
+  document.getElementById('inq-loc-address').value = siteData.inquiry.locationAddress;
+  document.getElementById('inq-loc-link').value = siteData.inquiry.locationLink;
+  document.getElementById('inq-map-image').value = siteData.inquiry.mapImage;
+  document.getElementById('inq-map-preview').src = siteData.inquiry.mapImage;
+
+  // Footer
+  document.getElementById('footer-brand').value = siteData.footer.brand;
+  document.getElementById('footer-tagline').value = siteData.footer.tagline;
+  document.getElementById('footer-copyright').value = siteData.footer.copyright;
+  renderFooterLinks('discover');
+  renderFooterLinks('legal');
+}
+
+function renderPhilosophyCards() {
+  const container = document.getElementById('phil-cards-container');
+  container.innerHTML = '';
+  siteData.philosophy.cards.forEach((card, i) => {
+    container.innerHTML += `
+      <div class="bg-gray-50 rounded-lg p-4 space-y-3">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-semibold text-gray-500">Card ${i + 1}</span>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+          <div>
+            <label class="block text-[10px] font-medium text-gray-400 mb-1">Icon (Material Symbol)</label>
+            <input data-phil-card="${i}" data-field="icon" type="text" value="${card.icon}" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-200 focus:border-emerald-400 outline-none"/>
+          </div>
+          <div class="md:col-span-2">
+            <label class="block text-[10px] font-medium text-gray-400 mb-1">Title</label>
+            <input data-phil-card="${i}" data-field="title" type="text" value="${escapeAttr(card.title)}" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-200 focus:border-emerald-400 outline-none"/>
+          </div>
+        </div>
+        <div>
+          <label class="block text-[10px] font-medium text-gray-400 mb-1">Description</label>
+          <textarea data-phil-card="${i}" data-field="description" rows="2" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-200 focus:border-emerald-400 outline-none resize-none">${escapeHtml(card.description)}</textarea>
+        </div>
+      </div>`;
+  });
+}
+
+function renderProperties() {
+  const container = document.getElementById('properties-container');
+  container.innerHTML = '';
+  const count = siteData.properties.length;
+  document.getElementById('prop-count-badge').textContent = count;
+  document.getElementById('sidebar-prop-count').textContent = count;
+
+  siteData.properties.forEach((prop, i) => {
+    container.innerHTML += `
+      <div class="bg-gray-50 rounded-lg p-4 space-y-3 border border-gray-100" id="prop-card-${i}">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="text-xs font-bold text-emerald-700 bg-emerald-100 w-6 h-6 flex items-center justify-center rounded">${i + 1}</span>
+            <span class="text-sm font-semibold text-gray-700">${escapeHtml(prop.title || 'Untitled Property')}</span>
+          </div>
+          <div class="flex items-center gap-1">
+            <button onclick="moveProperty(${i},-1)" class="p-1 hover:bg-gray-200 rounded ${i === 0 ? 'opacity-30 pointer-events-none' : ''}" title="Move up">
+              <span class="material-symbols-outlined text-[18px]">arrow_upward</span>
+            </button>
+            <button onclick="moveProperty(${i},1)" class="p-1 hover:bg-gray-200 rounded ${i === count - 1 ? 'opacity-30 pointer-events-none' : ''}" title="Move down">
+              <span class="material-symbols-outlined text-[18px]">arrow_downward</span>
+            </button>
+            <button onclick="deleteProperty(${i})" class="p-1 hover:bg-red-100 text-red-500 rounded" title="Delete">
+              <span class="material-symbols-outlined text-[18px]">delete</span>
+            </button>
+          </div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-[10px] font-medium text-gray-400 mb-1">Title</label>
+            <input data-prop="${i}" data-field="title" type="text" value="${escapeAttr(prop.title)}" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-200 focus:border-emerald-400 outline-none"/>
+          </div>
+          <div>
+            <label class="block text-[10px] font-medium text-gray-400 mb-1">Location</label>
+            <input data-prop="${i}" data-field="location" type="text" value="${escapeAttr(prop.location)}" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-200 focus:border-emerald-400 outline-none"/>
+          </div>
+          <div>
+            <label class="block text-[10px] font-medium text-gray-400 mb-1">Price</label>
+            <input data-prop="${i}" data-field="price" type="text" value="${escapeAttr(prop.price)}" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-200 focus:border-emerald-400 outline-none"/>
+          </div>
+          <div>
+            <label class="block text-[10px] font-medium text-gray-400 mb-1">Tags (comma separated)</label>
+            <input data-prop="${i}" data-field="tags" type="text" value="${escapeAttr((prop.tags || []).join(', '))}" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-200 focus:border-emerald-400 outline-none"/>
+          </div>
+        </div>
+        <div>
+          <label class="block text-[10px] font-medium text-gray-400 mb-1">Description (for horizontal layout cards)</label>
+          <textarea data-prop="${i}" data-field="description" rows="2" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-200 focus:border-emerald-400 outline-none resize-none">${escapeHtml(prop.description || '')}</textarea>
+        </div>
+        <div>
+          <label class="block text-[10px] font-medium text-gray-400 mb-1">Image URL</label>
+          <div class="flex gap-3 items-start">
+            <input data-prop="${i}" data-field="image" type="text" value="${escapeAttr(prop.image)}" class="flex-1 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-200 focus:border-emerald-400 outline-none" oninput="this.nextElementSibling.src=this.value"/>
+            <img class="img-preview" src="${escapeAttr(prop.image)}" onerror="this.style.display='none'" onload="this.style.display='block'"/>
+          </div>
+        </div>
+      </div>`;
+  });
+}
+
+function renderTestimonials() {
+  const container = document.getElementById('testimonials-container');
+  container.innerHTML = '';
+  const avatarOptions = ['bg-primary-fixed', 'bg-secondary-fixed', 'bg-primary-fixed-dim', 'bg-emerald-300', 'bg-amber-300', 'bg-rose-300', 'bg-blue-300'];
+
+  siteData.testimonials.forEach((t, i) => {
+    container.innerHTML += `
+      <div class="bg-gray-50 rounded-lg p-4 space-y-3 border border-gray-100">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-semibold text-gray-500">Testimonial ${i + 1}</span>
+          <button onclick="deleteTestimonial(${i})" class="p-1 hover:bg-red-100 text-red-500 rounded" title="Delete">
+            <span class="material-symbols-outlined text-[18px]">delete</span>
+          </button>
+        </div>
+        <div>
+          <label class="block text-[10px] font-medium text-gray-400 mb-1">Quote</label>
+          <textarea data-test="${i}" data-field="quote" rows="3" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-200 focus:border-emerald-400 outline-none resize-none">${escapeHtml(t.quote)}</textarea>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+          <div>
+            <label class="block text-[10px] font-medium text-gray-400 mb-1">Name</label>
+            <input data-test="${i}" data-field="name" type="text" value="${escapeAttr(t.name)}" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-200 focus:border-emerald-400 outline-none"/>
+          </div>
+          <div>
+            <label class="block text-[10px] font-medium text-gray-400 mb-1">Role</label>
+            <input data-test="${i}" data-field="role" type="text" value="${escapeAttr(t.role)}" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-200 focus:border-emerald-400 outline-none"/>
+          </div>
+          <div>
+            <label class="block text-[10px] font-medium text-gray-400 mb-1">Avatar Color</label>
+            <select data-test="${i}" data-field="avatarColor" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-200 focus:border-emerald-400 outline-none">
+              ${avatarOptions.map(c => `<option value="${c}" ${t.avatarColor === c ? 'selected' : ''}>${c.replace('bg-','')}</option>`).join('')}
+            </select>
+          </div>
+        </div>
+      </div>`;
+  });
+}
+
+function renderFooterLinks(column) {
+  const key = column === 'discover' ? 'discoverLinks' : 'legalLinks';
+  const container = document.getElementById(`footer-${column}-container`);
+  container.innerHTML = '';
+  (siteData.footer[key] || []).forEach((link, i) => {
+    container.innerHTML += `
+      <div class="flex items-center gap-2">
+        <input data-footer-link="${column}" data-index="${i}" type="text" value="${escapeAttr(link)}" class="flex-1 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-200 focus:border-emerald-400 outline-none"/>
+        <button onclick="removeFooterLink('${column}',${i})" class="p-1 hover:bg-red-100 text-red-500 rounded">
+          <span class="material-symbols-outlined text-[16px]">close</span>
+        </button>
+      </div>`;
+  });
+}
+
+// ==================== ACTIONS ====================
+function collectData() {
+  // Nav
+  siteData.nav.brand = document.getElementById('nav-brand').value;
+  siteData.nav.cta = document.getElementById('nav-cta').value;
+
+  // Hero
+  siteData.hero.badge = document.getElementById('hero-badge').value;
+  siteData.hero.headline = document.getElementById('hero-headline').value;
+  siteData.hero.description = document.getElementById('hero-description').value;
+  siteData.hero.image = document.getElementById('hero-image').value;
+  siteData.hero.btn1 = document.getElementById('hero-btn1').value;
+  siteData.hero.btn2 = document.getElementById('hero-btn2').value;
+
+  // Philosophy
+  siteData.philosophy.label = document.getElementById('phil-label').value;
+  siteData.philosophy.title = document.getElementById('phil-title').value;
+  siteData.philosophy.quote = document.getElementById('phil-quote').value;
+  siteData.philosophy.image = document.getElementById('phil-image').value;
+
+  document.querySelectorAll('[data-phil-card]').forEach(el => {
+    const idx = parseInt(el.dataset.philCard);
+    const field = el.dataset.field;
+    siteData.philosophy.cards[idx][field] = el.value;
+  });
+
+  // Properties
+  document.querySelectorAll('[data-prop]').forEach(el => {
+    const idx = parseInt(el.dataset.prop);
+    const field = el.dataset.field;
+    if (field === 'tags') {
+      siteData.properties[idx].tags = el.value.split(',').map(s => s.trim()).filter(Boolean);
+    } else {
+      siteData.properties[idx][field] = el.value;
+    }
+  });
+
+  // Testimonials
+  document.querySelectorAll('[data-test]').forEach(el => {
+    const idx = parseInt(el.dataset.test);
+    const field = el.dataset.field;
+    siteData.testimonials[idx][field] = el.value;
+  });
+
+  // Inquiry
+  siteData.inquiry.label = document.getElementById('inq-label').value;
+  siteData.inquiry.title = document.getElementById('inq-title').value;
+  siteData.inquiry.description = document.getElementById('inq-desc').value;
+  siteData.inquiry.locationTitle = document.getElementById('inq-loc-title').value;
+  siteData.inquiry.locationAddress = document.getElementById('inq-loc-address').value;
+  siteData.inquiry.locationLink = document.getElementById('inq-loc-link').value;
+  siteData.inquiry.mapImage = document.getElementById('inq-map-image').value;
+
+  // Footer
+  siteData.footer.brand = document.getElementById('footer-brand').value;
+  siteData.footer.tagline = document.getElementById('footer-tagline').value;
+  siteData.footer.copyright = document.getElementById('footer-copyright').value;
+
+  document.querySelectorAll('[data-footer-link]').forEach(el => {
+    const col = el.dataset.footerLink;
+    const idx = parseInt(el.dataset.index);
+    const key = col === 'discover' ? 'discoverLinks' : 'legalLinks';
+    siteData.footer[key][idx] = el.value;
+  });
+}
+
+function saveData() {
+  collectData();
+  localStorage.setItem('verdantMonolithData', JSON.stringify(siteData));
+  showToast('Changes saved successfully!');
+}
+
+function resetData() {
+  if (confirm('Reset all content to defaults? This will clear all your changes.')) {
+    localStorage.removeItem('verdantMonolithData');
+    siteData = JSON.parse(JSON.stringify(DEFAULT_DATA));
+    populateForms();
+    showToast('Reset to defaults', 'warning');
+  }
+}
+
+function addProperty() {
+  collectData();
+  siteData.properties.push({
+    title: "New Property",
+    location: "",
+    price: "",
+    image: "",
+    tags: [],
+    description: ""
+  });
+  renderProperties();
+}
+
+function deleteProperty(i) {
+  if (confirm('Delete this property?')) {
+    collectData();
+    siteData.properties.splice(i, 1);
+    renderProperties();
+  }
+}
+
+function moveProperty(i, dir) {
+  collectData();
+  const j = i + dir;
+  if (j < 0 || j >= siteData.properties.length) return;
+  [siteData.properties[i], siteData.properties[j]] = [siteData.properties[j], siteData.properties[i]];
+  renderProperties();
+}
+
+function addTestimonial() {
+  collectData();
+  siteData.testimonials.push({
+    quote: "New testimonial quote...",
+    name: "Name",
+    role: "Role",
+    avatarColor: "bg-primary-fixed"
+  });
+  renderTestimonials();
+}
+
+function deleteTestimonial(i) {
+  if (confirm('Delete this testimonial?')) {
+    collectData();
+    siteData.testimonials.splice(i, 1);
+    renderTestimonials();
+  }
+}
+
+function addFooterLink(column) {
+  collectData();
+  const key = column === 'discover' ? 'discoverLinks' : 'legalLinks';
+  siteData.footer[key].push('New Link');
+  renderFooterLinks(column);
+}
+
+function removeFooterLink(column, i) {
+  collectData();
+  const key = column === 'discover' ? 'discoverLinks' : 'legalLinks';
+  siteData.footer[key].splice(i, 1);
+  renderFooterLinks(column);
+}
+
+// ==================== UTILS ====================
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str || '';
+  return div.innerHTML;
+}
+function escapeAttr(str) {
+  return (str || '').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/'/g,'&#39;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+// ==================== INIT ====================
+loadData();
+populateForms();
+
+// Handle mobile sidebar overlay
+const sidebar = document.getElementById('sidebar');
+const overlay = document.getElementById('sidebar-overlay');
+const observer = new MutationObserver(() => {
+  if (!sidebar.classList.contains('-translate-x-full')) {
+    overlay.classList.remove('hidden');
+  } else {
+    overlay.classList.add('hidden');
+  }
+});
+observer.observe(sidebar, { attributes: true, attributeFilter: ['class'] });
+</script>
+</body>
+</html>
