@@ -166,7 +166,7 @@
 <!-- TopNavBar -->
 <nav class="fixed top-0 w-full z-50 bg-[#fafaf5]/70 backdrop-blur-md">
 <div class="flex justify-between items-center px-8 py-6 max-w-screen-2xl mx-auto">
-<div class="text-2xl font-serif font-bold tracking-tighter text-[#173124]">VERDANT MONOLITH</div>
+<img src="logo.png" alt="RealtyWize" class="h-12 md:h-14" id="nav-logo"/>
 <div class="hidden md:flex gap-12">
 <a class="font-sans uppercase tracking-[0.1em] text-label-md text-[#173124] font-bold border-b border-[#173124]/20 transition-colors duration-300" href="#">Properties</a>
 <a class="font-sans uppercase tracking-[0.1em] text-label-md text-[#715b3e] font-medium hover:text-[#173124] transition-colors duration-300" href="#">Locations</a>
@@ -373,18 +373,18 @@
 <p class="text-on-surface-variant mb-12 text-lg leading-relaxed max-w-lg">
                     Schedule a private walkthrough of our model suites or request a digital portfolio of available residences. Our consultants are ready to help you find your niche in the gallery.
                 </p>
-<form class="space-y-8">
+<form class="space-y-8" id="inquiryForm" onsubmit="return submitInquiry(event)">
 <div class="relative">
-<input class="w-full bg-transparent border-0 border-b border-outline-variant/30 py-4 focus:ring-0 focus:border-primary transition-all text-lg placeholder:text-outline" placeholder="Your Name" type="text"/>
+<input id="inq-name" class="w-full bg-transparent border-0 border-b border-outline-variant/30 py-4 focus:ring-0 focus:border-primary transition-all text-lg placeholder:text-outline" placeholder="Your Name" type="text" required/>
 </div>
 <div class="relative">
-<input class="w-full bg-transparent border-0 border-b border-outline-variant/30 py-4 focus:ring-0 focus:border-primary transition-all text-lg placeholder:text-outline" placeholder="Email Address" type="email"/>
+<input id="inq-email" class="w-full bg-transparent border-0 border-b border-outline-variant/30 py-4 focus:ring-0 focus:border-primary transition-all text-lg placeholder:text-outline" placeholder="Email Address" type="email" required/>
 </div>
 <div class="relative">
-<input class="w-full bg-transparent border-0 border-b border-outline-variant/30 py-4 focus:ring-0 focus:border-primary transition-all text-lg placeholder:text-outline" placeholder="Phone Number" type="tel"/>
+<input id="inq-phone" class="w-full bg-transparent border-0 border-b border-outline-variant/30 py-4 focus:ring-0 focus:border-primary transition-all text-lg placeholder:text-outline" placeholder="Phone Number" type="tel" required/>
 </div>
 <div class="relative">
-<select class="w-full bg-transparent border-0 border-b border-outline-variant/30 py-4 focus:ring-0 focus:border-primary transition-all text-lg text-outline">
+<select id="inq-property" class="w-full bg-transparent border-0 border-b border-outline-variant/30 py-4 focus:ring-0 focus:border-primary transition-all text-lg text-outline">
 <option>Preferred Property</option>
 <option>The Emerald Estate</option>
 <option>Oakwood Residences</option>
@@ -392,9 +392,14 @@
 <option>Verdant Sky-Villas</option>
 </select>
 </div>
-<button class="w-full md:w-auto bg-primary text-on-primary px-12 py-5 rounded-md font-sans uppercase tracking-[0.2em] text-sm hover:bg-primary-container transition-all shadow-ambient">
+<button type="submit" class="w-full md:w-auto bg-primary text-on-primary px-12 py-5 rounded-md font-sans uppercase tracking-[0.2em] text-sm hover:bg-primary-container transition-all shadow-ambient">
                         Inquire Now
                     </button>
+<div id="formSuccess" style="display:none" class="text-center py-4 px-6 bg-primary-fixed/20 rounded-xl">
+<span class="material-symbols-outlined text-primary text-3xl">check_circle</span>
+<p class="text-primary font-semibold mt-2">Thank you for your inquiry!</p>
+<p class="text-on-surface-variant text-sm">Our team will get back to you shortly.</p>
+</div>
 </form>
 </div>
 <div class="relative rounded-xl overflow-hidden shadow-ambient min-h-[500px]">
@@ -415,7 +420,7 @@
 <footer class="w-full py-20 px-12" style="background-color: #2D4739;">
 <div class="grid grid-cols-1 md:grid-cols-3 gap-12 items-start max-w-screen-2xl mx-auto">
 <div class="space-y-6">
-<div class="font-serif text-xl font-black" style="color: #F5F5F0;">VERDANT MONOLITH</div>
+<img src="logo.png" alt="RealtyWize" class="h-14 brightness-0 invert" id="footer-logo"/>
 <p class="font-serif italic text-xl" style="color: #F5F5F0;">Rooted in Nature.</p>
 <div class="flex gap-4">
 <span class="material-symbols-outlined cursor-pointer hover:text-primary transition-colors text-[#F5F5F0]" data-icon="language">language</span>
@@ -724,6 +729,37 @@
       }
     }
   }
+
+  // --- Form submission handler (global) ---
+  window.submitInquiry = function(e) {
+    e.preventDefault();
+    var name = document.getElementById('inq-name').value.trim();
+    var email = document.getElementById('inq-email').value.trim();
+    var phone = document.getElementById('inq-phone').value.trim();
+    var property = document.getElementById('inq-property').value;
+    if (!name || !email || !phone) return false;
+    var submission = {
+      id: Date.now(),
+      name: name,
+      email: email,
+      phone: phone,
+      property: property === 'Preferred Property' ? 'Not specified' : property,
+      date: new Date().toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' }),
+      status: 'new'
+    };
+    var subs = [];
+    try { subs = JSON.parse(localStorage.getItem('verdantInquiries') || '[]'); } catch(ex) {}
+    subs.unshift(submission);
+    localStorage.setItem('verdantInquiries', JSON.stringify(subs));
+    document.getElementById('inquiryForm').style.display = 'none';
+    document.getElementById('formSuccess').style.display = 'block';
+    setTimeout(function() {
+      document.getElementById('inquiryForm').style.display = '';
+      document.getElementById('formSuccess').style.display = 'none';
+      document.getElementById('inquiryForm').reset();
+    }, 4000);
+    return false;
+  };
 
   // --- Update page title with brand name ---
   if (data.nav && data.nav.brand) {
