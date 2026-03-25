@@ -515,6 +515,37 @@
     }
   };
 
+  // ==================== FORM SUBMISSION (always active) ====================
+  window.submitInquiry = function(e) {
+    e.preventDefault();
+    var name = document.getElementById('inq-name').value.trim();
+    var email = document.getElementById('inq-email').value.trim();
+    var phone = document.getElementById('inq-phone').value.trim();
+    var property = document.getElementById('inq-property').value;
+    if (!name || !email || !phone) return false;
+    var submission = {
+      id: Date.now(),
+      name: name,
+      email: email,
+      phone: phone,
+      property: property === 'Preferred Property' ? 'Not specified' : property,
+      date: new Date().toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' }),
+      status: 'new'
+    };
+    var subs = [];
+    try { subs = JSON.parse(localStorage.getItem('verdantInquiries') || '[]'); } catch(ex) {}
+    subs.unshift(submission);
+    localStorage.setItem('verdantInquiries', JSON.stringify(subs));
+    document.getElementById('inquiryForm').style.display = 'none';
+    document.getElementById('formSuccess').style.display = 'block';
+    setTimeout(function() {
+      document.getElementById('inquiryForm').style.display = '';
+      document.getElementById('formSuccess').style.display = 'none';
+      document.getElementById('inquiryForm').reset();
+    }, 4000);
+    return false;
+  };
+
   // ==================== LOAD DATA ====================
   var stored = localStorage.getItem('verdantMonolithData');
   var data;
@@ -729,37 +760,6 @@
       }
     }
   }
-
-  // --- Form submission handler (global) ---
-  window.submitInquiry = function(e) {
-    e.preventDefault();
-    var name = document.getElementById('inq-name').value.trim();
-    var email = document.getElementById('inq-email').value.trim();
-    var phone = document.getElementById('inq-phone').value.trim();
-    var property = document.getElementById('inq-property').value;
-    if (!name || !email || !phone) return false;
-    var submission = {
-      id: Date.now(),
-      name: name,
-      email: email,
-      phone: phone,
-      property: property === 'Preferred Property' ? 'Not specified' : property,
-      date: new Date().toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' }),
-      status: 'new'
-    };
-    var subs = [];
-    try { subs = JSON.parse(localStorage.getItem('verdantInquiries') || '[]'); } catch(ex) {}
-    subs.unshift(submission);
-    localStorage.setItem('verdantInquiries', JSON.stringify(subs));
-    document.getElementById('inquiryForm').style.display = 'none';
-    document.getElementById('formSuccess').style.display = 'block';
-    setTimeout(function() {
-      document.getElementById('inquiryForm').style.display = '';
-      document.getElementById('formSuccess').style.display = 'none';
-      document.getElementById('inquiryForm').reset();
-    }, 4000);
-    return false;
-  };
 
   // --- Update page title with brand name ---
   if (data.nav && data.nav.brand) {
