@@ -138,13 +138,19 @@
         }
 
         /* Nav scroll effect */
-        nav { transition: background-color 0.3s, box-shadow 0.3s, padding 0.3s; }
-        nav.scrolled {
-            background-color: rgba(250, 250, 245, 0.95) !important;
-            box-shadow: 0 2px 20px rgba(0,0,0,0.06);
+        nav {
+            transition: background-color 0.4s ease, box-shadow 0.4s ease, backdrop-filter 0.4s ease;
         }
-        nav.scrolled .flex { padding-top: 8px !important; padding-bottom: 8px !important; }
-        nav.scrolled #nav-logo { height: 3rem !important; transition: height 0.3s; }
+        nav.scrolled {
+            background-color: rgba(250, 250, 245, 0.92) !important;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            box-shadow: 0 1px 12px rgba(0,0,0,0.05);
+        }
+        nav.scrolled #nav-logo { height: 2.25rem !important; }
+        @media (min-width: 768px) {
+            nav.scrolled #nav-logo { height: 2.75rem !important; }
+        }
 
         /* Button hover ripple */
         .btn-ripple {
@@ -262,9 +268,7 @@
         /* Mobile Optimizations */
         @media (max-width: 767px) {
             /* Nav */
-            nav .flex { padding: 10px 16px; }
-            nav .text-2xl { font-size: 1.1rem; }
-            nav button { padding: 8px 14px; font-size: 10px; }
+            nav > .flex { padding: 8px 16px; }
 
             /* Hero */
             header { height: 75vh; }
@@ -335,17 +339,28 @@
 </head>
 <body class="bg-surface font-body text-on-surface">
 <!-- TopNavBar -->
-<nav class="fixed top-0 w-full z-50 bg-[#fafaf5]/70 backdrop-blur-md">
-<div class="flex justify-between items-center px-8 py-6 max-w-screen-2xl mx-auto">
-<img src="logo.png" alt="RealtyWize" class="h-16 md:h-32" id="nav-logo" style="transition:height 0.3s"/>
-<div class="hidden md:flex gap-12">
-<a class="font-sans uppercase tracking-[0.1em] text-label-md text-[#173124] font-bold border-b border-[#173124]/20 transition-colors duration-300" href="#">Properties</a>
-<a class="font-sans uppercase tracking-[0.1em] text-label-md text-[#715b3e] font-medium hover:text-[#173124] transition-colors duration-300" href="#">Locations</a>
-<a class="font-sans uppercase tracking-[0.1em] text-label-md text-[#715b3e] font-medium hover:text-[#173124] transition-colors duration-300" href="#">Sustainability</a>
-</div>
-<button class="bg-primary text-on-primary px-6 py-3 rounded-md font-sans uppercase tracking-widest text-xs hover:bg-primary-container transition-all active:scale-95 duration-200 ease-in-out">
+<nav class="fixed top-0 w-full z-50 bg-transparent" id="main-nav">
+<div class="flex justify-between items-center px-6 md:px-10 py-3 max-w-screen-2xl mx-auto">
+<a href="#" class="flex-shrink-0">
+<img src="logo-wide.png" alt="RealtyWize" class="h-10 md:h-14" id="nav-logo" style="transition:height 0.3s"/>
+</a>
+<div class="hidden md:flex items-center gap-10">
+<a class="font-sans uppercase tracking-[0.12em] text-[11px] text-[#173124] font-bold border-b border-[#173124]/20 pb-0.5 transition-colors duration-300" href="#">Properties</a>
+<a class="font-sans uppercase tracking-[0.12em] text-[11px] text-[#715b3e] font-medium hover:text-[#173124] transition-colors duration-300" href="#">Locations</a>
+<a class="font-sans uppercase tracking-[0.12em] text-[11px] text-[#715b3e] font-medium hover:text-[#173124] transition-colors duration-300" href="#">Sustainability</a>
+<button class="btn-ripple bg-primary text-on-primary px-5 py-2 rounded font-sans uppercase tracking-[0.15em] text-[10px] hover:bg-primary-container transition-all active:scale-95 duration-200">
                 Book a Private Tour
             </button>
+</div>
+<button class="md:hidden p-2 text-primary" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')">
+<span class="material-symbols-outlined">menu</span>
+</button>
+</div>
+<div id="mobile-menu" class="hidden md:hidden bg-white/95 backdrop-blur-lg border-t border-gray-100 px-6 py-4 space-y-3">
+<a class="block font-sans uppercase tracking-[0.12em] text-xs text-[#173124] font-medium py-2" href="#">Properties</a>
+<a class="block font-sans uppercase tracking-[0.12em] text-xs text-[#715b3e] font-medium py-2" href="#">Locations</a>
+<a class="block font-sans uppercase tracking-[0.12em] text-xs text-[#715b3e] font-medium py-2" href="#">Sustainability</a>
+<button class="w-full bg-primary text-on-primary px-5 py-2.5 rounded font-sans uppercase tracking-[0.15em] text-[10px] mt-2">Book a Private Tour</button>
 </div>
 </nav>
 <!-- Hero Section -->
