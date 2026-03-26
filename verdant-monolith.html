@@ -461,12 +461,77 @@
             .yieda-logo-wrap img { height: 2.5rem; }
         }
 
+        /* ===== YEIDA BANNER ===== */
+        .yeida-banner {
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, #062014 0%, #173124 40%, #2D4739 70%, #1a3a28 100%);
+        }
+        .yeida-banner::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse 80% 60% at 70% 50%, rgba(45,71,57,0.5), transparent),
+                radial-gradient(circle at 20% 80%, rgba(176,205,187,0.08), transparent 50%);
+        }
+        .yeida-banner-img {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+        }
+        .yeida-banner-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.18;
+            filter: saturate(0.6);
+        }
+        .yeida-banner-content {
+            position: relative;
+            z-index: 10;
+        }
+        .yeida-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .yeida-stat {
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(8px);
+            padding: 24px 20px;
+            text-align: center;
+            transition: background 0.3s ease;
+        }
+        .yeida-stat:hover {
+            background: rgba(255,255,255,0.1);
+        }
+        .yeida-glow {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(176,205,187,0.15), transparent 70%);
+            pointer-events: none;
+        }
+        .yeida-divider {
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, #b0cdbb, rgba(176,205,187,0.3));
+            border-radius: 2px;
+        }
+
         @media (max-width: 767px) {
             .top-picks-card { flex: 0 0 200px; }
             .allotment-card { padding: 24px; }
             .slider-arrow { width: 36px; height: 36px; }
             .slider-arrow.prev { left: 10px; }
             .slider-arrow.next { right: 10px; }
+            .yeida-stats { grid-template-columns: 1fr; }
+            .yeida-stat { padding: 16px; }
         }
 
         /* Smooth scroll */
@@ -669,6 +734,75 @@
 </div>
 </div>
 </header>
+<!-- YEIDA Banner Section -->
+<section class="yeida-banner py-20 md:py-28 px-8" id="yeida-section">
+<!-- Background Expressway Image -->
+<div class="yeida-banner-img">
+<img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBwN1m3feYjBuWDYRhDnl5PuUx9YIcxkf64SZuUrKBm3-LnRL2YIMrKfyMSG7uP627SAyUnOH-IhetZHYn-AeFbQIJ-VYLtm4iWmSNIjm_Hi7uD8HPrsvqngc1d2T5WukecvJiHKA7ceG_my98B_qx0hFT6zsAl3vincLjB4a9a2mnYWI_mDjLKDX7q75DTQE4KCI_D1AGN2mYFyR6rhrFH1mpslywMZfYH8gR98OQDd7R1lZva8L9HEtIU8gp61YriKWUUiR5nJ6G-=w1200-rw" alt="Yamuna Expressway aerial view" loading="lazy" decoding="async"/>
+</div>
+<!-- Decorative glows -->
+<div class="yeida-glow" style="top:-100px;right:-50px;"></div>
+<div class="yeida-glow" style="bottom:-80px;left:-60px;opacity:0.6;"></div>
+<!-- Content -->
+<div class="yeida-banner-content max-w-screen-xl mx-auto">
+<div class="flex flex-col md:flex-row items-center gap-12 md:gap-20">
+<!-- Left: Logo & Text -->
+<div class="flex-1 text-center md:text-left">
+<div class="flex items-center justify-center md:justify-start gap-5 mb-8 reveal">
+<img src="yieda-logo.png" alt="YEIDA Logo" class="h-20 md:h-28 drop-shadow-lg" style="filter: drop-shadow(0 4px 20px rgba(0,0,0,0.3));"/>
+<div>
+<p class="font-label uppercase tracking-[0.2em] text-[10px] md:text-xs text-primary-fixed-dim mb-1">Yamuna Expressway</p>
+<p class="font-label uppercase tracking-[0.2em] text-[10px] md:text-xs text-primary-fixed-dim">Industrial Development Authority</p>
+</div>
+</div>
+<h2 class="font-headline text-4xl md:text-6xl text-white leading-tight mb-6 reveal" style="transition-delay:0.15s">
+The Future <span class="text-primary-fixed-dim">is Here</span>
+</h2>
+<div class="yeida-divider mb-6 mx-auto md:mx-0 reveal" style="transition-delay:0.25s"></div>
+<p class="text-primary-fixed/80 text-lg md:text-xl leading-relaxed max-w-lg mx-auto md:mx-0 mb-8 reveal" style="transition-delay:0.3s">
+India's most ambitious expressway corridor connecting Greater Noida to Agra — unlocking unprecedented growth in real estate, infrastructure, and industrial development.
+</p>
+<div class="flex flex-wrap gap-4 justify-center md:justify-start reveal" style="transition-delay:0.4s">
+<a href="#allotments-section" class="btn-ripple bg-white/10 backdrop-blur-md text-white border border-white/20 px-8 py-3 rounded-md font-sans uppercase tracking-[0.15em] text-xs hover:bg-white/20 transition-all inline-flex items-center gap-2">
+<svg class="icon" width="18" height="18"><use href="#icon-location_on"/></svg>
+View Allotments
+</a>
+<a href="#top-picks-section" class="btn-ripple bg-primary-fixed-dim/20 backdrop-blur-md text-primary-fixed border border-primary-fixed/20 px-8 py-3 rounded-md font-sans uppercase tracking-[0.15em] text-xs hover:bg-primary-fixed-dim/30 transition-all inline-flex items-center gap-2">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="5,3 19,12 5,21"/></svg>
+Watch Highlights
+</a>
+</div>
+</div>
+<!-- Right: Stats -->
+<div class="w-full md:w-auto reveal-right" style="transition-delay:0.3s">
+<div class="yeida-stats">
+<div class="yeida-stat">
+<p class="font-headline text-3xl md:text-4xl text-white mb-1">165<span class="text-primary-fixed-dim text-xl">km</span></p>
+<p class="text-primary-fixed/60 text-xs font-label uppercase tracking-widest">Expressway Length</p>
+</div>
+<div class="yeida-stat">
+<p class="font-headline text-3xl md:text-4xl text-white mb-1">6</p>
+<p class="text-primary-fixed/60 text-xs font-label uppercase tracking-widest">Lane Expressway</p>
+</div>
+<div class="yeida-stat">
+<p class="font-headline text-3xl md:text-4xl text-white mb-1">5<span class="text-primary-fixed-dim text-xl">+</span></p>
+<p class="text-primary-fixed/60 text-xs font-label uppercase tracking-widest">Mega Projects</p>
+</div>
+</div>
+<div class="mt-6 bg-white/5 backdrop-blur-md rounded-xl border border-white/10 p-5">
+<div class="flex items-start gap-3">
+<svg class="icon text-primary-fixed-dim flex-shrink-0 mt-0.5" width="20" height="20"><use href="#icon-location_on"/></svg>
+<div>
+<p class="text-white text-sm font-medium mb-1">Key Landmarks</p>
+<p class="text-primary-fixed/60 text-xs leading-relaxed">Noida International Airport (Jewar) &bull; Buddha Circuit &bull; Formula 1 Track &bull; Film City &bull; Night Safari</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
 <!-- Rooted in Nature: Benefits Section (Asymmetric Layout) -->
 <section class="py-32 px-8 bg-surface">
 <div class="max-w-screen-2xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-16 items-center">
