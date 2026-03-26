@@ -298,6 +298,177 @@
             display: inline-block;
         }
 
+        /* ===== HERO SLIDER ===== */
+        .hero-slider {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+        .hero-slide {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .hero-slide.active {
+            opacity: 1;
+        }
+        .hero-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .slider-dots {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            position: absolute;
+            bottom: 32px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 20;
+        }
+        .slider-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.4);
+            border: 2px solid rgba(255,255,255,0.6);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .slider-dot.active {
+            background: #fff;
+            border-color: #fff;
+            transform: scale(1.2);
+        }
+        .slider-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 20;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255,255,255,0.3);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .slider-arrow:hover {
+            background: rgba(255,255,255,0.3);
+        }
+        .slider-arrow.prev { left: 20px; }
+        .slider-arrow.next { right: 20px; }
+
+        /* ===== TOP PICKS (Reels/Shorts) ===== */
+        .top-picks-scroll {
+            display: flex;
+            gap: 20px;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            padding-bottom: 16px;
+            scrollbar-width: none;
+        }
+        .top-picks-scroll::-webkit-scrollbar { display: none; }
+        .top-picks-card {
+            flex: 0 0 280px;
+            scroll-snap-align: start;
+            aspect-ratio: 9/16;
+            border-radius: 16px;
+            overflow: hidden;
+            position: relative;
+            background: #1a1c19;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+        }
+        .top-picks-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+        .top-picks-card iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        .top-picks-card .placeholder-overlay {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #173124, #2D4739);
+            color: white;
+            text-align: center;
+            padding: 24px;
+        }
+
+        /* ===== ALLOTMENTS SECTION ===== */
+        .allotment-card {
+            background: linear-gradient(135deg, #f4f4ef 0%, #e8e8e3 100%);
+            border: 1px solid rgba(23,49,36,0.1);
+            border-radius: 16px;
+            padding: 40px;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .allotment-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #173124, #715b3e);
+        }
+        .allotment-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 24px 48px rgba(26,28,25,0.12);
+        }
+        .allotment-badge {
+            display: inline-block;
+            background: #173124;
+            color: white;
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            padding: 6px 16px;
+            border-radius: 100px;
+            margin-bottom: 20px;
+        }
+
+        /* YIEDA Logo styling */
+        .yieda-logo-wrap {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            border-left: 1px solid rgba(23,49,36,0.15);
+            padding-left: 10px;
+            margin-left: 4px;
+        }
+        .yieda-logo-wrap img {
+            height: 2rem;
+        }
+        @media (min-width: 768px) {
+            .yieda-logo-wrap img { height: 2.5rem; }
+        }
+
+        @media (max-width: 767px) {
+            .top-picks-card { flex: 0 0 200px; }
+            .allotment-card { padding: 24px; }
+            .slider-arrow { width: 36px; height: 36px; }
+            .slider-arrow.prev { left: 10px; }
+            .slider-arrow.next { right: 10px; }
+        }
+
         /* Smooth scroll */
         html { scroll-behavior: smooth; }
 
@@ -424,9 +595,14 @@
 <!-- TopNavBar -->
 <nav class="fixed top-0 w-full z-50 bg-white border-b border-gray-100" id="main-nav">
 <div class="flex justify-between items-center px-6 md:px-10 py-1 max-w-screen-2xl mx-auto">
+<div class="flex items-center">
 <a href="#" class="flex-shrink-0 -my-2">
 <img src="logo-wide.png" alt="RealtyWize" class="h-14 md:h-[4.5rem] w-auto" id="nav-logo" style="transition:height 0.3s; aspect-ratio: 1132/852;"/>
 </a>
+<div class="yieda-logo-wrap">
+<img src="yieda-logo.png" alt="YIEDA - Yamuna Expressway Industrial Development Authority" id="yieda-logo"/>
+</div>
+</div>
 <div class="hidden md:flex items-center gap-10">
 <a class="font-sans uppercase tracking-[0.12em] text-[11px] text-[#173124] font-bold border-b border-[#173124]/20 pb-0.5 transition-colors duration-300" href="#">Properties</a>
 <a class="font-sans uppercase tracking-[0.12em] text-[11px] text-[#715b3e] font-medium hover:text-[#173124] transition-colors duration-300" href="#">Locations</a>
@@ -446,27 +622,48 @@
 <button class="w-full bg-primary text-on-primary px-5 py-2.5 rounded font-sans uppercase tracking-[0.15em] text-[10px] mt-2">Book a Private Tour</button>
 </div>
 </nav>
-<!-- Hero Section -->
-<header class="relative h-[921px] flex items-center overflow-hidden">
-<div class="absolute inset-0 z-0">
-<img class="w-full h-full object-cover" loading="eager" fetchpriority="high" width="1200" height="675" alt="Modern architectural masterpiece villa with floor-to-ceiling glass walls integrated into a dense forest landscape in Noida" srcset="https://lh3.googleusercontent.com/aida-public/AB6AXuDENix6kyl3cuiaOqboPVrV8ceyGbru_NgZQ28DbkHZGPr_r6vjAqGwjt-dIRFQvfxtYCai9qTaVlYkyMyQ-5oZUSjdt1u7CNSI6gEeI2SHmkKKGO7ZHVunKJH7RSiCigF-lvrytskbKb2KYKWQMkZzzb1K_a4WIVo2EM_SdTAtqbtJh-crazNX3E61jYc5CsQ2CwGg13cSalf9NufOeXDdzduNd1fd_FoHMus7feud1Ahc3ZzGUfGIrlOiK-ACw3kTkn0PKTbOcfFo=w400-rw 400w, https://lh3.googleusercontent.com/aida-public/AB6AXuDENix6kyl3cuiaOqboPVrV8ceyGbru_NgZQ28DbkHZGPr_r6vjAqGwjt-dIRFQvfxtYCai9qTaVlYkyMyQ-5oZUSjdt1u7CNSI6gEeI2SHmkKKGO7ZHVunKJH7RSiCigF-lvrytskbKb2KYKWQMkZzzb1K_a4WIVo2EM_SdTAtqbtJh-crazNX3E61jYc5CsQ2CwGg13cSalf9NufOeXDdzduNd1fd_FoHMus7feud1Ahc3ZzGUfGIrlOiK-ACw3kTkn0PKTbOcfFo=w800-rw 800w, https://lh3.googleusercontent.com/aida-public/AB6AXuDENix6kyl3cuiaOqboPVrV8ceyGbru_NgZQ28DbkHZGPr_r6vjAqGwjt-dIRFQvfxtYCai9qTaVlYkyMyQ-5oZUSjdt1u7CNSI6gEeI2SHmkKKGO7ZHVunKJH7RSiCigF-lvrytskbKb2KYKWQMkZzzb1K_a4WIVo2EM_SdTAtqbtJh-crazNX3E61jYc5CsQ2CwGg13cSalf9NufOeXDdzduNd1fd_FoHMus7feud1Ahc3ZzGUfGIrlOiK-ACw3kTkn0PKTbOcfFo=w1200-rw 1200w" sizes="100vw" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDENix6kyl3cuiaOqboPVrV8ceyGbru_NgZQ28DbkHZGPr_r6vjAqGwjt-dIRFQvfxtYCai9qTaVlYkyMyQ-5oZUSjdt1u7CNSI6gEeI2SHmkKKGO7ZHVunKJH7RSiCigF-lvrytskbKb2KYKWQMkZzzb1K_a4WIVo2EM_SdTAtqbtJh-crazNX3E61jYc5CsQ2CwGg13cSalf9NufOeXDdzduNd1fd_FoHMus7feud1Ahc3ZzGUfGIrlOiK-ACw3kTkn0PKTbOcfFo=w800-rw"/>
-<div class="absolute inset-0 hero-gradient"></div>
+<!-- Hero Section with Image Slider -->
+<header class="relative h-[921px] flex items-center overflow-hidden" id="hero-section">
+<div class="absolute inset-0 z-0 hero-slider" id="heroSlider">
+<div class="hero-slide active" data-slide="0">
+<img class="w-full h-full object-cover" loading="eager" fetchpriority="high" width="1200" height="675" alt="Formula Racing Track on Yamuna Expressway - World-class motorsport facility" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDENix6kyl3cuiaOqboPVrV8ceyGbru_NgZQ28DbkHZGPr_r6vjAqGwjt-dIRFQvfxtYCai9qTaVlYkyMyQ-5oZUSjdt1u7CNSI6gEeI2SHmkKKGO7ZHVunKJH7RSiCigF-lvrytskbKb2KYKWQMkZzzb1K_a4WIVo2EM_SdTAtqbtJh-crazNX3E61jYc5CsQ2CwGg13cSalf9NufOeXDdzduNd1fd_FoHMus7feud1Ahc3ZzGUfGIrlOiK-ACw3kTkn0PKTbOcfFo=w1200-rw" id="slide-img-0"/>
 </div>
-<div class="relative z-10 max-w-screen-2xl mx-auto px-8 w-full">
+<div class="hero-slide" data-slide="1">
+<img class="w-full h-full object-cover" loading="lazy" width="1200" height="675" alt="Noida International Airport (Jewar Airport) - Gateway to Yamuna Expressway" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCczT_f7-34sa69IctHVblIBM5BQpqgq1pUn2a2Q_C5jQ9lkxPpVBwD_NNZ77kD9IXxzo3Ph9jY8e3oM94mUW82MDvKlJ_giAdOGjGJbWwEY82ByzdThYABHjgZ8CM1gIovbio5Me1j6i8Q4Y9ouUIdBtBLow3OKgT9VECPaavWndtTLbhp2HhsVDAqVu6r2kOVnKhzL7LLvRX_khm70a2ZlmT_ETRfvl_JN0oS2vG5bHHcvW8eNkSixE1rC7e76YqvmNvuJO0LYk35=w1200-rw" id="slide-img-1"/>
+</div>
+<div class="hero-slide" data-slide="2">
+<img class="w-full h-full object-cover" loading="lazy" width="1200" height="675" alt="Buddha International Circuit, Greater Noida - Iconic landmark on Yamuna Expressway" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCPMck7ip76QWbLtRNn4H9v6T_Ccu-J4ltSzPrv5LswPVH0BG7LpJf84yDmTRMIu775aDPjKJjxZtrAdvGeceYtVMoJiq1WMNz60Q7fykhRktQn48y4nbGHzl_U8g8u0qYcTR0gUmTly8rGOAjtQ_xHCkR7PcfOpwVuD-SAUizRONq0P89uEnbZBhh4wJptW86q5y5Qm80w9XiB1jX-e0YX1Hw_X_g01lov2UaDbIIknohRjUOTkaEPH9yBRucTf_UumkTxCZiUG5J6=w1200-rw" id="slide-img-2"/>
+</div>
+<div class="absolute inset-0 hero-gradient z-10"></div>
+</div>
+<!-- Slider Controls -->
+<button class="slider-arrow prev" onclick="changeSlide(-1)" aria-label="Previous slide">
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+</button>
+<button class="slider-arrow next" onclick="changeSlide(1)" aria-label="Next slide">
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+</button>
+<div class="slider-dots" id="sliderDots">
+<button class="slider-dot active" onclick="goToSlide(0)" aria-label="Slide 1"></button>
+<button class="slider-dot" onclick="goToSlide(1)" aria-label="Slide 2"></button>
+<button class="slider-dot" onclick="goToSlide(2)" aria-label="Slide 3"></button>
+</div>
+<!-- Hero Content Overlay -->
+<div class="relative z-20 max-w-screen-2xl mx-auto px-8 w-full">
 <div class="max-w-3xl">
-<span class="inline-block font-label uppercase tracking-[0.2em] text-sm text-surface mb-6 bg-primary/40 backdrop-blur-md px-4 py-1 reveal" style="transition-delay:0.2s">The Living Gallery</span>
+<span class="inline-block font-label uppercase tracking-[0.2em] text-sm text-surface mb-6 bg-primary/40 backdrop-blur-md px-4 py-1 reveal" style="transition-delay:0.2s">Yamuna Expressway</span>
 <h1 class="font-headline text-display-lg text-white text-6xl md:text-8xl leading-none tracking-tight mb-8 reveal" style="transition-delay:0.4s">
-                    Own the Living Gallery <br/>in Noida
+                    Welcome to <br/>Yamuna Expressway
                 </h1>
 <p class="font-body text-xl text-surface-container-low max-w-xl mb-10 leading-relaxed reveal" style="transition-delay:0.6s">
-                    Premium properties near the city's greenest parks starting at ₹75 Lakhs. Experience the silence of the forest within the heart of the NCR.
+                    Discover premium properties, world-class infrastructure, and investment opportunities along India's most promising expressway corridor.
                 </p>
 <div class="flex gap-4">
 <button class="btn-ripple bg-primary text-on-primary px-8 py-4 rounded-md font-sans uppercase tracking-widest text-sm hover:bg-primary-container transition-all reveal" style="transition-delay:0.8s">
-                        Inquire Now
+                        Explore Now
                     </button>
 <button class="btn-ripple border border-white/20 text-white backdrop-blur-sm px-8 py-4 rounded-md font-sans uppercase tracking-widest text-sm hover:bg-white/10 transition-all reveal" style="transition-delay:0.9s">
-                        Explore Masterplan
+                        View Properties
                     </button>
 </div>
 </div>
@@ -585,6 +782,118 @@
 </div>
 </div>
 </section>
+<!-- Top Picks: Reels / YouTube Shorts -->
+<section class="py-32 px-8 bg-surface" id="top-picks-section">
+<div class="max-w-screen-2xl mx-auto">
+<div class="mb-16">
+<span class="font-label uppercase tracking-[0.15em] text-secondary text-sm block mb-4 reveal">Trending</span>
+<h2 class="font-headline text-5xl text-primary reveal">Top Picks</h2>
+<p class="text-on-surface-variant mt-4 max-w-lg text-lg leading-relaxed reveal">Watch the latest updates, property walkthroughs, and highlights from Yamuna Expressway.</p>
+</div>
+<div class="top-picks-scroll" id="topPicksContainer">
+<!-- Reel 1 -->
+<div class="top-picks-card reveal-scale" style="transition-delay:0s">
+<div class="placeholder-overlay" id="reel-placeholder-0">
+<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="5,3 19,12 5,21"/></svg>
+<p class="mt-4 font-label uppercase tracking-widest text-xs opacity-80">Reel 1</p>
+<p class="mt-2 text-sm opacity-60">Add via Admin Panel</p>
+</div>
+</div>
+<!-- Reel 2 -->
+<div class="top-picks-card reveal-scale" style="transition-delay:0.1s">
+<div class="placeholder-overlay" id="reel-placeholder-1">
+<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="5,3 19,12 5,21"/></svg>
+<p class="mt-4 font-label uppercase tracking-widest text-xs opacity-80">Reel 2</p>
+<p class="mt-2 text-sm opacity-60">Add via Admin Panel</p>
+</div>
+</div>
+<!-- Reel 3 -->
+<div class="top-picks-card reveal-scale" style="transition-delay:0.2s">
+<div class="placeholder-overlay" id="reel-placeholder-2">
+<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="5,3 19,12 5,21"/></svg>
+<p class="mt-4 font-label uppercase tracking-widest text-xs opacity-80">Reel 3</p>
+<p class="mt-2 text-sm opacity-60">Add via Admin Panel</p>
+</div>
+</div>
+<!-- Reel 4 -->
+<div class="top-picks-card reveal-scale" style="transition-delay:0.3s">
+<div class="placeholder-overlay" id="reel-placeholder-3">
+<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="5,3 19,12 5,21"/></svg>
+<p class="mt-4 font-label uppercase tracking-widest text-xs opacity-80">Reel 4</p>
+<p class="mt-2 text-sm opacity-60">Add via Admin Panel</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- Allotments: Township & Industrial Plots -->
+<section class="py-32 px-8 bg-surface-container-low" id="allotments-section">
+<div class="max-w-screen-2xl mx-auto">
+<div class="text-center mb-20">
+<span class="font-label uppercase tracking-[0.15em] text-secondary text-sm block mb-4 reveal">Investment Opportunity</span>
+<h2 class="font-headline text-5xl text-primary reveal">Township & Industrial Allotments</h2>
+<p class="text-on-surface-variant mt-6 max-w-2xl mx-auto text-lg leading-relaxed reveal">Premium land allotments along Yamuna Expressway for builders, developers, and industrial enterprises. Strategically located near the upcoming Noida International Airport.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-10 max-w-5xl mx-auto">
+<!-- 50 Acres Plot -->
+<div class="allotment-card reveal-left">
+<span class="allotment-badge">Township Plot</span>
+<h3 class="font-headline text-3xl text-primary mb-4">50 Acres</h3>
+<p class="text-on-surface-variant leading-relaxed mb-6">Ideal for integrated township development with residential, commercial, and recreational zones. Perfect for mid-scale builders looking to create self-sustained communities along the expressway corridor.</p>
+<ul class="space-y-3 mb-8">
+<li class="flex items-start gap-3">
+<svg class="icon text-primary flex-shrink-0 mt-0.5" width="20" height="20"><use href="#icon-check_circle"/></svg>
+<span class="text-on-surface-variant text-sm">YIEDA approved township zone</span>
+</li>
+<li class="flex items-start gap-3">
+<svg class="icon text-primary flex-shrink-0 mt-0.5" width="20" height="20"><use href="#icon-check_circle"/></svg>
+<span class="text-on-surface-variant text-sm">Proximity to Noida International Airport</span>
+</li>
+<li class="flex items-start gap-3">
+<svg class="icon text-primary flex-shrink-0 mt-0.5" width="20" height="20"><use href="#icon-check_circle"/></svg>
+<span class="text-on-surface-variant text-sm">Direct expressway connectivity</span>
+</li>
+<li class="flex items-start gap-3">
+<svg class="icon text-primary flex-shrink-0 mt-0.5" width="20" height="20"><use href="#icon-check_circle"/></svg>
+<span class="text-on-surface-variant text-sm">Suitable for integrated township with mixed-use zoning</span>
+</li>
+</ul>
+<button class="btn-ripple bg-primary text-on-primary px-8 py-3 rounded-md font-sans uppercase tracking-[0.15em] text-xs hover:bg-primary-container transition-all">
+Inquire About 50 Acre Plots
+</button>
+</div>
+<!-- 100 Acres Plot -->
+<div class="allotment-card reveal-right">
+<span class="allotment-badge">Industrial Plot</span>
+<h3 class="font-headline text-3xl text-primary mb-4">100 Acres</h3>
+<p class="text-on-surface-variant leading-relaxed mb-6">Large-scale industrial and township allotment for major developers and enterprises. Strategically positioned for logistics hubs, manufacturing zones, and mega township projects with premium infrastructure.</p>
+<ul class="space-y-3 mb-8">
+<li class="flex items-start gap-3">
+<svg class="icon text-primary flex-shrink-0 mt-0.5" width="20" height="20"><use href="#icon-check_circle"/></svg>
+<span class="text-on-surface-variant text-sm">YIEDA notified industrial corridor</span>
+</li>
+<li class="flex items-start gap-3">
+<svg class="icon text-primary flex-shrink-0 mt-0.5" width="20" height="20"><use href="#icon-check_circle"/></svg>
+<span class="text-on-surface-variant text-sm">Ideal for logistics parks & manufacturing</span>
+</li>
+<li class="flex items-start gap-3">
+<svg class="icon text-primary flex-shrink-0 mt-0.5" width="20" height="20"><use href="#icon-check_circle"/></svg>
+<span class="text-on-surface-variant text-sm">Multi-modal transport access (road, rail, air)</span>
+</li>
+<li class="flex items-start gap-3">
+<svg class="icon text-primary flex-shrink-0 mt-0.5" width="20" height="20"><use href="#icon-check_circle"/></svg>
+<span class="text-on-surface-variant text-sm">Mega township potential with commercial & residential zones</span>
+</li>
+</ul>
+<button class="btn-ripple bg-primary text-on-primary px-8 py-3 rounded-md font-sans uppercase tracking-[0.15em] text-xs hover:bg-primary-container transition-all">
+Inquire About 100 Acre Plots
+</button>
+</div>
+</div>
+</div>
+</section>
+
 <!-- Testimonials Section -->
 <section class="py-32 px-8 bg-surface">
 <div class="max-w-screen-xl mx-auto text-center mb-20">
@@ -743,12 +1052,12 @@ document.addEventListener('DOMContentLoaded', function() {
   var DEFAULT_DATA = {
     nav: { brand: "VERDANT MONOLITH", cta: "Book a Private Tour" },
     hero: {
-      badge: "The Living Gallery",
-      headline: "Own the Living Gallery <br/>in Noida",
-      description: "Premium properties near the city\u2019s greenest parks starting at \u20B975 Lakhs. Experience the silence of the forest within the heart of the NCR.",
+      badge: "Yamuna Expressway",
+      headline: "Welcome to <br/>Yamuna Expressway",
+      description: "Discover premium properties, world-class infrastructure, and investment opportunities along India\u2019s most promising expressway corridor.",
       image: "https://lh3.googleusercontent.com/aida-public/AB6AXuDENix6kyl3cuiaOqboPVrV8ceyGbru_NgZQ28DbkHZGPr_r6vjAqGwjt-dIRFQvfxtYCai9qTaVlYkyMyQ-5oZUSjdt1u7CNSI6gEeI2SHmkKKGO7ZHVunKJH7RSiCigF-lvrytskbKb2KYKWQMkZzzb1K_a4WIVo2EM_SdTAtqbtJh-crazNX3E61jYc5CsQ2CwGg13cSalf9NufOeXDdzduNd1fd_FoHMus7feud1Ahc3ZzGUfGIrlOiK-ACw3kTkn0PKTbOcfFo",
-      btn1: "Inquire Now",
-      btn2: "Explore Masterplan"
+      btn1: "Explore Now",
+      btn2: "View Properties"
     },
     philosophy: {
       label: "Philosophy",
@@ -1142,6 +1451,131 @@ document.addEventListener('DOMContentLoaded', function() {
   } else {
     document.addEventListener('DOMContentLoaded', setupInteractions);
   }
+})();
+
+// ==================== HERO SLIDER ====================
+var currentSlide = 0;
+var totalSlides = document.querySelectorAll('.hero-slide').length;
+var sliderInterval;
+
+function goToSlide(index) {
+  var slides = document.querySelectorAll('.hero-slide');
+  var dots = document.querySelectorAll('.slider-dot');
+  if (index < 0) index = totalSlides - 1;
+  if (index >= totalSlides) index = 0;
+  slides.forEach(function(s) { s.classList.remove('active'); });
+  dots.forEach(function(d) { d.classList.remove('active'); });
+  slides[index].classList.add('active');
+  dots[index].classList.add('active');
+  currentSlide = index;
+}
+
+function changeSlide(direction) {
+  goToSlide(currentSlide + direction);
+  resetSliderInterval();
+}
+
+function resetSliderInterval() {
+  clearInterval(sliderInterval);
+  sliderInterval = setInterval(function() { changeSlide(1); }, 5000);
+}
+
+// Auto-advance slider every 5 seconds
+sliderInterval = setInterval(function() { changeSlide(1); }, 5000);
+
+// Touch/swipe support for mobile
+(function() {
+  var slider = document.getElementById('heroSlider');
+  if (!slider) return;
+  var touchStartX = 0;
+  var touchEndX = 0;
+  slider.addEventListener('touchstart', function(e) {
+    touchStartX = e.changedTouches[0].screenX;
+  }, { passive: true });
+  slider.addEventListener('touchend', function(e) {
+    touchEndX = e.changedTouches[0].screenX;
+    var diff = touchStartX - touchEndX;
+    if (Math.abs(diff) > 50) {
+      changeSlide(diff > 0 ? 1 : -1);
+    }
+  }, { passive: true });
+})();
+
+// ==================== TOP PICKS DYNAMIC LOADING ====================
+(function loadTopPicks() {
+  var stored = localStorage.getItem('verdantMonolithData');
+  if (!stored) return;
+  var data;
+  try { data = JSON.parse(stored); } catch(e) { return; }
+  if (!data.topPicks || !data.topPicks.length) return;
+
+  var container = document.getElementById('topPicksContainer');
+  if (!container) return;
+  container.innerHTML = '';
+
+  data.topPicks.forEach(function(pick, i) {
+    var card = document.createElement('div');
+    card.className = 'top-picks-card reveal-scale';
+    card.style.transitionDelay = (i * 0.1) + 's';
+
+    if (pick.embedUrl) {
+      card.innerHTML = '<iframe src="' + pick.embedUrl + '" allowfullscreen loading="lazy" title="' + (pick.title || 'Reel ' + (i+1)) + '"></iframe>';
+    } else {
+      card.innerHTML = '<div class="placeholder-overlay">' +
+        '<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="5,3 19,12 5,21"/></svg>' +
+        '<p class="mt-4 font-label uppercase tracking-widest text-xs opacity-80">' + (pick.title || 'Reel ' + (i+1)) + '</p>' +
+        '</div>';
+    }
+    container.appendChild(card);
+  });
+})();
+
+// ==================== SLIDER DATA LOADING ====================
+(function loadSliderData() {
+  var stored = localStorage.getItem('verdantMonolithData');
+  if (!stored) return;
+  var data;
+  try { data = JSON.parse(stored); } catch(e) { return; }
+  if (!data.heroSlides || !data.heroSlides.length) return;
+
+  var sliderEl = document.getElementById('heroSlider');
+  if (!sliderEl) return;
+  // Remove existing slides (keep gradient overlay)
+  var gradient = sliderEl.querySelector('.hero-gradient');
+  sliderEl.innerHTML = '';
+  data.heroSlides.forEach(function(slide, i) {
+    var div = document.createElement('div');
+    div.className = 'hero-slide' + (i === 0 ? ' active' : '');
+    div.setAttribute('data-slide', i);
+    var img = document.createElement('img');
+    img.className = 'w-full h-full object-cover';
+    img.alt = slide.alt || 'Slide ' + (i+1);
+    img.src = slide.image;
+    if (i > 0) img.loading = 'lazy';
+    div.appendChild(img);
+    sliderEl.appendChild(div);
+  });
+  if (gradient) sliderEl.appendChild(gradient);
+  else {
+    var g = document.createElement('div');
+    g.className = 'absolute inset-0 hero-gradient z-10';
+    sliderEl.appendChild(g);
+  }
+
+  // Update dots
+  totalSlides = data.heroSlides.length;
+  var dotsContainer = document.getElementById('sliderDots');
+  if (dotsContainer) {
+    dotsContainer.innerHTML = '';
+    data.heroSlides.forEach(function(_, i) {
+      var btn = document.createElement('button');
+      btn.className = 'slider-dot' + (i === 0 ? ' active' : '');
+      btn.setAttribute('aria-label', 'Slide ' + (i+1));
+      btn.onclick = function() { goToSlide(i); resetSliderInterval(); };
+      dotsContainer.appendChild(btn);
+    });
+  }
+  currentSlide = 0;
 })();
 
 // Smooth counter animation for hero price

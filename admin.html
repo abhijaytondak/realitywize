@@ -45,6 +45,12 @@ body { font-family: 'Manrope', sans-serif; }
       <span class="material-symbols-outlined text-[20px]">apartment</span> Properties
       <span id="sidebar-prop-count" class="ml-auto bg-emerald-100 text-emerald-700 text-[10px] font-bold px-2 py-0.5 rounded-full">4</span>
     </a>
+    <a href="#hero-slides-section" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors">
+      <span class="material-symbols-outlined text-[20px]">slideshow</span> Hero Slider
+    </a>
+    <a href="#top-picks-admin" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors">
+      <span class="material-symbols-outlined text-[20px]">video_library</span> Top Picks
+    </a>
     <a href="#testimonials-section" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors">
       <span class="material-symbols-outlined text-[20px]">format_quote</span> Testimonials
     </a>
@@ -227,6 +233,46 @@ body { font-family: 'Manrope', sans-serif; }
       </div>
     </div>
 
+    <!-- HERO SLIDER SECTION -->
+    <div id="hero-slides-section" class="bg-white rounded-xl border border-gray-200 overflow-hidden">
+      <button onclick="toggleSection(this)" class="w-full flex items-center justify-between p-6 hover:bg-gray-50 transition-colors">
+        <div class="flex items-center gap-3">
+          <span class="material-symbols-outlined text-emerald-700">slideshow</span>
+          <h3 class="text-lg font-semibold">Hero Slider Images</h3>
+        </div>
+        <span class="material-symbols-outlined text-gray-400 section-chevron transition-transform">expand_more</span>
+      </button>
+      <div class="section-body px-6 pb-6 space-y-4">
+        <p class="text-xs text-gray-400">Manage the images that appear in the hero banner slider. Add image URLs and alt text for each slide.</p>
+        <div class="flex justify-end">
+          <button onclick="addHeroSlide()" class="bg-emerald-50 text-emerald-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-emerald-100 transition-colors flex items-center gap-1">
+            <span class="material-symbols-outlined text-[18px]">add</span> Add Slide
+          </button>
+        </div>
+        <div id="hero-slides-container" class="space-y-4"></div>
+      </div>
+    </div>
+
+    <!-- TOP PICKS SECTION -->
+    <div id="top-picks-admin" class="bg-white rounded-xl border border-gray-200 overflow-hidden">
+      <button onclick="toggleSection(this)" class="w-full flex items-center justify-between p-6 hover:bg-gray-50 transition-colors">
+        <div class="flex items-center gap-3">
+          <span class="material-symbols-outlined text-emerald-700">video_library</span>
+          <h3 class="text-lg font-semibold">Top Picks (Reels / Shorts)</h3>
+        </div>
+        <span class="material-symbols-outlined text-gray-400 section-chevron transition-transform">expand_more</span>
+      </button>
+      <div class="section-body px-6 pb-6 space-y-4">
+        <p class="text-xs text-gray-400">Add YouTube Shorts or Instagram Reels embed URLs. Use the embed URL format (e.g., https://www.youtube.com/embed/VIDEO_ID).</p>
+        <div class="flex justify-end">
+          <button onclick="addTopPick()" class="bg-emerald-50 text-emerald-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-emerald-100 transition-colors flex items-center gap-1">
+            <span class="material-symbols-outlined text-[18px]">add</span> Add Reel/Short
+          </button>
+        </div>
+        <div id="top-picks-container" class="space-y-4"></div>
+      </div>
+    </div>
+
     <!-- TESTIMONIALS SECTION -->
     <div id="testimonials-section" class="bg-white rounded-xl border border-gray-200 overflow-hidden">
       <button onclick="toggleSection(this)" class="w-full flex items-center justify-between p-6 hover:bg-gray-50 transition-colors">
@@ -368,12 +414,12 @@ const DEFAULT_DATA = {
     cta: "Book a Private Tour"
   },
   hero: {
-    badge: "The Living Gallery",
-    headline: "Own the Living Gallery <br/>in Noida",
-    description: "Premium properties near the city's greenest parks starting at ₹75 Lakhs. Experience the silence of the forest within the heart of the NCR.",
+    badge: "Yamuna Expressway",
+    headline: "Welcome to <br/>Yamuna Expressway",
+    description: "Discover premium properties, world-class infrastructure, and investment opportunities along India's most promising expressway corridor.",
     image: "https://lh3.googleusercontent.com/aida-public/AB6AXuDENix6kyl3cuiaOqboPVrV8ceyGbru_NgZQ28DbkHZGPr_r6vjAqGwjt-dIRFQvfxtYCai9qTaVlYkyMyQ-5oZUSjdt1u7CNSI6gEeI2SHmkKKGO7ZHVunKJH7RSiCigF-lvrytskbKb2KYKWQMkZzzb1K_a4WIVo2EM_SdTAtqbtJh-crazNX3E61jYc5CsQ2CwGg13cSalf9NufOeXDdzduNd1fd_FoHMus7feud1Ahc3ZzGUfGIrlOiK-ACw3kTkn0PKTbOcfFo",
-    btn1: "Inquire Now",
-    btn2: "Explore Masterplan"
+    btn1: "Explore Now",
+    btn2: "View Properties"
   },
   philosophy: {
     label: "Philosophy",
@@ -450,6 +496,17 @@ const DEFAULT_DATA = {
     locationLink: "Get Directions",
     mapImage: "https://lh3.googleusercontent.com/aida-public/AB6AXuCCvuwUl3Mlu-jAySP1okGJatf4eAxytHAEkG2t6-tudAQK2mptcW_Y6_u4rTowbrcuIoi-KuuTdAm1B63Tgg9U1AZbx84aeG9Lxai0FDltomzMaML0MIMCY3Dqedo-8m4O1fhVaod7ptjlEknjefksjsPh3YAEQWe11h4nq99Bvw8DwPjP1NtzZV8OPt1CJT0fqAgltrLa_izrABzfYvyt8xzHR218ChGZVp0viOBeXgWQCu7j7kjfN4B2Q_ZhTFRRrw4kiilBeluS"
   },
+  heroSlides: [
+    { image: "", alt: "Formula Racing Track on Yamuna Expressway" },
+    { image: "", alt: "Noida International Airport (Jewar Airport)" },
+    { image: "", alt: "Buddha International Circuit, Greater Noida" }
+  ],
+  topPicks: [
+    { title: "Reel 1", embedUrl: "" },
+    { title: "Reel 2", embedUrl: "" },
+    { title: "Reel 3", embedUrl: "" },
+    { title: "Reel 4", embedUrl: "" }
+  ],
   footer: {
     brand: "VERDANT MONOLITH",
     tagline: "Rooted in Nature.",
@@ -558,6 +615,12 @@ function populateForms() {
   document.getElementById('footer-copyright').value = siteData.footer.copyright;
   renderFooterLinks('discover');
   renderFooterLinks('legal');
+
+  // Hero Slides
+  renderHeroSlides();
+
+  // Top Picks
+  renderTopPicks();
 }
 
 function renderPhilosophyCards() {
@@ -700,6 +763,57 @@ function renderFooterLinks(column) {
   });
 }
 
+function renderHeroSlides() {
+  const container = document.getElementById('hero-slides-container');
+  container.innerHTML = '';
+  (siteData.heroSlides || []).forEach((slide, i) => {
+    container.innerHTML += `
+      <div class="bg-gray-50 rounded-lg p-4 space-y-3 border border-gray-100">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-semibold text-gray-500">Slide ${i + 1}</span>
+          <button onclick="deleteHeroSlide(${i})" class="p-1 hover:bg-red-100 text-red-500 rounded" title="Delete">
+            <span class="material-symbols-outlined text-[18px]">delete</span>
+          </button>
+        </div>
+        <div>
+          <label class="block text-[10px] font-medium text-gray-400 mb-1">Image URL</label>
+          <div class="flex gap-3 items-start">
+            <input data-hero-slide="${i}" data-field="image" type="text" value="${escapeAttr(slide.image || '')}" class="flex-1 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-200 focus:border-emerald-400 outline-none" oninput="this.nextElementSibling.src=this.value"/>
+            <img class="img-preview" src="${escapeAttr(slide.image || '')}" onerror="this.style.display='none'" onload="this.style.display='block'"/>
+          </div>
+        </div>
+        <div>
+          <label class="block text-[10px] font-medium text-gray-400 mb-1">Alt Text / Description</label>
+          <input data-hero-slide="${i}" data-field="alt" type="text" value="${escapeAttr(slide.alt || '')}" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-200 focus:border-emerald-400 outline-none"/>
+        </div>
+      </div>`;
+  });
+}
+
+function renderTopPicks() {
+  const container = document.getElementById('top-picks-container');
+  container.innerHTML = '';
+  (siteData.topPicks || []).forEach((pick, i) => {
+    container.innerHTML += `
+      <div class="bg-gray-50 rounded-lg p-4 space-y-3 border border-gray-100">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-semibold text-gray-500">Reel / Short ${i + 1}</span>
+          <button onclick="deleteTopPick(${i})" class="p-1 hover:bg-red-100 text-red-500 rounded" title="Delete">
+            <span class="material-symbols-outlined text-[18px]">delete</span>
+          </button>
+        </div>
+        <div>
+          <label class="block text-[10px] font-medium text-gray-400 mb-1">Title</label>
+          <input data-top-pick="${i}" data-field="title" type="text" value="${escapeAttr(pick.title || '')}" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-200 focus:border-emerald-400 outline-none"/>
+        </div>
+        <div>
+          <label class="block text-[10px] font-medium text-gray-400 mb-1">Embed URL (YouTube Shorts / Instagram Reels embed link)</label>
+          <input data-top-pick="${i}" data-field="embedUrl" type="text" value="${escapeAttr(pick.embedUrl || '')}" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-200 focus:border-emerald-400 outline-none" placeholder="https://www.youtube.com/embed/VIDEO_ID"/>
+        </div>
+      </div>`;
+  });
+}
+
 // ==================== ACTIONS ====================
 function collectData() {
   // Nav
@@ -763,6 +877,22 @@ function collectData() {
     const idx = parseInt(el.dataset.index);
     const key = col === 'discover' ? 'discoverLinks' : 'legalLinks';
     siteData.footer[key][idx] = el.value;
+  });
+
+  // Hero Slides
+  if (!siteData.heroSlides) siteData.heroSlides = [];
+  document.querySelectorAll('[data-hero-slide]').forEach(el => {
+    const idx = parseInt(el.dataset.heroSlide);
+    const field = el.dataset.field;
+    if (siteData.heroSlides[idx]) siteData.heroSlides[idx][field] = el.value;
+  });
+
+  // Top Picks
+  if (!siteData.topPicks) siteData.topPicks = [];
+  document.querySelectorAll('[data-top-pick]').forEach(el => {
+    const idx = parseInt(el.dataset.topPick);
+    const field = el.dataset.field;
+    if (siteData.topPicks[idx]) siteData.topPicks[idx][field] = el.value;
   });
 }
 
@@ -841,6 +971,38 @@ function removeFooterLink(column, i) {
   const key = column === 'discover' ? 'discoverLinks' : 'legalLinks';
   siteData.footer[key].splice(i, 1);
   renderFooterLinks(column);
+}
+
+// Hero Slides CRUD
+function addHeroSlide() {
+  collectData();
+  if (!siteData.heroSlides) siteData.heroSlides = [];
+  siteData.heroSlides.push({ image: "", alt: "New Slide" });
+  renderHeroSlides();
+}
+
+function deleteHeroSlide(i) {
+  if (confirm('Delete this slide?')) {
+    collectData();
+    siteData.heroSlides.splice(i, 1);
+    renderHeroSlides();
+  }
+}
+
+// Top Picks CRUD
+function addTopPick() {
+  collectData();
+  if (!siteData.topPicks) siteData.topPicks = [];
+  siteData.topPicks.push({ title: "New Reel", embedUrl: "" });
+  renderTopPicks();
+}
+
+function deleteTopPick(i) {
+  if (confirm('Delete this reel/short?')) {
+    collectData();
+    siteData.topPicks.splice(i, 1);
+    renderTopPicks();
+  }
 }
 
 // ==================== UTILS ====================
