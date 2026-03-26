@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import PropertyCard from "@/components/PropertyCard";
 import InquiryForm from "@/components/InquiryForm";
+import YeidaBanner from "@/components/YeidaBanner";
 import { getFeaturedProperties, getSiteConfig, getHomeContent } from "@/lib/supabase/queries";
 import { PropertyType } from "@/lib/types";
 
@@ -92,6 +93,9 @@ export default async function HomePage() {
           </div>
         </section>
       )}
+
+      {/* YEIDA Banner */}
+      <YeidaBanner />
 
       {/* Why Choose Us */}
       <section className="py-20 bg-surface">
