@@ -1,27 +1,18 @@
 import { NextRequest, NextResponse } from "next/server";
-import { SAMPLE_PROPERTIES } from "@/lib/sample-data";
+import { getProperties } from "@/lib/supabase/queries";
+import { PropertyType, TransactionType, PropertyFilters } from "@/lib/types";
 
 export async function GET(request: NextRequest) {
   const { searchParams } = request.nextUrl;
-  let properties = [...SAMPLE_PROPERTIES].filter((p) => p.is_active);
 
-  const type = searchParams.get("type");
-  const subtype = searchParams.get("subtype");
-  const transaction = searchParams.get("transaction");
-  const search = searchParams.get("search");
+  const filters: PropertyFilters = {
+    search: searchParams.get("search") || undefined,
+    type: (searchParams.get("type") as PropertyType) || undefined,
+    subtype: searchParams.get("subtype") as PropertyFilters["subtype"],
+    transaction: (searchParams.get("transaction") as TransactionType) || undefined,
+    sort: (searchParams.get("sort") as PropertyFilters["sort"]) || undefined,
+  };
 
-  if (type) properties = properties.filter((p) => p.type === type);
-  if (subtype) properties = properties.filter((p) => p.subtype === subtype);
-  if (transaction) properties = properties.filter((p) => p.transaction_type === transaction);
-  if (search) {
-    const q = search.toLowerCase();
-    properties = properties.filter(
-      (p) =>
-        p.title.toLowerCase().includes(q) ||
-        p.address.toLowerCase().includes(q) ||
-        p.city.toLowerCase().includes(q)
-    );
-  }
-
+  const properties = await getProperties(filters);
   return NextResponse.json(properties);
 }

@@ -1,8 +1,8 @@
 import { Suspense } from "react";
 import PropertyCard from "@/components/PropertyCard";
 import PropertyFilters from "@/components/PropertyFilters";
-import { SAMPLE_PROPERTIES } from "@/lib/sample-data";
-import { Property, PropertyType, TransactionType } from "@/lib/types";
+import { getProperties } from "@/lib/supabase/queries";
+import { PropertyType, TransactionType, PropertyFilters as Filters } from "@/lib/types";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -10,63 +10,7 @@ export const metadata: Metadata = {
   description: "Browse premium properties across Noida and NCR. Filter by type, location, price, and more.",
 };
 
-function parsePrice(price: string | null): number {
-  if (!price) return 0;
-  const lower = price.toLowerCase().replace(/[^\d.a-z/]/g, "");
-  if (lower.includes("cr")) return parseFloat(lower) * 10000000;
-  if (lower.includes("lakh")) return parseFloat(lower) * 100000;
-  return parseFloat(lower) || 0;
-}
-
-function filterAndSort(
-  properties: Property[],
-  params: Record<string, string | undefined>
-): Property[] {
-  let result = properties.filter((p) => p.is_active && !p.is_sold);
-
-  if (params.search) {
-    const q = params.search.toLowerCase();
-    result = result.filter(
-      (p) =>
-        p.title.toLowerCase().includes(q) ||
-        p.address.toLowerCase().includes(q) ||
-        p.city.toLowerCase().includes(q) ||
-        p.tags.some((t) => t.toLowerCase().includes(q))
-    );
-  }
-
-  if (params.type) {
-    result = result.filter((p) => p.type === params.type);
-  }
-
-  if (params.subtype) {
-    result = result.filter((p) => p.subtype === params.subtype);
-  }
-
-  if (params.transaction) {
-    result = result.filter((p) => p.transaction_type === params.transaction);
-  }
-
-  // Sort
-  switch (params.sort) {
-    case "price_asc":
-      result.sort((a, b) => parsePrice(a.price) - parsePrice(b.price));
-      break;
-    case "price_desc":
-      result.sort((a, b) => parsePrice(b.price) - parsePrice(a.price));
-      break;
-    case "area_asc":
-      result.sort((a, b) => (a.area || 0) - (b.area || 0));
-      break;
-    case "area_desc":
-      result.sort((a, b) => (b.area || 0) - (a.area || 0));
-      break;
-    default: // newest
-      result.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
-  }
-
-  return result;
-}
+export const revalidate = 60;
 
 export default async function PropertiesPage({
   searchParams,
@@ -74,10 +18,16 @@ export default async function PropertiesPage({
   searchParams: Promise<Record<string, string | undefined>>;
 }) {
   const params = await searchParams;
-  const properties = filterAndSort(SAMPLE_PROPERTIES, params);
 
-  const activeType = params.type as PropertyType | undefined;
-  const activeTransaction = params.transaction as TransactionType | undefined;
+  const filters: Filters = {
+    search: params.search,
+    type: params.type as PropertyType | undefined,
+    subtype: params.subtype as Filters["subtype"],
+    transaction: params.transaction as TransactionType | undefined,
+    sort: params.sort as Filters["sort"],
+  };
+
+  const properties = await getProperties(filters);
 
   return (
     <div className="min-h-screen bg-surface">
@@ -88,8 +38,8 @@ export default async function PropertiesPage({
             Browse
           </span>
           <h1 className="font-headline text-3xl md:text-5xl text-on-primary mt-2">
-            {activeType ? `${activeType} Properties` : "All Properties"}
-            {activeTransaction ? ` for ${activeTransaction}` : ""}
+            {filters.type ? `${filters.type} Properties` : "All Properties"}
+            {filters.transaction ? ` for ${filters.transaction}` : ""}
           </h1>
           <p className="text-on-primary/70 mt-3 text-sm">
             {properties.length} {properties.length === 1 ? "property" : "properties"} found

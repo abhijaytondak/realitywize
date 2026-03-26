@@ -1,40 +1,18 @@
-"use client";
+import { getEnquiries } from "@/lib/supabase/queries";
 
-import { useState, useEffect } from "react";
-import { Enquiry } from "@/lib/types";
+export const revalidate = 0;
 
-export default function AdminEnquiriesPage() {
-  const [enquiries, setEnquiries] = useState<Enquiry[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    async function fetchEnquiries() {
-      try {
-        const res = await fetch("/api/enquiries");
-        if (res.ok) {
-          const data = await res.json();
-          setEnquiries(data);
-        }
-      } catch {
-        // Fallback to localStorage
-        try {
-          const stored = JSON.parse(localStorage.getItem("verdantInquiries") || "[]");
-          setEnquiries(stored);
-        } catch { /* empty */ }
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchEnquiries();
-  }, []);
+export default async function AdminEnquiriesPage() {
+  const enquiries = await getEnquiries();
 
   return (
     <div>
-      <h1 className="font-headline text-2xl md:text-3xl text-primary mb-8">Enquiries</h1>
+      <div className="flex items-center justify-between mb-8">
+        <h1 className="font-headline text-2xl md:text-3xl text-primary">Enquiries</h1>
+        <span className="text-sm text-on-surface-variant">{enquiries.length} total</span>
+      </div>
 
-      {loading ? (
-        <div className="text-center py-20 text-on-surface-variant">Loading...</div>
-      ) : enquiries.length === 0 ? (
+      {enquiries.length === 0 ? (
         <div className="bg-white rounded-xl border border-outline-variant/20 shadow-sm p-12 text-center">
           <svg className="w-16 h-16 text-outline mx-auto mb-4" fill="currentColor" viewBox="0 0 24 24">
             <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
@@ -61,17 +39,11 @@ export default function AdminEnquiriesPage() {
                   <tr key={enq.id} className="border-b border-outline-variant/10 hover:bg-surface-container-low/50">
                     <td className="px-6 py-4 font-medium text-primary">{enq.name}</td>
                     <td className="px-6 py-4">
-                      <div>
-                        <p className="text-on-surface-variant">{enq.email}</p>
-                        <p className="text-xs text-on-surface-variant">{enq.phone}</p>
-                      </div>
+                      <p className="text-on-surface-variant">{enq.email}</p>
+                      <p className="text-xs text-on-surface-variant">{enq.phone}</p>
                     </td>
-                    <td className="px-6 py-4 text-on-surface-variant">
-                      {enq.property_title || "General"}
-                    </td>
-                    <td className="px-6 py-4 text-on-surface-variant max-w-xs truncate">
-                      {enq.message || "-"}
-                    </td>
+                    <td className="px-6 py-4 text-on-surface-variant">{enq.property_title || "General"}</td>
+                    <td className="px-6 py-4 text-on-surface-variant max-w-xs truncate">{enq.message || "-"}</td>
                     <td className="px-6 py-4 text-xs text-on-surface-variant">
                       {new Date(enq.created_at).toLocaleDateString("en-IN", { dateStyle: "medium" })}
                     </td>

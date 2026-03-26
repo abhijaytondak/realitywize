@@ -1,17 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-
-// In-memory storage for MVP (replace with Supabase when connected)
-let enquiries: Array<{
-  id: string;
-  name: string;
-  email: string;
-  phone: string;
-  message: string;
-  property_id: string | null;
-  property_title: string | null;
-  status: string;
-  created_at: string;
-}> = [];
+import { submitEnquiry, getEnquiries } from "@/lib/supabase/queries";
 
 export async function POST(request: NextRequest) {
   try {
@@ -22,26 +10,26 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Name, email, and phone are required" }, { status: 400 });
     }
 
-    const enquiry = {
-      id: Date.now().toString(),
+    const result = await submitEnquiry({
       name,
       email,
       phone,
-      message: message || "",
-      property_id: property_id || null,
-      property_title: property_title || null,
-      status: "new",
-      created_at: new Date().toISOString(),
-    };
+      message,
+      property_id,
+      property_title,
+    });
 
-    enquiries.unshift(enquiry);
+    if (!result.success) {
+      return NextResponse.json({ error: result.error }, { status: 500 });
+    }
 
-    return NextResponse.json({ success: true, id: enquiry.id });
+    return NextResponse.json({ success: true, id: result.id });
   } catch {
     return NextResponse.json({ error: "Invalid request" }, { status: 400 });
   }
 }
 
 export async function GET() {
+  const enquiries = await getEnquiries();
   return NextResponse.json(enquiries);
 }

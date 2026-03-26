@@ -3,10 +3,13 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import ImageGallery from "@/components/ImageGallery";
 import InquiryForm from "@/components/InquiryForm";
-import { SAMPLE_PROPERTIES, SITE_CONFIG } from "@/lib/sample-data";
+import { getPropertyBySlug, getAllPropertySlugs, getSiteConfig } from "@/lib/supabase/queries";
+
+export const revalidate = 60;
 
 export async function generateStaticParams() {
-  return SAMPLE_PROPERTIES.map((p) => ({ slug: p.slug }));
+  const slugs = await getAllPropertySlugs();
+  return slugs.map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({
@@ -15,7 +18,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const property = SAMPLE_PROPERTIES.find((p) => p.slug === slug);
+  const property = await getPropertyBySlug(slug);
   if (!property) return { title: "Property Not Found" };
   return {
     title: `${property.title} | RealtyWize`,
@@ -34,7 +37,11 @@ export default async function PropertyDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const property = SAMPLE_PROPERTIES.find((p) => p.slug === slug);
+  const [property, siteConfig] = await Promise.all([
+    getPropertyBySlug(slug),
+    getSiteConfig(),
+  ]);
+
   if (!property) notFound();
 
   const attributes = [
@@ -66,7 +73,6 @@ export default async function PropertyDetailPage({
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
           {/* Left column: Gallery + Details */}
           <div className="lg:col-span-2 space-y-8">
-            {/* Gallery */}
             <ImageGallery images={property.images} />
 
             {/* Title + Price */}
@@ -113,13 +119,8 @@ export default async function PropertyDetailPage({
               <h2 className="font-headline text-xl text-primary mb-4">Property Details</h2>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                 {attributes.map(({ label, value }) => (
-                  <div
-                    key={label}
-                    className="bg-white rounded-lg p-4 border border-outline-variant/20"
-                  >
-                    <p className="text-xs text-on-surface-variant font-label uppercase tracking-wider mb-1">
-                      {label}
-                    </p>
+                  <div key={label} className="bg-white rounded-lg p-4 border border-outline-variant/20">
+                    <p className="text-xs text-on-surface-variant font-label uppercase tracking-wider mb-1">{label}</p>
                     <p className="font-headline text-primary text-sm">{value}</p>
                   </div>
                 ))}
@@ -153,12 +154,11 @@ export default async function PropertyDetailPage({
 
           {/* Right column: Inquiry + CTAs */}
           <div className="space-y-6">
-            {/* Sticky sidebar */}
             <div className="lg:sticky lg:top-24 space-y-6">
               {/* CTA Buttons */}
               <div className="bg-white rounded-xl p-6 border border-outline-variant/20 shadow-sm space-y-3">
                 <a
-                  href={`tel:${SITE_CONFIG.contact_phone}`}
+                  href={`tel:${siteConfig.contact_phone}`}
                   className="flex items-center justify-center gap-3 w-full bg-primary text-on-primary px-6 py-3.5 rounded-lg font-label uppercase tracking-wider text-xs hover:bg-primary-container transition-all"
                 >
                   <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
@@ -167,7 +167,7 @@ export default async function PropertyDetailPage({
                   Call Now
                 </a>
                 <a
-                  href={`https://wa.me/${SITE_CONFIG.whatsapp_number}?text=Hi, I'm interested in ${property.title}`}
+                  href={`https://wa.me/${siteConfig.whatsapp_number}?text=Hi, I'm interested in ${property.title}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center justify-center gap-3 w-full bg-[#25D366] text-white px-6 py-3.5 rounded-lg font-label uppercase tracking-wider text-xs hover:bg-[#20BD5A] transition-all"
@@ -178,7 +178,7 @@ export default async function PropertyDetailPage({
                   WhatsApp
                 </a>
                 <a
-                  href={`mailto:${SITE_CONFIG.contact_email}?subject=Inquiry about ${property.title}`}
+                  href={`mailto:${siteConfig.contact_email}?subject=Inquiry about ${property.title}`}
                   className="flex items-center justify-center gap-3 w-full border border-primary text-primary px-6 py-3.5 rounded-lg font-label uppercase tracking-wider text-xs hover:bg-primary hover:text-on-primary transition-all"
                 >
                   <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">

@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { createClient } from "@/lib/supabase/client";
 
 const NAV_ITEMS = [
   { href: "/admin", label: "Dashboard", icon: "M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z" },
@@ -12,6 +13,14 @@ const NAV_ITEMS = [
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const router = useRouter();
+
+  async function handleLogout() {
+    const supabase = createClient();
+    await supabase.auth.signOut();
+    router.push("/login");
+    router.refresh();
+  }
 
   return (
     <div className="min-h-screen bg-surface-container-low">
@@ -43,7 +52,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               );
             })}
           </nav>
-          <div className="p-4 border-t border-outline-variant/20">
+          <div className="p-4 border-t border-outline-variant/20 space-y-2">
             <Link
               href="/"
               className="flex items-center gap-2 text-sm text-on-surface-variant hover:text-primary transition-colors"
@@ -53,6 +62,15 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               </svg>
               Back to Site
             </Link>
+            <button
+              onClick={handleLogout}
+              className="flex items-center gap-2 text-sm text-error hover:text-error/80 transition-colors w-full"
+            >
+              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z" />
+              </svg>
+              Logout
+            </button>
           </div>
         </aside>
 

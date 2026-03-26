@@ -1,14 +1,16 @@
 import Link from "next/link";
-import { SAMPLE_PROPERTIES } from "@/lib/sample-data";
+import { getAllProperties } from "@/lib/supabase/queries";
 
-export default function AdminPropertiesPage() {
+export const revalidate = 0;
+
+export default async function AdminPropertiesPage() {
+  const properties = await getAllProperties();
+
   return (
     <div>
       <div className="flex items-center justify-between mb-8">
         <h1 className="font-headline text-2xl md:text-3xl text-primary">Properties</h1>
-        <span className="text-xs text-on-surface-variant bg-surface-container px-3 py-1.5 rounded-lg">
-          Connect Supabase to add/edit properties
-        </span>
+        <span className="text-sm text-on-surface-variant">{properties.length} total</span>
       </div>
 
       <div className="bg-white rounded-xl border border-outline-variant/20 shadow-sm overflow-hidden">
@@ -25,13 +27,11 @@ export default function AdminPropertiesPage() {
               </tr>
             </thead>
             <tbody>
-              {SAMPLE_PROPERTIES.map((property) => (
+              {properties.map((property) => (
                 <tr key={property.id} className="border-b border-outline-variant/10 hover:bg-surface-container-low/50">
                   <td className="px-6 py-4">
-                    <div>
-                      <p className="font-headline text-primary text-sm">{property.title}</p>
-                      <p className="text-xs text-on-surface-variant">{property.subtype}</p>
-                    </div>
+                    <p className="font-headline text-primary text-sm">{property.title}</p>
+                    <p className="text-xs text-on-surface-variant">{property.subtype}</p>
                   </td>
                   <td className="px-6 py-4">
                     <span className="text-xs bg-primary-fixed/20 text-primary px-2 py-1 rounded">{property.type}</span>
@@ -46,10 +46,7 @@ export default function AdminPropertiesPage() {
                     </span>
                   </td>
                   <td className="px-6 py-4">
-                    <Link
-                      href={`/properties/${property.slug}`}
-                      className="text-xs text-primary hover:underline"
-                    >
+                    <Link href={`/properties/${property.slug}`} className="text-xs text-primary hover:underline">
                       View
                     </Link>
                   </td>
