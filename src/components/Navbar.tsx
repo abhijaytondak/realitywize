@@ -31,6 +31,8 @@ export default function Navbar() {
               scrolled ? "h-10 md:h-12" : "h-12 md:h-16"
             }`}
             priority
+            quality={80}
+            sizes="180px"
           />
         </Link>
 
@@ -58,7 +60,7 @@ export default function Navbar() {
 
         {/* Mobile hamburger */}
         <button
-          className="md:hidden p-2 text-primary"
+          className="md:hidden p-3 -mr-1 text-primary"
           aria-label="Toggle menu"
           onClick={() => setMobileOpen(!mobileOpen)}
         >
@@ -77,21 +79,21 @@ export default function Navbar() {
         <div className="md:hidden bg-white/95 backdrop-blur-lg border-t border-gray-100 px-6 py-4 space-y-3">
           <Link
             href="/properties"
-            className="block font-label uppercase tracking-[0.12em] text-xs text-primary font-medium py-2"
+            className="block font-label uppercase tracking-[0.12em] text-sm text-primary font-medium py-3"
             onClick={() => setMobileOpen(false)}
           >
             Properties
           </Link>
           <Link
             href="/about"
-            className="block font-label uppercase tracking-[0.12em] text-xs text-secondary font-medium py-2"
+            className="block font-label uppercase tracking-[0.12em] text-sm text-secondary font-medium py-3"
             onClick={() => setMobileOpen(false)}
           >
             About Us
           </Link>
           <Link
             href="/properties"
-            className="block w-full text-center bg-primary text-on-primary px-5 py-2.5 rounded font-label uppercase tracking-[0.15em] text-[10px] mt-2"
+            className="block w-full text-center bg-primary text-on-primary px-5 py-3.5 rounded font-label uppercase tracking-[0.15em] text-xs mt-2"
             onClick={() => setMobileOpen(false)}
           >
             Explore Properties

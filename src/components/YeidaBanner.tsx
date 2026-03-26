@@ -18,6 +18,8 @@ export default function YeidaBanner() {
                 width={112}
                 height={112}
                 className="h-20 md:h-28 w-auto drop-shadow-lg"
+                quality={75}
+                loading="lazy"
               />
               <div>
                 <p className="font-label uppercase tracking-[0.2em] text-[10px] md:text-xs text-primary-fixed-dim mb-1">

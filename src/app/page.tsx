@@ -1,13 +1,14 @@
 import Link from "next/link";
-import Image from "next/image";
+import dynamic from "next/dynamic";
 import PropertyCard from "@/components/PropertyCard";
-import InquiryForm from "@/components/InquiryForm";
-import YeidaBanner from "@/components/YeidaBanner";
 import HeroSlider from "@/components/HeroSlider";
-import TopPicks from "@/components/TopPicks";
-import Allotments from "@/components/Allotments";
 import { getFeaturedProperties, getSiteConfig, getHomeContent } from "@/lib/supabase/queries";
 import { PropertyType } from "@/lib/types";
+
+const InquiryForm = dynamic(() => import("@/components/InquiryForm"));
+const YeidaBanner = dynamic(() => import("@/components/YeidaBanner"));
+const TopPicks = dynamic(() => import("@/components/TopPicks"));
+const Allotments = dynamic(() => import("@/components/Allotments"));
 
 const PROPERTY_TYPES: { type: PropertyType; icon: string; desc: string }[] = [
   { type: "Residential", icon: "M19 9.3V4h-3v2.6L12 3 2 12h3v8h5v-6h4v6h5v-8h3l-3-2.7z", desc: "Apartments, Villas, Plots & more" },
@@ -79,7 +80,7 @@ export default async function HomePage() {
                 <span className="font-label uppercase tracking-[0.15em] text-secondary text-sm">Curated</span>
                 <h2 className="font-headline text-4xl md:text-5xl text-primary mt-3">Featured Properties</h2>
               </div>
-              <Link href="/properties" className="hidden md:inline-flex items-center gap-2 font-label uppercase tracking-[0.15em] text-sm text-secondary hover:text-primary transition-colors">View All &rarr;</Link>
+              <Link href="/properties" className="hidden md:inline-flex items-center gap-2 font-label uppercase tracking-[0.15em] text-sm text-secondary hover:text-primary transition-colors">View All Properties &rarr;</Link>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {featured.map((property) => (<PropertyCard key={property.id} property={property} />))}

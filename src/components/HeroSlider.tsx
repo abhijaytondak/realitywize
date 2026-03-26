@@ -39,6 +39,8 @@ export default function HeroSlider({ slides }: { slides: Slide[] }) {
             className="object-cover"
             sizes="100vw"
             priority={i === 0}
+            quality={75}
+            loading={i === 0 ? "eager" : "lazy"}
           />
         </div>
       ))}

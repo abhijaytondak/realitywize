@@ -47,7 +47,7 @@ export default function ImageGallery({ images }: { images: PropertyImage[] }) {
             <button
               key={img.id}
               onClick={() => setActiveIndex(i)}
-              className={`relative w-20 h-16 flex-shrink-0 rounded-lg overflow-hidden transition-all ${
+              className={`relative w-20 h-20 md:h-16 flex-shrink-0 rounded-lg overflow-hidden transition-all ${
                 i === activeIndex ? "ring-2 ring-primary" : "opacity-60 hover:opacity-100"
               }`}
             >

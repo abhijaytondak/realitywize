@@ -17,6 +17,8 @@ export default async function Footer() {
               width={80}
               height={80}
               className="h-16 w-auto brightness-0 invert mb-4"
+              quality={75}
+              loading="lazy"
             />
             <p className="text-on-primary/70 text-sm leading-relaxed">
               Your trusted partner in finding premium properties across Noida and NCR.
@@ -25,7 +27,7 @@ export default async function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h4 className="font-headline text-lg mb-4">Quick Links</h4>
+            <h3 className="font-headline text-lg mb-4">Quick Links</h3>
             <ul className="space-y-2">
               <li>
                 <Link href="/" className="text-on-primary/70 text-sm hover:text-on-primary transition-colors">
@@ -47,7 +49,7 @@ export default async function Footer() {
 
           {/* Property Types */}
           <div>
-            <h4 className="font-headline text-lg mb-4">Property Types</h4>
+            <h3 className="font-headline text-lg mb-4">Property Types</h3>
             <ul className="space-y-2">
               {["Residential", "Commercial", "Industrial", "Institutional"].map((type) => (
                 <li key={type}>
@@ -64,7 +66,7 @@ export default async function Footer() {
 
           {/* Contact */}
           <div>
-            <h4 className="font-headline text-lg mb-4">Contact</h4>
+            <h3 className="font-headline text-lg mb-4">Contact</h3>
             <ul className="space-y-3 text-sm text-on-primary/70">
               <li className="flex items-start gap-2">
                 <svg className="w-4 h-4 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
