@@ -17,6 +17,7 @@ const manrope = Manrope({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://realitywize.vercel.app"),
   title: "RealtyWize | Premium Property Listings in Noida & NCR",
   description:
     "Discover premium residential, commercial, and industrial properties across Noida and NCR. Browse listings, view details, and submit enquiries.",
@@ -24,6 +25,10 @@ export const metadata: Metadata = {
     title: "RealtyWize | Premium Property Listings",
     description: "Discover premium properties across Noida and NCR.",
     images: ["/logo-wide.png"],
+    siteName: "RealtyWize",
+  },
+  twitter: {
+    card: "summary_large_image",
   },
 };
 
@@ -31,6 +36,28 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={`${notoSerif.variable} ${manrope.variable}`}>
       <body className="min-h-screen flex flex-col">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "RealEstateAgent",
+              "name": "RealtyWize",
+              "url": "https://realitywize.vercel.app",
+              "logo": "https://realitywize.vercel.app/logo-wide.png",
+              "description": "Premium property listings in Noida and NCR",
+              "address": {
+                "@type": "PostalAddress",
+                "streetAddress": "Plot 22, Sector 150, Noida Expressway",
+                "addressLocality": "Noida",
+                "addressRegion": "Uttar Pradesh",
+                "postalCode": "201310",
+                "addressCountry": "IN",
+              },
+              "areaServed": "Noida, NCR",
+            }),
+          }}
+        />
         <Navbar />
         <main className="flex-1 pt-20">{children}</main>
         <Footer />

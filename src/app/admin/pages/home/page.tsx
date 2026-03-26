@@ -6,6 +6,7 @@ import { TextField, Section } from "@/components/admin/CmsEditor";
 interface CardItem { title: string; description: string }
 interface TopPickItem { title: string; url: string }
 interface AllotmentItem { title: string; size: string; description: string; type: string }
+interface SlideItem { src: string; alt: string }
 
 interface HomeHeroData {
   badge: string; headline: string; description: string;
@@ -20,6 +21,7 @@ export default function EditHomePage() {
   const [inquiry, setInquiry] = useState<HomeInquiryData | null>(null);
   const [topPicks, setTopPicks] = useState<TopPickItem[] | null>(null);
   const [allotments, setAllotments] = useState<AllotmentItem[] | null>(null);
+  const [heroSlides, setHeroSlides] = useState<SlideItem[] | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
@@ -31,10 +33,12 @@ export default function EditHomePage() {
       fetch("/api/config?key=home_inquiry").then((r) => r.json()),
       fetch("/api/config?key=home_top_picks").then((r) => r.json()),
       fetch("/api/config?key=home_allotments").then((r) => r.json()),
-    ]).then(([h, w, i, tp, al]) => {
+      fetch("/api/config?key=home_hero_slides").then((r) => r.json()),
+    ]).then(([h, w, i, tp, al, hs]) => {
       setHero(h); setWhyUs(w); setInquiry(i);
       setTopPicks(Array.isArray(tp) ? tp : []);
       setAllotments(Array.isArray(al) ? al : []);
+      setHeroSlides(Array.isArray(hs) ? hs : []);
       setLoading(false);
     });
   }, []);
@@ -47,13 +51,14 @@ export default function EditHomePage() {
       fetch("/api/config", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ key: "home_inquiry", value: inquiry }) }),
       fetch("/api/config", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ key: "home_top_picks", value: topPicks }) }),
       fetch("/api/config", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ key: "home_allotments", value: allotments }) }),
+      fetch("/api/config", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ key: "home_hero_slides", value: heroSlides }) }),
     ]);
     setSaving(false); setSaved(true);
     setTimeout(() => setSaved(false), 3000);
   }
 
   if (loading) return <div className="py-20 text-center text-on-surface-variant">Loading...</div>;
-  if (!hero || !whyUs || !inquiry || !topPicks || !allotments) return <div className="py-20 text-center text-error">Failed to load</div>;
+  if (!hero || !whyUs || !inquiry || !topPicks || !allotments || !heroSlides) return <div className="py-20 text-center text-error">Failed to load</div>;
 
   function updateCard(cards: CardItem[], index: number, field: keyof CardItem, value: string) {
     const copy = [...cards]; copy[index] = { ...copy[index], [field]: value }; return copy;
@@ -85,6 +90,28 @@ export default function EditHomePage() {
       </Section>
 
       {/* Top Picks / Reels */}
+      {/* Hero Slider Images */}
+      <Section title="Hero Slider Images">
+        <p className="text-xs text-on-surface-variant -mt-2 mb-4">Images that rotate in the hero banner. Use high-quality landscape images.</p>
+        <div className="space-y-4">
+          {heroSlides.map((slide, i) => (
+            <div key={i} className="bg-surface-container-low rounded-lg p-4 space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-label text-on-surface-variant">Slide {i + 1}</span>
+                <button onClick={() => setHeroSlides(heroSlides.filter((_, j) => j !== i))} className="text-xs text-error hover:underline">Remove</button>
+              </div>
+              <TextField label="Image URL" value={slide.src} onChange={(v) => {
+                const copy = [...heroSlides]; copy[i] = { ...copy[i], src: v }; setHeroSlides(copy);
+              }} placeholder="https://..." />
+              <TextField label="Alt Text" value={slide.alt} onChange={(v) => {
+                const copy = [...heroSlides]; copy[i] = { ...copy[i], alt: v }; setHeroSlides(copy);
+              }} />
+            </div>
+          ))}
+          <button onClick={() => setHeroSlides([...heroSlides, { src: "", alt: "" }])} className="text-xs text-primary hover:underline">+ Add Slide</button>
+        </div>
+      </Section>
+
       <Section title="Top Picks (Reels / YouTube Shorts)">
         <p className="text-xs text-on-surface-variant -mt-2 mb-4">Add YouTube Shorts or Reels URLs. They will be displayed in portrait format.</p>
         <div className="space-y-4">

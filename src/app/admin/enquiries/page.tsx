@@ -3,15 +3,11 @@
 import { useState, useEffect } from "react";
 
 interface Enquiry {
-  id: string;
-  name: string;
-  email: string;
-  phone: string;
-  message: string;
-  property_title: string | null;
-  status: string;
-  created_at: string;
+  id: string; name: string; email: string; phone: string;
+  message: string; property_title: string | null; status: string; created_at: string;
 }
+
+const STATUS_OPTIONS = ["new", "contacted", "closed"];
 
 export default function AdminEnquiriesPage() {
   const [enquiries, setEnquiries] = useState<Enquiry[]>([]);
@@ -23,6 +19,28 @@ export default function AdminEnquiriesPage() {
       .then((data) => { setEnquiries(data); setLoading(false); })
       .catch(() => setLoading(false));
   }, []);
+
+  async function updateStatus(id: string, status: string) {
+    const res = await fetch(`/api/enquiries/${id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ status }),
+    });
+    if (res.ok) {
+      setEnquiries((prev) => prev.map((e) => (e.id === id ? { ...e, status } : e)));
+    }
+  }
+
+  async function handleDelete(id: string) {
+    if (!confirm("Delete this enquiry?")) return;
+    const res = await fetch(`/api/enquiries/${id}`, { method: "DELETE" });
+    if (res.ok) setEnquiries((prev) => prev.filter((e) => e.id !== id));
+  }
+
+  const statusColor = (s: string) =>
+    s === "new" ? "bg-blue-50 text-blue-700" :
+    s === "contacted" ? "bg-amber-50 text-amber-700" :
+    "bg-green-50 text-green-700";
 
   return (
     <div>
@@ -42,46 +60,41 @@ export default function AdminEnquiriesPage() {
           <p className="text-sm text-on-surface-variant">Enquiries from the contact form will appear here.</p>
         </div>
       ) : (
-        <div className="bg-white rounded-xl border border-outline-variant/20 shadow-sm overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b border-outline-variant/20 bg-surface-container-low">
-                  <th className="text-left px-6 py-4 font-label uppercase tracking-wider text-xs text-on-surface-variant">Name</th>
-                  <th className="text-left px-6 py-4 font-label uppercase tracking-wider text-xs text-on-surface-variant">Contact</th>
-                  <th className="text-left px-6 py-4 font-label uppercase tracking-wider text-xs text-on-surface-variant">Property</th>
-                  <th className="text-left px-6 py-4 font-label uppercase tracking-wider text-xs text-on-surface-variant">Message</th>
-                  <th className="text-left px-6 py-4 font-label uppercase tracking-wider text-xs text-on-surface-variant">Date</th>
-                  <th className="text-left px-6 py-4 font-label uppercase tracking-wider text-xs text-on-surface-variant">Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                {enquiries.map((enq) => (
-                  <tr key={enq.id} className="border-b border-outline-variant/10 hover:bg-surface-container-low/50">
-                    <td className="px-6 py-4 font-medium text-primary">{enq.name}</td>
-                    <td className="px-6 py-4">
-                      <p className="text-on-surface-variant">{enq.email}</p>
-                      <p className="text-xs text-on-surface-variant">{enq.phone}</p>
-                    </td>
-                    <td className="px-6 py-4 text-on-surface-variant">{enq.property_title || "General"}</td>
-                    <td className="px-6 py-4 text-on-surface-variant max-w-xs truncate">{enq.message || "-"}</td>
-                    <td className="px-6 py-4 text-xs text-on-surface-variant">
-                      {new Date(enq.created_at).toLocaleDateString("en-IN", { dateStyle: "medium" })}
-                    </td>
-                    <td className="px-6 py-4">
-                      <span className={`text-xs px-2 py-1 rounded ${
-                        enq.status === "new" ? "bg-blue-50 text-blue-700" :
-                        enq.status === "contacted" ? "bg-amber-50 text-amber-700" :
-                        "bg-green-50 text-green-700"
-                      }`}>
-                        {enq.status}
-                      </span>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+        <div className="space-y-4">
+          {enquiries.map((enq) => (
+            <div key={enq.id} className="bg-white rounded-xl border border-outline-variant/20 shadow-sm p-5">
+              <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-3 mb-2">
+                    <h3 className="font-headline text-primary">{enq.name}</h3>
+                    <span className={`text-[10px] px-2 py-0.5 rounded uppercase tracking-wider font-label ${statusColor(enq.status)}`}>{enq.status}</span>
+                  </div>
+                  <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-on-surface-variant mb-2">
+                    <a href={`mailto:${enq.email}`} className="hover:text-primary">{enq.email}</a>
+                    <a href={`tel:${enq.phone}`} className="hover:text-primary">{enq.phone}</a>
+                    <span>{new Date(enq.created_at).toLocaleDateString("en-IN", { dateStyle: "medium" })}</span>
+                  </div>
+                  {enq.property_title && (
+                    <p className="text-xs text-secondary mb-1">Property: {enq.property_title}</p>
+                  )}
+                  {enq.message && <p className="text-sm text-on-surface-variant">{enq.message}</p>}
+                </div>
+
+                <div className="flex items-center gap-2 flex-shrink-0">
+                  <select
+                    value={enq.status}
+                    onChange={(e) => updateStatus(enq.id, e.target.value)}
+                    className="border border-outline-variant/30 rounded-lg px-3 py-1.5 text-xs focus:ring-2 focus:ring-primary/20"
+                  >
+                    {STATUS_OPTIONS.map((s) => (
+                      <option key={s} value={s}>{s.charAt(0).toUpperCase() + s.slice(1)}</option>
+                    ))}
+                  </select>
+                  <button onClick={() => handleDelete(enq.id)} className="text-xs text-error hover:underline px-2 py-1">Delete</button>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       )}
     </div>

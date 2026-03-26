@@ -181,7 +181,7 @@ export async function getConfigValue<T>(key: string, fallback: T): Promise<T> {
 
 // Fetch all page content for home page
 export async function getHomeContent() {
-  const [hero, whyUs, inquiry, topPicks, allotments] = await Promise.all([
+  const [hero, whyUs, inquiry, topPicks, allotments, heroSlides] = await Promise.all([
     getConfigValue<HomeHero>("home_hero", {
       badge: "Noida \u2022 NCR \u2022 India",
       headline: "Find Your Perfect Property",
@@ -204,8 +204,9 @@ export async function getHomeContent() {
     }),
     getConfigValue<TopPickItem[]>("home_top_picks", []),
     getConfigValue<AllotmentItem[]>("home_allotments", []),
+    getConfigValue<{ src: string; alt: string }[]>("home_hero_slides", []),
   ]);
-  return { hero, whyUs, inquiry, topPicks, allotments };
+  return { hero, whyUs, inquiry, topPicks, allotments, heroSlides };
 }
 
 // Fetch all page content for about page

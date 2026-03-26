@@ -31,13 +31,13 @@ export default async function HomePage() {
     getHomeContent(),
   ]);
 
-  const { hero, whyUs, inquiry, topPicks, allotments } = cms;
+  const { hero, whyUs, inquiry, topPicks, allotments, heroSlides } = cms;
 
   return (
     <>
       {/* Hero Section with Image Slider */}
       <section className="relative min-h-[85vh] flex items-center overflow-hidden bg-primary">
-        <HeroSlider />
+        <HeroSlider slides={heroSlides} />
         <div className="relative z-20 max-w-screen-2xl mx-auto px-6 md:px-10 py-20">
           <span className="inline-block font-label uppercase tracking-[0.2em] text-primary-fixed text-xs mb-6">{hero.badge}</span>
           <h1 className="font-headline text-4xl md:text-6xl lg:text-7xl text-on-primary max-w-3xl leading-tight mb-6">{hero.headline}</h1>
