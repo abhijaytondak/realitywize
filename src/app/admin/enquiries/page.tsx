@@ -1,9 +1,28 @@
-import { getEnquiries } from "@/lib/supabase/queries";
+"use client";
 
-export const revalidate = 0;
+import { useState, useEffect } from "react";
 
-export default async function AdminEnquiriesPage() {
-  const enquiries = await getEnquiries();
+interface Enquiry {
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
+  message: string;
+  property_title: string | null;
+  status: string;
+  created_at: string;
+}
+
+export default function AdminEnquiriesPage() {
+  const [enquiries, setEnquiries] = useState<Enquiry[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch("/api/enquiries")
+      .then((r) => r.json())
+      .then((data) => { setEnquiries(data); setLoading(false); })
+      .catch(() => setLoading(false));
+  }, []);
 
   return (
     <div>
@@ -12,7 +31,9 @@ export default async function AdminEnquiriesPage() {
         <span className="text-sm text-on-surface-variant">{enquiries.length} total</span>
       </div>
 
-      {enquiries.length === 0 ? (
+      {loading ? (
+        <div className="py-20 text-center text-on-surface-variant">Loading...</div>
+      ) : enquiries.length === 0 ? (
         <div className="bg-white rounded-xl border border-outline-variant/20 shadow-sm p-12 text-center">
           <svg className="w-16 h-16 text-outline mx-auto mb-4" fill="currentColor" viewBox="0 0 24 24">
             <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />

@@ -1,51 +1,58 @@
+"use client";
+
+import { useState, useEffect } from "react";
 import Link from "next/link";
-import { getAllProperties, getEnquiries } from "@/lib/supabase/queries";
 
-export const revalidate = 0; // always fresh for admin
+export default function AdminDashboard() {
+  const [propertyCount, setPropertyCount] = useState(0);
+  const [enquiryCount, setEnquiryCount] = useState(0);
+  const [newEnquiries, setNewEnquiries] = useState(0);
+  const [loading, setLoading] = useState(true);
 
-export default async function AdminDashboard() {
-  const [properties, enquiries] = await Promise.all([
-    getAllProperties(),
-    getEnquiries(),
-  ]);
-
-  const activeProperties = properties.filter((p) => p.is_active).length;
-  const featuredProperties = properties.filter((p) => p.is_featured).length;
-  const newEnquiries = enquiries.filter((e) => e.status === "new").length;
+  useEffect(() => {
+    Promise.all([
+      fetch("/api/properties").then((r) => r.json()),
+      fetch("/api/enquiries").then((r) => r.json()),
+    ]).then(([props, enqs]) => {
+      setPropertyCount(props.length);
+      setEnquiryCount(enqs.length);
+      setNewEnquiries(enqs.filter((e: { status: string }) => e.status === "new").length);
+      setLoading(false);
+    });
+  }, []);
 
   const stats = [
-    { label: "Total Properties", value: properties.length, href: "/admin/properties", color: "bg-primary-fixed/30 text-primary" },
-    { label: "Active Listings", value: activeProperties, href: "/admin/properties", color: "bg-green-50 text-green-700" },
-    { label: "Featured", value: featuredProperties, href: "/admin/properties", color: "bg-amber-50 text-amber-700" },
-    { label: "New Enquiries", value: newEnquiries, href: "/admin/enquiries", color: "bg-blue-50 text-blue-700" },
+    { label: "Total Properties", value: propertyCount, href: "/admin/properties", color: "bg-primary-fixed/30 text-primary" },
+    { label: "Total Enquiries", value: enquiryCount, href: "/admin/enquiries", color: "bg-blue-50 text-blue-700" },
+    { label: "New Enquiries", value: newEnquiries, href: "/admin/enquiries", color: "bg-amber-50 text-amber-700" },
   ];
 
   return (
     <div>
       <h1 className="font-headline text-2xl md:text-3xl text-primary mb-8">Dashboard</h1>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
-        {stats.map(({ label, value, href, color }) => (
-          <Link
-            key={label}
-            href={href}
-            className="bg-white rounded-xl p-6 border border-outline-variant/20 shadow-sm hover:shadow-md transition-shadow"
-          >
-            <p className="text-xs font-label uppercase tracking-wider text-on-surface-variant mb-2">{label}</p>
-            <p className={`font-headline text-3xl rounded-lg inline-block px-3 py-1 ${color}`}>{value}</p>
-          </Link>
-        ))}
-      </div>
+      {loading ? (
+        <div className="py-10 text-center text-on-surface-variant">Loading...</div>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-10">
+          {stats.map(({ label, value, href, color }) => (
+            <Link key={label} href={href} className="bg-white rounded-xl p-6 border border-outline-variant/20 shadow-sm hover:shadow-md transition-shadow">
+              <p className="text-xs font-label uppercase tracking-wider text-on-surface-variant mb-2">{label}</p>
+              <p className={`font-headline text-3xl rounded-lg inline-block px-3 py-1 ${color}`}>{value}</p>
+            </Link>
+          ))}
+        </div>
+      )}
 
       <h2 className="font-headline text-xl text-primary mb-4">Quick Actions</h2>
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <Link href="/admin/properties" className="bg-white rounded-xl p-6 border border-outline-variant/20 shadow-sm hover:shadow-md transition-shadow flex items-center gap-4">
+        <Link href="/admin/pages/home" className="bg-white rounded-xl p-6 border border-outline-variant/20 shadow-sm hover:shadow-md transition-shadow flex items-center gap-4">
           <div className="w-10 h-10 rounded-full bg-primary-fixed/30 flex items-center justify-center">
-            <svg className="w-5 h-5 text-primary" fill="currentColor" viewBox="0 0 24 24"><path d="M19 9.3V4h-3v2.6L12 3 2 12h3v8h5v-6h4v6h5v-8h3l-3-2.7z" /></svg>
+            <svg className="w-5 h-5 text-primary" fill="currentColor" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" /></svg>
           </div>
           <div>
-            <p className="font-headline text-sm text-primary">Manage Properties</p>
-            <p className="text-xs text-on-surface-variant">Add, edit, or remove listings</p>
+            <p className="font-headline text-sm text-primary">Edit Home Page</p>
+            <p className="text-xs text-on-surface-variant">Hero, reels, allotments</p>
           </div>
         </Link>
         <Link href="/admin/enquiries" className="bg-white rounded-xl p-6 border border-outline-variant/20 shadow-sm hover:shadow-md transition-shadow flex items-center gap-4">
@@ -54,7 +61,7 @@ export default async function AdminDashboard() {
           </div>
           <div>
             <p className="font-headline text-sm text-primary">View Enquiries</p>
-            <p className="text-xs text-on-surface-variant">{newEnquiries} new leads</p>
+            <p className="text-xs text-on-surface-variant">{loading ? "..." : `${newEnquiries} new leads`}</p>
           </div>
         </Link>
         <Link href="/admin/settings" className="bg-white rounded-xl p-6 border border-outline-variant/20 shadow-sm hover:shadow-md transition-shadow flex items-center gap-4">
@@ -63,7 +70,7 @@ export default async function AdminDashboard() {
           </div>
           <div>
             <p className="font-headline text-sm text-primary">Settings</p>
-            <p className="text-xs text-on-surface-variant">Update contact info</p>
+            <p className="text-xs text-on-surface-variant">Contact info & config</p>
           </div>
         </Link>
       </div>
