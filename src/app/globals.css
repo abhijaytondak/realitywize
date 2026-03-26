@@ -1,0 +1,132 @@
+@import "tailwindcss";
+
+@theme inline {
+  /* Material Design 3 Color Tokens */
+  --color-primary: #173124;
+  --color-on-primary: #ffffff;
+  --color-primary-container: #2d4739;
+  --color-on-primary-container: #98b5a3;
+  --color-primary-fixed: #ccead6;
+  --color-primary-fixed-dim: #b0cdbb;
+  --color-on-primary-fixed: #062014;
+  --color-on-primary-fixed-variant: #324c3e;
+  --color-inverse-primary: #b0cdbb;
+
+  --color-secondary: #715b3e;
+  --color-on-secondary: #ffffff;
+  --color-secondary-container: #f9dbb7;
+  --color-on-secondary-container: #755f42;
+  --color-secondary-fixed: #fcdeba;
+  --color-secondary-fixed-dim: #dfc29f;
+  --color-on-secondary-fixed: #281903;
+  --color-on-secondary-fixed-variant: #574329;
+
+  --color-tertiary: #412424;
+  --color-on-tertiary: #ffffff;
+  --color-tertiary-container: #5a3939;
+  --color-on-tertiary-container: #d0a3a3;
+  --color-tertiary-fixed: #ffdad9;
+  --color-tertiary-fixed-dim: #eabbba;
+  --color-on-tertiary-fixed: #2e1414;
+  --color-on-tertiary-fixed-variant: #603e3e;
+
+  --color-error: #ba1a1a;
+  --color-on-error: #ffffff;
+  --color-error-container: #ffdad6;
+  --color-on-error-container: #93000a;
+
+  --color-surface: #fafaf5;
+  --color-on-surface: #1a1c19;
+  --color-surface-variant: #e3e3de;
+  --color-on-surface-variant: #424844;
+  --color-surface-dim: #dadad5;
+  --color-surface-bright: #fafaf5;
+  --color-surface-tint: #496455;
+  --color-surface-container: #eeeee9;
+  --color-surface-container-low: #f4f4ef;
+  --color-surface-container-high: #e8e8e3;
+  --color-surface-container-highest: #e3e3de;
+  --color-surface-container-lowest: #ffffff;
+
+  --color-background: #fafaf5;
+  --color-on-background: #1a1c19;
+  --color-outline: #727973;
+  --color-outline-variant: #c2c8c2;
+  --color-inverse-surface: #2f312e;
+  --color-inverse-on-surface: #f1f1ec;
+
+  /* Fonts */
+  --font-headline: "Noto Serif", serif;
+  --font-body: "Manrope", sans-serif;
+  --font-label: "Manrope", sans-serif;
+
+  /* Border Radius */
+  --radius-sm: 0.125rem;
+  --radius-lg: 0.25rem;
+  --radius-xl: 0.5rem;
+  --radius-full: 0.75rem;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--color-background);
+  color: var(--color-on-surface);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Button ripple effect */
+.btn-ripple {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Glass nav effect */
+.glass-nav {
+  backdrop-filter: blur(16px) saturate(1.8);
+  -webkit-backdrop-filter: blur(16px) saturate(1.8);
+}
+
+/* Reveal animation */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Image zoom on hover */
+.img-zoom {
+  overflow: hidden;
+}
+.img-zoom img {
+  transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.img-zoom:hover img {
+  transform: scale(1.08);
+}
+
+/* Card lift effect */
+.card-lift {
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+.card-lift:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+}
+
+/* Success toast animation */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px) scale(0.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.success-toast {
+  animation: fadeInUp 0.5s ease-out forwards;
+}
