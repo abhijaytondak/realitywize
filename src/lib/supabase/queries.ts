@@ -1,6 +1,6 @@
 import { createClient } from "./server";
 import { createClient as createBrowserClient } from "@supabase/supabase-js";
-import type { Property, PropertyImage, Enquiry, SiteConfig, PropertyFilters, HomeHero, HomeWhyUs, HomeInquiry, AboutHero, AboutStory, AboutStat, AboutValues } from "../types";
+import type { Property, PropertyImage, Enquiry, SiteConfig, PropertyFilters, HomeHero, HomeWhyUs, HomeInquiry, AboutHero, AboutStory, AboutStat, AboutValues, TopPickItem, AllotmentItem } from "../types";
 
 // Client that doesn't need cookies (for build-time use like generateStaticParams)
 function createAnonClient() {
@@ -181,7 +181,7 @@ export async function getConfigValue<T>(key: string, fallback: T): Promise<T> {
 
 // Fetch all page content for home page
 export async function getHomeContent() {
-  const [hero, whyUs, inquiry] = await Promise.all([
+  const [hero, whyUs, inquiry, topPicks, allotments] = await Promise.all([
     getConfigValue<HomeHero>("home_hero", {
       badge: "Noida \u2022 NCR \u2022 India",
       headline: "Find Your Perfect Property",
@@ -202,8 +202,10 @@ export async function getHomeContent() {
       label: "Get In Touch", headline: "Begin Your Journey",
       description: "Looking for the perfect property? Submit an inquiry and we'll get back to you within 24 hours.",
     }),
+    getConfigValue<TopPickItem[]>("home_top_picks", []),
+    getConfigValue<AllotmentItem[]>("home_allotments", []),
   ]);
-  return { hero, whyUs, inquiry };
+  return { hero, whyUs, inquiry, topPicks, allotments };
 }
 
 // Fetch all page content for about page

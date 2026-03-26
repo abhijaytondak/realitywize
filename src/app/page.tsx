@@ -3,6 +3,9 @@ import Image from "next/image";
 import PropertyCard from "@/components/PropertyCard";
 import InquiryForm from "@/components/InquiryForm";
 import YeidaBanner from "@/components/YeidaBanner";
+import HeroSlider from "@/components/HeroSlider";
+import TopPicks from "@/components/TopPicks";
+import Allotments from "@/components/Allotments";
 import { getFeaturedProperties, getSiteConfig, getHomeContent } from "@/lib/supabase/queries";
 import { PropertyType } from "@/lib/types";
 
@@ -28,20 +31,14 @@ export default async function HomePage() {
     getHomeContent(),
   ]);
 
-  const { hero, whyUs, inquiry } = cms;
-  const heroImage = hero.bg_image || featured[0]?.images[0]?.url;
+  const { hero, whyUs, inquiry, topPicks, allotments } = cms;
 
   return (
     <>
-      {/* Hero Section */}
+      {/* Hero Section with Image Slider */}
       <section className="relative min-h-[85vh] flex items-center overflow-hidden bg-primary">
-        {heroImage && (
-          <div className="absolute inset-0">
-            <Image src={heroImage} alt="Hero background" fill className="object-cover opacity-30" priority />
-            <div className="absolute inset-0 bg-gradient-to-r from-primary/90 via-primary/70 to-transparent" />
-          </div>
-        )}
-        <div className="relative z-10 max-w-screen-2xl mx-auto px-6 md:px-10 py-20">
+        <HeroSlider />
+        <div className="relative z-20 max-w-screen-2xl mx-auto px-6 md:px-10 py-20">
           <span className="inline-block font-label uppercase tracking-[0.2em] text-primary-fixed text-xs mb-6">{hero.badge}</span>
           <h1 className="font-headline text-4xl md:text-6xl lg:text-7xl text-on-primary max-w-3xl leading-tight mb-6">{hero.headline}</h1>
           <p className="text-on-primary/80 text-lg md:text-xl max-w-xl mb-10 leading-relaxed font-body">{hero.description}</p>
@@ -96,6 +93,12 @@ export default async function HomePage() {
 
       {/* YEIDA Banner */}
       <YeidaBanner />
+
+      {/* Top Picks - Reels / YouTube Shorts */}
+      <TopPicks items={topPicks} />
+
+      {/* Allotments - Township & Industrial Plots */}
+      <Allotments items={allotments} />
 
       {/* Why Choose Us */}
       <section className="py-20 bg-surface">

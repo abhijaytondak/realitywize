@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import { TextField, Section } from "@/components/admin/CmsEditor";
 
 interface CardItem { title: string; description: string }
+interface TopPickItem { title: string; url: string }
+interface AllotmentItem { title: string; size: string; description: string; type: string }
 
 interface HomeHeroData {
   badge: string; headline: string; description: string;
@@ -16,6 +18,8 @@ export default function EditHomePage() {
   const [hero, setHero] = useState<HomeHeroData | null>(null);
   const [whyUs, setWhyUs] = useState<HomeWhyUsData | null>(null);
   const [inquiry, setInquiry] = useState<HomeInquiryData | null>(null);
+  const [topPicks, setTopPicks] = useState<TopPickItem[] | null>(null);
+  const [allotments, setAllotments] = useState<AllotmentItem[] | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
@@ -25,8 +29,13 @@ export default function EditHomePage() {
       fetch("/api/config?key=home_hero").then((r) => r.json()),
       fetch("/api/config?key=home_why_us").then((r) => r.json()),
       fetch("/api/config?key=home_inquiry").then((r) => r.json()),
-    ]).then(([h, w, i]) => {
-      setHero(h); setWhyUs(w); setInquiry(i); setLoading(false);
+      fetch("/api/config?key=home_top_picks").then((r) => r.json()),
+      fetch("/api/config?key=home_allotments").then((r) => r.json()),
+    ]).then(([h, w, i, tp, al]) => {
+      setHero(h); setWhyUs(w); setInquiry(i);
+      setTopPicks(Array.isArray(tp) ? tp : []);
+      setAllotments(Array.isArray(al) ? al : []);
+      setLoading(false);
     });
   }, []);
 
@@ -36,27 +45,18 @@ export default function EditHomePage() {
       fetch("/api/config", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ key: "home_hero", value: hero }) }),
       fetch("/api/config", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ key: "home_why_us", value: whyUs }) }),
       fetch("/api/config", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ key: "home_inquiry", value: inquiry }) }),
+      fetch("/api/config", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ key: "home_top_picks", value: topPicks }) }),
+      fetch("/api/config", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ key: "home_allotments", value: allotments }) }),
     ]);
-    setSaving(false);
-    setSaved(true);
+    setSaving(false); setSaved(true);
     setTimeout(() => setSaved(false), 3000);
   }
 
   if (loading) return <div className="py-20 text-center text-on-surface-variant">Loading...</div>;
-  if (!hero || !whyUs || !inquiry) return <div className="py-20 text-center text-error">Failed to load</div>;
+  if (!hero || !whyUs || !inquiry || !topPicks || !allotments) return <div className="py-20 text-center text-error">Failed to load</div>;
 
   function updateCard(cards: CardItem[], index: number, field: keyof CardItem, value: string) {
-    const copy = [...cards];
-    copy[index] = { ...copy[index], [field]: value };
-    return copy;
-  }
-
-  function addCard(cards: CardItem[]) {
-    return [...cards, { title: "", description: "" }];
-  }
-
-  function removeCard(cards: CardItem[], index: number) {
-    return cards.filter((_, i) => i !== index);
+    const copy = [...cards]; copy[index] = { ...copy[index], [field]: value }; return copy;
   }
 
   return (
@@ -76,12 +76,64 @@ export default function EditHomePage() {
         <TextField label="Badge Text" value={hero.badge} onChange={(v) => setHero({ ...hero, badge: v })} />
         <TextField label="Headline" value={hero.headline} onChange={(v) => setHero({ ...hero, headline: v })} />
         <TextField label="Description" value={hero.description} onChange={(v) => setHero({ ...hero, description: v })} multiline />
-        <TextField label="Background Image URL (optional)" value={hero.bg_image} onChange={(v) => setHero({ ...hero, bg_image: v })} placeholder="Leave empty to use featured property image" />
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <TextField label="Button 1 Text" value={hero.btn1_text} onChange={(v) => setHero({ ...hero, btn1_text: v })} />
           <TextField label="Button 1 Link" value={hero.btn1_link} onChange={(v) => setHero({ ...hero, btn1_link: v })} />
           <TextField label="Button 2 Text" value={hero.btn2_text} onChange={(v) => setHero({ ...hero, btn2_text: v })} />
           <TextField label="Button 2 Link" value={hero.btn2_link} onChange={(v) => setHero({ ...hero, btn2_link: v })} />
+        </div>
+      </Section>
+
+      {/* Top Picks / Reels */}
+      <Section title="Top Picks (Reels / YouTube Shorts)">
+        <p className="text-xs text-on-surface-variant -mt-2 mb-4">Add YouTube Shorts or Reels URLs. They will be displayed in portrait format.</p>
+        <div className="space-y-4">
+          {topPicks.map((item, i) => (
+            <div key={i} className="bg-surface-container-low rounded-lg p-4 space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-label text-on-surface-variant">Reel {i + 1}</span>
+                <button onClick={() => setTopPicks(topPicks.filter((_, j) => j !== i))} className="text-xs text-error hover:underline">Remove</button>
+              </div>
+              <TextField label="Title" value={item.title} onChange={(v) => {
+                const copy = [...topPicks]; copy[i] = { ...copy[i], title: v }; setTopPicks(copy);
+              }} />
+              <TextField label="YouTube URL" value={item.url} onChange={(v) => {
+                const copy = [...topPicks]; copy[i] = { ...copy[i], url: v }; setTopPicks(copy);
+              }} placeholder="e.g. https://www.youtube.com/shorts/VIDEO_ID" />
+            </div>
+          ))}
+          <button onClick={() => setTopPicks([...topPicks, { title: "", url: "" }])} className="text-xs text-primary hover:underline">+ Add Reel</button>
+        </div>
+      </Section>
+
+      {/* Allotments */}
+      <Section title="Allotments (Township / Industrial Plots)">
+        <div className="space-y-4">
+          {allotments.map((item, i) => (
+            <div key={i} className="bg-surface-container-low rounded-lg p-4 space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-label text-on-surface-variant">Allotment {i + 1}</span>
+                {allotments.length > 1 && (
+                  <button onClick={() => setAllotments(allotments.filter((_, j) => j !== i))} className="text-xs text-error hover:underline">Remove</button>
+                )}
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                <TextField label="Title" value={item.title} onChange={(v) => {
+                  const copy = [...allotments]; copy[i] = { ...copy[i], title: v }; setAllotments(copy);
+                }} />
+                <TextField label="Size" value={item.size} onChange={(v) => {
+                  const copy = [...allotments]; copy[i] = { ...copy[i], size: v }; setAllotments(copy);
+                }} placeholder="e.g. 50 Acres" />
+                <TextField label="Type" value={item.type} onChange={(v) => {
+                  const copy = [...allotments]; copy[i] = { ...copy[i], type: v }; setAllotments(copy);
+                }} placeholder="Township or Industrial" />
+              </div>
+              <TextField label="Description" value={item.description} onChange={(v) => {
+                const copy = [...allotments]; copy[i] = { ...copy[i], description: v }; setAllotments(copy);
+              }} multiline />
+            </div>
+          ))}
+          <button onClick={() => setAllotments([...allotments, { title: "", size: "", description: "", type: "Township" }])} className="text-xs text-primary hover:underline">+ Add Allotment</button>
         </div>
       </Section>
 
@@ -92,14 +144,14 @@ export default function EditHomePage() {
         <div className="space-y-4 mt-4">
           <div className="flex items-center justify-between">
             <p className="text-sm font-label text-on-surface-variant font-semibold">Cards</p>
-            <button onClick={() => setWhyUs({ ...whyUs, cards: addCard(whyUs.cards) })} className="text-xs text-primary hover:underline">+ Add Card</button>
+            <button onClick={() => setWhyUs({ ...whyUs, cards: [...whyUs.cards, { title: "", description: "" }] })} className="text-xs text-primary hover:underline">+ Add Card</button>
           </div>
           {whyUs.cards.map((card, i) => (
             <div key={i} className="bg-surface-container-low rounded-lg p-4 space-y-3">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-label text-on-surface-variant">Card {i + 1}</span>
                 {whyUs.cards.length > 1 && (
-                  <button onClick={() => setWhyUs({ ...whyUs, cards: removeCard(whyUs.cards, i) })} className="text-xs text-error hover:underline">Remove</button>
+                  <button onClick={() => setWhyUs({ ...whyUs, cards: whyUs.cards.filter((_, j) => j !== i) })} className="text-xs text-error hover:underline">Remove</button>
                 )}
               </div>
               <TextField label="Title" value={card.title} onChange={(v) => setWhyUs({ ...whyUs, cards: updateCard(whyUs.cards, i, "title", v) })} />

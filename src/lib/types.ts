@@ -132,6 +132,18 @@ export interface AboutValues {
   cards: { title: string; description: string }[];
 }
 
+export interface TopPickItem {
+  title: string;
+  url: string;
+}
+
+export interface AllotmentItem {
+  title: string;
+  size: string;
+  description: string;
+  type: string;
+}
+
 export interface PageContent {
   home_hero: HomeHero;
   home_why_us: HomeWhyUs;
