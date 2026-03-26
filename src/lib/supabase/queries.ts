@@ -1,6 +1,6 @@
 import { createClient } from "./server";
 import { createClient as createBrowserClient } from "@supabase/supabase-js";
-import type { Property, PropertyImage, Enquiry, SiteConfig, PropertyFilters } from "../types";
+import type { Property, PropertyImage, Enquiry, SiteConfig, PropertyFilters, HomeHero, HomeWhyUs, HomeInquiry, AboutHero, AboutStory, AboutStat, AboutValues } from "../types";
 
 // Client that doesn't need cookies (for build-time use like generateStaticParams)
 function createAnonClient() {
@@ -166,6 +166,69 @@ export async function getSiteConfig(): Promise<SiteConfig> {
     }
   }
   return defaults;
+}
+
+// Fetch a single CMS config value
+export async function getConfigValue<T>(key: string, fallback: T): Promise<T> {
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from("site_config")
+    .select("value")
+    .eq("key", key)
+    .single();
+  return data?.value ?? fallback;
+}
+
+// Fetch all page content for home page
+export async function getHomeContent() {
+  const [hero, whyUs, inquiry] = await Promise.all([
+    getConfigValue<HomeHero>("home_hero", {
+      badge: "Noida \u2022 NCR \u2022 India",
+      headline: "Find Your Perfect Property",
+      description: "Discover premium residential, commercial, and industrial properties across Noida and the NCR region.",
+      btn1_text: "Explore Properties", btn1_link: "/properties",
+      btn2_text: "Contact Us", btn2_link: "#inquiry",
+      bg_image: "",
+    }),
+    getConfigValue<HomeWhyUs>("home_why_us", {
+      label: "Why RealtyWize", headline: "Your Trusted Partner",
+      cards: [
+        { title: "Verified Listings", description: "Every property is personally verified by our team." },
+        { title: "Expert Guidance", description: "Our consultants guide you through every step." },
+        { title: "Best Prices", description: "Direct relationships ensure competitive pricing." },
+      ],
+    }),
+    getConfigValue<HomeInquiry>("home_inquiry", {
+      label: "Get In Touch", headline: "Begin Your Journey",
+      description: "Looking for the perfect property? Submit an inquiry and we'll get back to you within 24 hours.",
+    }),
+  ]);
+  return { hero, whyUs, inquiry };
+}
+
+// Fetch all page content for about page
+export async function getAboutContent() {
+  const [hero, story, stats, values] = await Promise.all([
+    getConfigValue<AboutHero>("about_hero", {
+      label: "Who We Are", headline: "About RealtyWize",
+      description: "Your trusted partner in navigating the real estate landscape of Noida and the NCR.",
+    }),
+    getConfigValue<AboutStory>("about_story", {
+      label: "Our Story", headline: "Building Trust, One Property at a Time",
+      paragraphs: ["RealtyWize was founded with a simple mission."],
+    }),
+    getConfigValue<AboutStat[]>("about_stats", [
+      { number: "500+", label: "Properties Listed" },
+      { number: "200+", label: "Happy Clients" },
+      { number: "10+", label: "Years Experience" },
+      { number: "50+", label: "Localities Covered" },
+    ]),
+    getConfigValue<AboutValues>("about_values", {
+      label: "What Drives Us", headline: "Our Values",
+      cards: [{ title: "Transparency", description: "Honest dealings." }],
+    }),
+  ]);
+  return { hero, story, stats, values };
 }
 
 // Map DB row to Property type

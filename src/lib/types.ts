@@ -85,6 +85,63 @@ export interface SiteConfig {
   office_address: string;
 }
 
+// CMS Content types
+export interface HomeHero {
+  badge: string;
+  headline: string;
+  description: string;
+  btn1_text: string;
+  btn1_link: string;
+  btn2_text: string;
+  btn2_link: string;
+  bg_image: string;
+}
+
+export interface HomeWhyUs {
+  label: string;
+  headline: string;
+  cards: { title: string; description: string }[];
+}
+
+export interface HomeInquiry {
+  label: string;
+  headline: string;
+  description: string;
+}
+
+export interface AboutHero {
+  label: string;
+  headline: string;
+  description: string;
+}
+
+export interface AboutStory {
+  label: string;
+  headline: string;
+  paragraphs: string[];
+}
+
+export interface AboutStat {
+  number: string;
+  label: string;
+}
+
+export interface AboutValues {
+  label: string;
+  headline: string;
+  cards: { title: string; description: string }[];
+}
+
+export interface PageContent {
+  home_hero: HomeHero;
+  home_why_us: HomeWhyUs;
+  home_inquiry: HomeInquiry;
+  about_hero: AboutHero;
+  about_story: AboutStory;
+  about_stats: AboutStat[];
+  about_values: AboutValues;
+}
+
 // Filter params for listing page
 export interface PropertyFilters {
   search?: string;
