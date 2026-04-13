@@ -291,9 +291,9 @@ export async function getAllFeedback(): Promise<Feedback[]> {
 export async function getHomeExtras() {
   const [yeidaImages, locationItems] = await Promise.all([
     getConfigValue<YeidaImage[]>("home_yeida_images", [
-      { src: "https://images.unsplash.com/photo-1436491865332-7a61a109db05?w=600&q=80", alt: "Noida International Airport", label: "Noida Int'l Airport" },
-      { src: "https://images.unsplash.com/photo-1515488764276-beab7607c1e6?w=600&q=80", alt: "Green Expressway Highway", label: "Green Expressway" },
-      { src: "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?w=600&q=80", alt: "Buddh International Circuit", label: "Yamuna Race Track" },
+      { src: "https://images.unsplash.com/photo-1529074963764-98f45c47344b?w=1200&q=80", alt: "Noida International Airport — Modern Terminal", label: "Noida Int'l Airport" },
+      { src: "https://images.unsplash.com/photo-1545459720-aac8509eb02c?w=1200&q=80", alt: "Yamuna Expressway — Green Highway Corridor", label: "Green Expressway" },
+      { src: "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?w=1200&q=80", alt: "Buddh International Circuit — Formula 1 Track", label: "Yamuna Race Track" },
     ]),
     getConfigValue<LocationItem[]>("home_locations", [
       { name: "NOIDA", image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80", description: "The IT & business hub of NCR", link: "/properties?search=Noida" },
