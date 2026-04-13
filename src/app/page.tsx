@@ -2,10 +2,11 @@ import Link from "next/link";
 import dynamic from "next/dynamic";
 import PropertyCard from "@/components/PropertyCard";
 import HeroSlider from "@/components/HeroSlider";
-import { getFeaturedProperties, getSiteConfig, getHomeContent } from "@/lib/supabase/queries";
+import { getFeaturedProperties, getSiteConfig, getHomeContent, getHomeExtras } from "@/lib/supabase/queries";
 import { PropertyType } from "@/lib/types";
 
 const InquiryForm = dynamic(() => import("@/components/InquiryForm"));
+const FeedbackForm = dynamic(() => import("@/components/FeedbackForm"));
 const YeidaBanner = dynamic(() => import("@/components/YeidaBanner"));
 const TopPicks = dynamic(() => import("@/components/TopPicks"));
 const Allotments = dynamic(() => import("@/components/Allotments"));
@@ -26,13 +27,15 @@ const WHY_US_ICONS = [
 export const revalidate = 60;
 
 export default async function HomePage() {
-  const [featured, siteConfig, cms] = await Promise.all([
+  const [featured, siteConfig, cms, extras] = await Promise.all([
     getFeaturedProperties(),
     getSiteConfig(),
     getHomeContent(),
+    getHomeExtras(),
   ]);
 
   const { hero, whyUs, inquiry, topPicks, allotments, heroSlides } = cms;
+  const { yeidaImages } = extras;
 
   return (
     <>
@@ -93,7 +96,7 @@ export default async function HomePage() {
       )}
 
       {/* YEIDA Banner */}
-      <YeidaBanner />
+      <YeidaBanner images={yeidaImages} />
 
       {/* Top Picks - Reels / YouTube Shorts */}
       <TopPicks items={topPicks} />
@@ -118,6 +121,84 @@ export default async function HomePage() {
                 <p className="text-on-surface-variant text-sm leading-relaxed">{card.description}</p>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Builders / Investors CTA */}
+      <section className="py-20 bg-gradient-to-br from-[#062014] via-[#173124] to-[#1a3a28] relative overflow-hidden">
+        <div className="absolute top-[-80px] right-[-40px] w-[300px] h-[300px] rounded-full bg-primary-fixed/5 blur-[100px]" />
+        <div className="max-w-screen-2xl mx-auto px-6 md:px-10 relative">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div>
+              <span className="font-label uppercase tracking-[0.2em] text-primary-fixed-dim text-xs mb-4 block">Exclusive Opportunities</span>
+              <h2 className="font-headline text-3xl md:text-5xl text-white leading-tight mb-6">
+                Builders &amp; Investors <span className="text-primary-fixed-dim">Portal</span>
+              </h2>
+              <p className="text-primary-fixed/80 text-lg leading-relaxed mb-8 max-w-lg">
+                Premium collaboration opportunities starting from ₹10 Crore. Partner with us on landmark projects worth ₹50 Crore and above across Noida, Greater Noida, and the Yamuna Expressway corridor.
+              </p>
+              <div className="flex flex-wrap gap-6 mb-8">
+                <div className="text-center">
+                  <p className="font-headline text-3xl text-white">₹50Cr<span className="text-primary-fixed-dim text-lg">+</span></p>
+                  <p className="text-primary-fixed/60 text-xs font-label uppercase tracking-widest">Project Value</p>
+                </div>
+                <div className="text-center">
+                  <p className="font-headline text-3xl text-white">₹10Cr</p>
+                  <p className="text-primary-fixed/60 text-xs font-label uppercase tracking-widest">Entry Point</p>
+                </div>
+              </div>
+              <Link
+                href="/builders"
+                className="bg-white text-primary px-8 py-4 rounded-md font-label uppercase tracking-[0.2em] text-sm hover:bg-primary-fixed transition-all inline-flex items-center gap-2"
+              >
+                Explore Collaborations
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </Link>
+            </div>
+            <div className="hidden lg:grid grid-cols-2 gap-4">
+              {[
+                { label: "Joint Ventures", desc: "Co-develop landmark projects with shared investment" },
+                { label: "Revenue Sharing", desc: "Profit-sharing models on premium developments" },
+                { label: "Land Partnerships", desc: "Leverage prime land assets for maximum returns" },
+                { label: "Project Funding", desc: "Strategic funding for high-potential projects" },
+              ].map((item) => (
+                <div key={item.label} className="bg-white/5 backdrop-blur-md rounded-xl border border-white/10 p-5">
+                  <h3 className="text-white font-headline text-sm mb-2">{item.label}</h3>
+                  <p className="text-primary-fixed/60 text-xs leading-relaxed">{item.desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Feedback Section */}
+      <section className="py-20 bg-surface-container-low">
+        <div className="max-w-screen-2xl mx-auto px-6 md:px-10">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            <div>
+              <span className="font-label uppercase tracking-[0.15em] text-secondary text-sm block mb-4">Your Opinion Matters</span>
+              <h2 className="font-headline text-4xl md:text-5xl text-primary mb-6">Share Your Feedback</h2>
+              <p className="text-on-surface-variant text-lg leading-relaxed mb-6">
+                We value your experience with RealtyWize. Share your thoughts, suggestions, or tell us about your journey — your feedback helps us serve you better.
+              </p>
+              <div className="flex items-center gap-4 text-sm text-on-surface-variant">
+                <div className="flex gap-1">
+                  {[1,2,3,4,5].map((s) => (
+                    <svg key={s} className="w-5 h-5 text-amber-400" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                    </svg>
+                  ))}
+                </div>
+                <span>Trusted by hundreds of happy clients</span>
+              </div>
+            </div>
+            <div className="bg-white rounded-2xl p-8 md:p-10 shadow-sm border border-outline-variant/20">
+              <FeedbackForm />
+            </div>
           </div>
         </div>
       </section>

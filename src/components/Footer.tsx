@@ -40,6 +40,11 @@ export default async function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/builders" className="text-on-primary/70 text-sm hover:text-on-primary transition-colors">
+                  Builders &amp; Investors
+                </Link>
+              </li>
+              <li>
                 <Link href="/about" className="text-on-primary/70 text-sm hover:text-on-primary transition-colors">
                   About Us
                 </Link>

@@ -13,6 +13,10 @@ const nextConfig: NextConfig = {
         hostname: "nizungmqjpurtccbliym.supabase.co",
         pathname: "/storage/**",
       },
+      {
+        protocol: "https",
+        hostname: "images.unsplash.com",
+      },
     ],
   },
   async redirects() {
@@ -41,7 +45,7 @@ const nextConfig: NextConfig = {
               "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
               "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
               "font-src 'self' https://fonts.gstatic.com",
-              "img-src 'self' data: https://lh3.googleusercontent.com https://nizungmqjpurtccbliym.supabase.co",
+              "img-src 'self' data: https://lh3.googleusercontent.com https://nizungmqjpurtccbliym.supabase.co https://images.unsplash.com",
               "connect-src 'self' https://nizungmqjpurtccbliym.supabase.co",
               "frame-src 'self' https://www.youtube.com",
             ].join("; "),

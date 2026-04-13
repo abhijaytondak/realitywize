@@ -1,6 +1,6 @@
 import { createClient } from "./server";
 import { createClient as createBrowserClient } from "@supabase/supabase-js";
-import type { Property, PropertyImage, Enquiry, SiteConfig, PropertyFilters, HomeHero, HomeWhyUs, HomeInquiry, AboutHero, AboutStory, AboutStat, AboutValues, TopPickItem, AllotmentItem } from "../types";
+import type { Property, PropertyImage, Enquiry, SiteConfig, PropertyFilters, HomeHero, HomeWhyUs, HomeInquiry, AboutHero, AboutStory, AboutStat, AboutValues, TopPickItem, AllotmentItem, BuilderProject, Feedback, YeidaImage, LocationItem } from "../types";
 
 // Client that doesn't need cookies (for build-time use like generateStaticParams)
 function createAnonClient() {
@@ -232,6 +232,78 @@ export async function getAboutContent() {
     }),
   ]);
   return { hero, story, stats, values };
+}
+
+// Fetch active builder projects
+export async function getBuilderProjects(): Promise<BuilderProject[]> {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("builder_projects")
+    .select("*")
+    .eq("is_active", true)
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    console.error("Error fetching builder projects:", error);
+    return [];
+  }
+  return data || [];
+}
+
+// Fetch all builder projects (admin)
+export async function getAllBuilderProjects(): Promise<BuilderProject[]> {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("builder_projects")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  if (error) return [];
+  return data || [];
+}
+
+// Fetch single builder project by slug
+export async function getBuilderProjectBySlug(slug: string): Promise<BuilderProject | null> {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("builder_projects")
+    .select("*")
+    .eq("slug", slug)
+    .single();
+
+  if (error || !data) return null;
+  return data;
+}
+
+// Fetch all feedback (admin)
+export async function getAllFeedback(): Promise<Feedback[]> {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("feedback")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  if (error) return [];
+  return data || [];
+}
+
+// Fetch home content for YEIDA images and location carousel
+export async function getHomeExtras() {
+  const [yeidaImages, locationItems] = await Promise.all([
+    getConfigValue<YeidaImage[]>("home_yeida_images", [
+      { src: "https://images.unsplash.com/photo-1436491865332-7a61a109db05?w=600&q=80", alt: "Noida International Airport", label: "Noida Int'l Airport" },
+      { src: "https://images.unsplash.com/photo-1515488764276-beab7607c1e6?w=600&q=80", alt: "Green Expressway Highway", label: "Green Expressway" },
+      { src: "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?w=600&q=80", alt: "Buddh International Circuit", label: "Yamuna Race Track" },
+    ]),
+    getConfigValue<LocationItem[]>("home_locations", [
+      { name: "NOIDA", image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80", description: "The IT & business hub of NCR", link: "/properties?search=Noida" },
+      { name: "GREATER NOIDA", image: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800&q=80", description: "Planned city with modern infrastructure", link: "/properties?search=Greater+Noida" },
+      { name: "GRENO WEST", image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800&q=80", description: "Emerging residential destination", link: "/properties?search=Noida+Extension" },
+      { name: "YEIDA", image: "https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=800&q=80", description: "Yamuna Expressway corridor", link: "/properties?search=Yamuna" },
+      { name: "UPEIDA", image: "https://images.unsplash.com/photo-1464938050520-ef2571e6f795?w=800&q=80", description: "UP Expressways Industrial Dev.", link: "/properties?search=Expressway" },
+    ]),
+  ]);
+  return { yeidaImages, locationItems };
 }
 
 // Map DB row to Property type

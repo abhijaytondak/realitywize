@@ -45,6 +45,12 @@ export default function Navbar() {
             Properties
           </Link>
           <Link
+            href="/builders"
+            className="font-label uppercase tracking-[0.12em] text-[11px] text-secondary font-medium hover:text-primary transition-colors duration-300"
+          >
+            Builders &amp; Investors
+          </Link>
+          <Link
             href="/about"
             className="font-label uppercase tracking-[0.12em] text-[11px] text-secondary font-medium hover:text-primary transition-colors duration-300"
           >
@@ -83,6 +89,13 @@ export default function Navbar() {
             onClick={() => setMobileOpen(false)}
           >
             Properties
+          </Link>
+          <Link
+            href="/builders"
+            className="block font-label uppercase tracking-[0.12em] text-sm text-secondary font-medium py-3"
+            onClick={() => setMobileOpen(false)}
+          >
+            Builders &amp; Investors
           </Link>
           <Link
             href="/about"

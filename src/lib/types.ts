@@ -154,6 +154,57 @@ export interface PageContent {
   about_values: AboutValues;
 }
 
+// Builder/Investor project
+export interface BuilderProject {
+  id: string;
+  slug: string;
+  title: string;
+  description: string;
+  short_description: string;
+  investment_range: string;
+  min_entry_amount: string | null;
+  collaboration_type: string;
+  location: string;
+  area: string | null;
+  project_type: string;
+  highlights: string[];
+  image_url: string;
+  gallery_images: string[];
+  contact_phone: string | null;
+  contact_email: string | null;
+  is_active: boolean;
+  is_featured: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+// Feedback
+export interface Feedback {
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
+  rating: number | null;
+  message: string;
+  status: "new" | "reviewed" | "resolved";
+  created_at: string;
+}
+
+// YEIDA Image
+export interface YeidaImage {
+  src: string;
+  alt: string;
+  label: string;
+}
+
+// Location Carousel Item
+export interface LocationItem {
+  name: string;
+  image: string;
+  description: string;
+  link: string;
+}
+
 // Filter params for listing page
 export interface PropertyFilters {
   search?: string;

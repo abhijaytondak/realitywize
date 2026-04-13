@@ -7,6 +7,7 @@ interface CardItem { title: string; description: string }
 interface TopPickItem { title: string; url: string }
 interface AllotmentItem { title: string; size: string; description: string; type: string }
 interface SlideItem { src: string; alt: string }
+interface YeidaImageItem { src: string; alt: string; label: string }
 
 interface HomeHeroData {
   badge: string; headline: string; description: string;
@@ -22,6 +23,7 @@ export default function EditHomePage() {
   const [topPicks, setTopPicks] = useState<TopPickItem[] | null>(null);
   const [allotments, setAllotments] = useState<AllotmentItem[] | null>(null);
   const [heroSlides, setHeroSlides] = useState<SlideItem[] | null>(null);
+  const [yeidaImages, setYeidaImages] = useState<YeidaImageItem[] | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
@@ -34,11 +36,13 @@ export default function EditHomePage() {
       fetch("/api/config?key=home_top_picks").then((r) => r.json()),
       fetch("/api/config?key=home_allotments").then((r) => r.json()),
       fetch("/api/config?key=home_hero_slides").then((r) => r.json()),
-    ]).then(([h, w, i, tp, al, hs]) => {
+      fetch("/api/config?key=home_yeida_images").then((r) => r.json()).catch(() => []),
+    ]).then(([h, w, i, tp, al, hs, yi]) => {
       setHero(h); setWhyUs(w); setInquiry(i);
       setTopPicks(Array.isArray(tp) ? tp : []);
       setAllotments(Array.isArray(al) ? al : []);
       setHeroSlides(Array.isArray(hs) ? hs : []);
+      setYeidaImages(Array.isArray(yi) ? yi : []);
       setLoading(false);
     });
   }, []);
@@ -52,13 +56,14 @@ export default function EditHomePage() {
       fetch("/api/config", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ key: "home_top_picks", value: topPicks }) }),
       fetch("/api/config", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ key: "home_allotments", value: allotments }) }),
       fetch("/api/config", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ key: "home_hero_slides", value: heroSlides }) }),
+      fetch("/api/config", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ key: "home_yeida_images", value: yeidaImages }) }),
     ]);
     setSaving(false); setSaved(true);
     setTimeout(() => setSaved(false), 3000);
   }
 
   if (loading) return <div className="py-20 text-center text-on-surface-variant">Loading...</div>;
-  if (!hero || !whyUs || !inquiry || !topPicks || !allotments || !heroSlides) return <div className="py-20 text-center text-error">Failed to load</div>;
+  if (!hero || !whyUs || !inquiry || !topPicks || !allotments || !heroSlides || !yeidaImages) return <div className="py-20 text-center text-error">Failed to load</div>;
 
   function updateCard(cards: CardItem[], index: number, field: keyof CardItem, value: string) {
     const copy = [...cards]; copy[index] = { ...copy[index], [field]: value }; return copy;
@@ -109,6 +114,35 @@ export default function EditHomePage() {
             </div>
           ))}
           <button onClick={() => setHeroSlides([...heroSlides, { src: "", alt: "" }])} className="text-xs text-primary hover:underline">+ Add Slide</button>
+        </div>
+      </Section>
+
+      {/* YEIDA Section Images */}
+      <Section title="YEIDA Section Images">
+        <p className="text-xs text-on-surface-variant -mt-2 mb-4">Images displayed in the YEIDA banner section (Airport, Green Highway, Race Track).</p>
+        <div className="space-y-4">
+          {yeidaImages.map((img, i) => (
+            <div key={i} className="bg-surface-container-low rounded-lg p-4 space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-label text-on-surface-variant">Image {i + 1}</span>
+                {yeidaImages.length > 1 && (
+                  <button onClick={() => setYeidaImages(yeidaImages.filter((_, j) => j !== i))} className="text-xs text-error hover:underline">Remove</button>
+                )}
+              </div>
+              <TextField label="Image URL" value={img.src} onChange={(v) => {
+                const copy = [...yeidaImages]; copy[i] = { ...copy[i], src: v }; setYeidaImages(copy);
+              }} placeholder="https://..." />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <TextField label="Alt Text" value={img.alt} onChange={(v) => {
+                  const copy = [...yeidaImages]; copy[i] = { ...copy[i], alt: v }; setYeidaImages(copy);
+                }} />
+                <TextField label="Label" value={img.label} onChange={(v) => {
+                  const copy = [...yeidaImages]; copy[i] = { ...copy[i], label: v }; setYeidaImages(copy);
+                }} placeholder="e.g. Noida Int'l Airport" />
+              </div>
+            </div>
+          ))}
+          <button onClick={() => setYeidaImages([...yeidaImages, { src: "", alt: "", label: "" }])} className="text-xs text-primary hover:underline">+ Add Image</button>
         </div>
       </Section>
 

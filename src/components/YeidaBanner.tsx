@@ -1,6 +1,22 @@
 import Image from "next/image";
 
-export default function YeidaBanner() {
+interface YeidaImage {
+  src: string;
+  alt: string;
+  label: string;
+}
+
+interface YeidaBannerProps {
+  images?: YeidaImage[];
+}
+
+const defaultImages: YeidaImage[] = [
+  { src: "https://images.unsplash.com/photo-1436491865332-7a61a109db05?w=600&q=80", alt: "Noida International Airport", label: "Noida Int'l Airport" },
+  { src: "https://images.unsplash.com/photo-1515488764276-beab7607c1e6?w=600&q=80", alt: "Green Expressway Highway", label: "Green Expressway" },
+  { src: "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?w=600&q=80", alt: "Buddh International Circuit", label: "Yamuna Race Track" },
+];
+
+export default function YeidaBanner({ images = defaultImages }: YeidaBannerProps) {
   return (
     <section className="relative py-20 md:py-28 px-8 overflow-hidden bg-gradient-to-br from-[#062014] via-[#173124] to-[#1a3a28]">
       {/* Decorative glows */}
@@ -40,6 +56,31 @@ export default function YeidaBanner() {
             <p className="text-primary-fixed/80 text-lg md:text-xl leading-relaxed max-w-lg mx-auto md:mx-0 mb-8">
               India&apos;s most ambitious expressway corridor connecting Greater Noida to Agra — unlocking unprecedented growth in real estate, infrastructure, and industrial development.
             </p>
+
+            {/* Location Tags */}
+            <div className="mb-8">
+              <p className="text-primary-fixed/60 text-xs font-label uppercase tracking-widest mb-3">Explore Regions</p>
+              <div className="flex flex-wrap gap-2 justify-center md:justify-start">
+                {[
+                  { name: "NOIDA", search: "Noida" },
+                  { name: "GREATER NOIDA", search: "Greater+Noida" },
+                  { name: "GRENO WEST", search: "Noida+Extension" },
+                  { name: "YEIDA", search: "Yamuna" },
+                  { name: "UPEIDA", search: "Expressway" },
+                ].map((loc) => (
+                  <a
+                    key={loc.name}
+                    href={`/properties?search=${loc.search}`}
+                    className="bg-white/10 backdrop-blur-md text-white border border-white/20 px-4 py-2 rounded-full font-label uppercase tracking-[0.12em] text-[10px] hover:bg-white/20 hover:border-white/40 transition-all inline-flex items-center gap-1.5"
+                  >
+                    <svg className="w-3 h-3 text-primary-fixed-dim" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
+                    </svg>
+                    {loc.name}
+                  </a>
+                ))}
+              </div>
+            </div>
 
             <div className="flex flex-wrap gap-4 justify-center md:justify-start">
               <a
@@ -81,6 +122,29 @@ export default function YeidaBanner() {
                   5<span className="text-primary-fixed-dim text-xl">+</span>
                 </p>
                 <p className="text-primary-fixed/60 text-xs font-label uppercase tracking-widest">Mega Projects</p>
+              </div>
+            </div>
+
+            {/* Key Developments image gallery */}
+            <div className="mt-6">
+              <p className="text-white text-sm font-medium mb-3">Key Developments</p>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                {images.map((img, i) => (
+                  <div key={i} className="relative aspect-video rounded-xl overflow-hidden">
+                    <Image
+                      src={img.src}
+                      alt={img.alt}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 768px) 100vw, 200px"
+                      loading="lazy"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                    <p className="absolute bottom-2 left-3 text-white text-xs font-medium">
+                      {img.label}
+                    </p>
+                  </div>
+                ))}
               </div>
             </div>
 
