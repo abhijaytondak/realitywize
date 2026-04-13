@@ -11,9 +11,9 @@ interface YeidaBannerProps {
 }
 
 const defaultImages: YeidaImage[] = [
-  { src: "https://images.unsplash.com/photo-1436491865332-7a61a109db05?w=600&q=80", alt: "Noida International Airport", label: "Noida Int'l Airport" },
-  { src: "https://images.unsplash.com/photo-1515488764276-beab7607c1e6?w=600&q=80", alt: "Green Expressway Highway", label: "Green Expressway" },
-  { src: "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?w=600&q=80", alt: "Buddh International Circuit", label: "Yamuna Race Track" },
+  { src: "https://images.unsplash.com/photo-1436491865332-7a61a109db05?w=1200&q=80", alt: "Noida International Airport", label: "Noida Int'l Airport" },
+  { src: "https://images.unsplash.com/photo-1515488764276-beab7607c1e6?w=1200&q=80", alt: "Green Expressway Highway", label: "Green Expressway" },
+  { src: "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?w=1200&q=80", alt: "Buddh International Circuit", label: "Yamuna Race Track" },
 ];
 
 export default function YeidaBanner({ images = defaultImages }: YeidaBannerProps) {
@@ -125,29 +125,6 @@ export default function YeidaBanner({ images = defaultImages }: YeidaBannerProps
               </div>
             </div>
 
-            {/* Key Developments image gallery */}
-            <div className="mt-6">
-              <p className="text-white text-sm font-medium mb-3">Key Developments</p>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                {images.map((img, i) => (
-                  <div key={i} className="relative aspect-video rounded-xl overflow-hidden">
-                    <Image
-                      src={img.src}
-                      alt={img.alt}
-                      fill
-                      className="object-cover"
-                      sizes="(max-width: 768px) 100vw, 200px"
-                      loading="lazy"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-                    <p className="absolute bottom-2 left-3 text-white text-xs font-medium">
-                      {img.label}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </div>
-
             <div className="mt-6 bg-white/5 backdrop-blur-md rounded-xl border border-white/10 p-5">
               <div className="flex items-start gap-3">
                 <svg className="w-5 h-5 text-primary-fixed-dim flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 24 24">
@@ -161,6 +138,31 @@ export default function YeidaBanner({ images = defaultImages }: YeidaBannerProps
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+
+        {/* Key Developments - Full Width Image Gallery */}
+        <div className="mt-14">
+          <p className="text-primary-fixed/60 text-xs font-label uppercase tracking-widest mb-2">Key Developments</p>
+          <h3 className="font-headline text-2xl md:text-3xl text-white mb-6">Transforming the Corridor</h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            {images.map((img, i) => (
+              <div key={i} className="group relative aspect-[4/3] rounded-2xl overflow-hidden">
+                <Image
+                  src={img.src}
+                  alt={img.alt}
+                  fill
+                  className="object-cover group-hover:scale-105 transition-transform duration-500"
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                  loading="lazy"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+                <div className="absolute bottom-0 left-0 right-0 p-5">
+                  <p className="text-white font-headline text-lg">{img.label}</p>
+                  <p className="text-white/60 text-xs mt-1">{img.alt}</p>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>
