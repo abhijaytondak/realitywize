@@ -3,10 +3,18 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
+
+const NAV_LINKS = [
+  { href: "/properties", label: "Properties" },
+  { href: "/builders", label: "Builders & Investors" },
+  { href: "/about", label: "About Us" },
+];
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -38,24 +46,22 @@ export default function Navbar() {
 
         {/* Desktop links */}
         <div className="hidden md:flex items-center gap-10">
-          <Link
-            href="/properties"
-            className="font-label uppercase tracking-[0.12em] text-[11px] text-primary font-bold border-b border-primary/20 pb-0.5 transition-colors duration-300"
-          >
-            Properties
-          </Link>
-          <Link
-            href="/builders"
-            className="font-label uppercase tracking-[0.12em] text-[11px] text-secondary font-medium hover:text-primary transition-colors duration-300"
-          >
-            Builders &amp; Investors
-          </Link>
-          <Link
-            href="/about"
-            className="font-label uppercase tracking-[0.12em] text-[11px] text-secondary font-medium hover:text-primary transition-colors duration-300"
-          >
-            About Us
-          </Link>
+          {NAV_LINKS.map(({ href, label }) => {
+            const isActive = pathname === href || pathname.startsWith(href + "/");
+            return (
+              <Link
+                key={href}
+                href={href}
+                className={`font-label uppercase tracking-[0.12em] text-[11px] transition-colors duration-300 ${
+                  isActive
+                    ? "text-primary font-bold border-b border-primary/20 pb-0.5"
+                    : "text-secondary font-medium hover:text-primary"
+                }`}
+              >
+                {label}
+              </Link>
+            );
+          })}
           <Link
             href="/properties"
             className="bg-primary text-on-primary px-5 py-2 rounded font-label uppercase tracking-[0.15em] text-[10px] hover:bg-primary-container transition-all active:scale-95 duration-200"
@@ -83,27 +89,21 @@ export default function Navbar() {
       {/* Mobile menu */}
       {mobileOpen && (
         <div className="md:hidden bg-white/95 backdrop-blur-lg border-t border-gray-100 px-6 py-4 space-y-3">
-          <Link
-            href="/properties"
-            className="block font-label uppercase tracking-[0.12em] text-sm text-primary font-medium py-3"
-            onClick={() => setMobileOpen(false)}
-          >
-            Properties
-          </Link>
-          <Link
-            href="/builders"
-            className="block font-label uppercase tracking-[0.12em] text-sm text-secondary font-medium py-3"
-            onClick={() => setMobileOpen(false)}
-          >
-            Builders &amp; Investors
-          </Link>
-          <Link
-            href="/about"
-            className="block font-label uppercase tracking-[0.12em] text-sm text-secondary font-medium py-3"
-            onClick={() => setMobileOpen(false)}
-          >
-            About Us
-          </Link>
+          {NAV_LINKS.map(({ href, label }) => {
+            const isActive = pathname === href || pathname.startsWith(href + "/");
+            return (
+              <Link
+                key={href}
+                href={href}
+                className={`block font-label uppercase tracking-[0.12em] text-sm font-medium py-3 ${
+                  isActive ? "text-primary" : "text-secondary"
+                }`}
+                onClick={() => setMobileOpen(false)}
+              >
+                {label}
+              </Link>
+            );
+          })}
           <Link
             href="/properties"
             className="block w-full text-center bg-primary text-on-primary px-5 py-3.5 rounded font-label uppercase tracking-[0.15em] text-xs mt-2"

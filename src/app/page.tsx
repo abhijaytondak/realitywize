@@ -6,7 +6,7 @@ import { getFeaturedProperties, getSiteConfig, getHomeContent, getHomeExtras } f
 import { PropertyType } from "@/lib/types";
 
 const InquiryForm = dynamic(() => import("@/components/InquiryForm"));
-const FeedbackForm = dynamic(() => import("@/components/FeedbackForm"));
+const FeedbackCta = dynamic(() => import("@/components/FeedbackCta"));
 const YeidaBanner = dynamic(() => import("@/components/YeidaBanner"));
 const TopPicks = dynamic(() => import("@/components/TopPicks"));
 const Allotments = dynamic(() => import("@/components/Allotments"));
@@ -175,33 +175,8 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Feedback Section */}
-      <section className="py-20 bg-surface-container-low">
-        <div className="max-w-screen-2xl mx-auto px-6 md:px-10">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            <div>
-              <span className="font-label uppercase tracking-[0.15em] text-secondary text-sm block mb-4">Your Opinion Matters</span>
-              <h2 className="font-headline text-4xl md:text-5xl text-primary mb-6">Share Your Feedback</h2>
-              <p className="text-on-surface-variant text-lg leading-relaxed mb-6">
-                We value your experience with RealtyWize. Share your thoughts, suggestions, or tell us about your journey — your feedback helps us serve you better.
-              </p>
-              <div className="flex items-center gap-4 text-sm text-on-surface-variant">
-                <div className="flex gap-1">
-                  {[1,2,3,4,5].map((s) => (
-                    <svg key={s} className="w-5 h-5 text-amber-400" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
-                    </svg>
-                  ))}
-                </div>
-                <span>Trusted by hundreds of happy clients</span>
-              </div>
-            </div>
-            <div className="bg-white rounded-2xl p-8 md:p-10 shadow-sm border border-outline-variant/20">
-              <FeedbackForm />
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Feedback CTA + Modal */}
+      <FeedbackCta />
 
       {/* CTA / Inquiry Section */}
       <section id="inquiry" className="py-20 bg-surface-container-low">
