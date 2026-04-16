@@ -2,169 +2,9 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import type { Metadata } from "next";
+import { getBuilderProjectBySlug } from "@/lib/supabase/queries";
 
 export const revalidate = 60;
-
-// Dummy data until Supabase tables are created
-const DUMMY_PROJECTS: Record<string, {
-  title: string; description: string; short_description: string;
-  investment_range: string; min_entry_amount: string | null; collaboration_type: string;
-  location: string; area: string | null; project_type: string;
-  highlights: string[]; image_url: string; gallery_images: string[];
-  contact_phone: string | null; contact_email: string | null;
-}> = {
-  "verdant-heights-township": {
-    title: "Verdant Heights Township",
-    description: "A landmark 50-acre integrated township located on the Yamuna Expressway, just 15 minutes from the upcoming Noida International Airport at Jewar.\n\nThis project offers a rare opportunity for builders and investors to co-develop a world-class residential community featuring luxury villas, premium apartments, a commercial plaza, clubhouse with sports facilities, landscaped gardens, and dedicated schools & healthcare zones.\n\nThe township is strategically positioned to benefit from the massive infrastructure development in the region — including the Delhi-Mumbai Industrial Corridor, the upcoming metro extension, and the 6-lane Yamuna Expressway connectivity.\n\nWith YEIDA approvals in place and land acquisition completed, this is a ready-to-develop opportunity with projected ROI of 25-30% over 4 years.",
-    short_description: "A 50-acre integrated township with luxury villas, clubhouse, and commercial plaza on the Yamuna Expressway.",
-    investment_range: "₹80 Cr - ₹120 Cr",
-    min_entry_amount: "₹10 Cr",
-    collaboration_type: "Joint Venture",
-    location: "Sector 22D, Yamuna Expressway",
-    area: "50 Acres",
-    project_type: "Integrated Township",
-    highlights: [
-      "50-acre land parcel with clear YEIDA approvals",
-      "15 minutes from Noida International Airport (Jewar)",
-      "Direct Yamuna Expressway frontage",
-      "Projected ROI of 25-30% over 4 years",
-      "Mixed-use development: villas, apartments, retail",
-      "Infrastructure-ready with water, sewage, and power connections",
-    ],
-    image_url: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=1200&q=80",
-    gallery_images: [
-      "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&q=80",
-      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&q=80",
-      "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&q=80",
-    ],
-    contact_phone: "+91-9876543210",
-    contact_email: "builders@realitywize.com",
-  },
-  "greeno-west-commercial-hub": {
-    title: "GRENO West Commercial Hub",
-    description: "A premium commercial complex strategically located in Tech Zone IV, Greater Noida West — the fastest-growing real estate micro-market in NCR.\n\nThis Grade-A commercial development spans 8 acres and includes modern office spaces, a curated retail zone, food court, multiplex-ready space, and covered parking for 1,200+ vehicles.\n\nGreater Noida West already has 2 lakh+ residential units delivered with a population exceeding 5 lakh residents — yet severely lacks quality commercial infrastructure. This project fills that gap and offers guaranteed high footfall from Day 1.\n\nIdeal for investors looking for a revenue-sharing model with predictable rental income from pre-committed anchor tenants.",
-    short_description: "Premium commercial complex with Grade-A office spaces, retail outlets, and food court in Greater Noida West.",
-    investment_range: "₹50 Cr - ₹75 Cr",
-    min_entry_amount: "₹15 Cr",
-    collaboration_type: "Revenue Sharing",
-    location: "Tech Zone IV, Greater Noida West",
-    area: "8 Acres",
-    project_type: "Commercial Complex",
-    highlights: [
-      "Located in NCR's fastest-growing micro-market",
-      "5 lakh+ captive population in surrounding residential zones",
-      "Pre-committed anchor tenants for retail and food court",
-      "Revenue-sharing model with predictable rental income",
-      "1,200+ covered parking spaces",
-      "Metro connectivity planned within 2 km radius",
-    ],
-    image_url: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&q=80",
-    gallery_images: [
-      "https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80",
-      "https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=800&q=80",
-    ],
-    contact_phone: "+91-9876543210",
-    contact_email: "builders@realitywize.com",
-  },
-  "noida-150-luxury-residences": {
-    title: "Sector 150 Luxury Residences",
-    description: "An ultra-luxury residential project in the premium Sector 150 corridor along the Noida Expressway.\n\nSpread across 25 acres, this project features 3 & 4 BHK premium apartments with world-class amenities including an Olympic-size swimming pool, cricket practice nets, tennis courts, jogging track, meditation garden, and a grand clubhouse.\n\nSector 150 is Noida's most prestigious residential zone — home to leading developers and surrounded by top schools, hospitals, and retail destinations. The location offers seamless connectivity to Delhi via the Noida-Greater Noida Expressway.\n\nThis is a joint venture opportunity with land already acquired and architectural plans approved by Noida Authority.",
-    short_description: "Ultra-luxury 3 & 4 BHK residences spread across 25 acres with sports facilities and infinity pool.",
-    investment_range: "₹100 Cr - ₹150 Cr",
-    min_entry_amount: "₹20 Cr",
-    collaboration_type: "Joint Venture",
-    location: "Sector 150, Noida Expressway",
-    area: "25 Acres",
-    project_type: "Luxury Residential",
-    highlights: [
-      "Sector 150 — Noida's most premium address",
-      "Noida Authority-approved architectural plans",
-      "Olympic-size pool, cricket nets, tennis courts",
-      "25 acres with 70% open and green area",
-      "2 minutes from Noida-Greater Noida Expressway",
-      "Surrounded by top schools and hospitals",
-    ],
-    image_url: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=1200&q=80",
-    gallery_images: [
-      "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&q=80",
-      "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=800&q=80",
-    ],
-    contact_phone: "+91-9876543210",
-    contact_email: "builders@realitywize.com",
-  },
-  "yamuna-logistics-park": {
-    title: "Yamuna Logistics & Warehousing Park",
-    description: "A state-of-the-art logistics and warehousing facility on 40 acres along the Yamuna Expressway, strategically positioned near the Noida International Airport at Jewar.\n\nDesigned for Grade-A warehousing with 40-ft clear height, dock-level loading bays, fire sprinkler systems, and 24/7 security with CCTV surveillance. The park includes dedicated zones for cold storage, e-commerce fulfillment, and general warehousing.\n\nWith the airport becoming operational and the Delhi-Mumbai Industrial Corridor passing through, this location is set to become North India's premier logistics hub.\n\nIdeal for institutional investors and logistics companies looking to own or lease premium warehousing space.",
-    short_description: "State-of-the-art logistics and warehousing facility on 40 acres near Jewar Airport.",
-    investment_range: "₹60 Cr - ₹90 Cr",
-    min_entry_amount: "₹10 Cr",
-    collaboration_type: "Land Partnership",
-    location: "Yamuna Expressway, Near Jewar",
-    area: "40 Acres",
-    project_type: "Industrial / Logistics",
-    highlights: [
-      "40 acres on Yamuna Expressway",
-      "5 km from Noida International Airport",
-      "Grade-A specs: 40-ft clear height, dock-level bays",
-      "Cold storage and e-commerce fulfillment zones",
-      "Delhi-Mumbai Industrial Corridor connectivity",
-      "Pre-leasing interest from major e-commerce players",
-    ],
-    image_url: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=1200&q=80",
-    gallery_images: [],
-    contact_phone: "+91-9876543210",
-    contact_email: "builders@realitywize.com",
-  },
-  "greater-noida-it-park": {
-    title: "Greater Noida IT Park & SEZ",
-    description: "A visionary IT/ITES Special Economic Zone in Knowledge Park V, Greater Noida — designed to attract top multinational corporations and Indian IT companies.\n\nThe campus spans 30 acres with 2.5 million sq ft of built-up area, featuring plug-and-play office floors, a Tier-3 data center, conference and convention facilities, food courts, recreation zones, and landscaped courtyards.\n\nGreater Noida is emerging as a serious IT destination with existing presence of companies like HCL, Samsung, and multiple startups. The proximity to Noida International Airport adds significant value for companies with global operations.\n\nThis is a project-funding opportunity with approved SEZ status and tax benefits under the SEZ Act.",
-    short_description: "IT/ITES SEZ project with plug-and-play offices, data center, and campus-style development.",
-    investment_range: "₹120 Cr - ₹200 Cr",
-    min_entry_amount: "₹25 Cr",
-    collaboration_type: "Project Funding",
-    location: "Knowledge Park V, Greater Noida",
-    area: "30 Acres",
-    project_type: "IT Park / SEZ",
-    highlights: [
-      "Approved SEZ status with tax benefits",
-      "2.5 million sq ft built-up area",
-      "Tier-3 data center facility",
-      "Plug-and-play office floors",
-      "Close to Noida International Airport",
-      "Existing IT ecosystem with HCL, Samsung nearby",
-    ],
-    image_url: "https://images.unsplash.com/photo-1497366216548-37526070297c?w=1200&q=80",
-    gallery_images: [
-      "https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=800&q=80",
-      "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=800&q=80",
-    ],
-    contact_phone: "+91-9876543210",
-    contact_email: "builders@realitywize.com",
-  },
-  "expressway-mixed-use-development": {
-    title: "Expressway Mixed-Use Development",
-    description: "A premium mixed-use development along the Yamuna Expressway combining retail, hospitality, and co-working spaces in a single integrated project.\n\nThe development features a curated retail mall with entertainment zone, serviced apartments for business travelers and expats, modern co-working spaces, and rooftop dining experiences.\n\nPositioned at a key interchange on the Yamuna Expressway, the project benefits from high visibility and easy access for commuters traveling between Greater Noida, Agra, and the upcoming Jewar Airport.\n\nThis revenue-sharing opportunity is structured for steady returns through diversified income streams across retail, hospitality, and office leasing.",
-    short_description: "Premium mixed-use project combining retail mall, serviced apartments, and co-working spaces.",
-    investment_range: "₹70 Cr - ₹100 Cr",
-    min_entry_amount: "₹12 Cr",
-    collaboration_type: "Revenue Sharing",
-    location: "Sector 18, Yamuna Expressway",
-    area: "15 Acres",
-    project_type: "Mixed Use",
-    highlights: [
-      "Yamuna Expressway interchange location",
-      "Diversified income: retail + hospitality + office",
-      "Serviced apartments for business travelers",
-      "High-visibility frontage on expressway",
-      "Revenue-sharing model with multiple income streams",
-      "20 minutes from Jewar Airport",
-    ],
-    image_url: "https://images.unsplash.com/photo-1577495508048-b635879837f1?w=1200&q=80",
-    gallery_images: [],
-    contact_phone: "+91-9876543210",
-    contact_email: "builders@realitywize.com",
-  },
-};
 
 export async function generateMetadata({
   params,
@@ -172,7 +12,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const project = DUMMY_PROJECTS[slug];
+  const project = await getBuilderProjectBySlug(slug);
   if (!project) return { title: "Project Not Found" };
   return {
     title: `${project.title} | Builders & Investors | RealtyWize`,
@@ -186,9 +26,7 @@ export default async function BuilderDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  // Use dummy data until Supabase tables are created
-  // TODO: Replace with getBuilderProjectBySlug(slug) after running migration
-  const project = DUMMY_PROJECTS[slug];
+  const project = await getBuilderProjectBySlug(slug);
 
   if (!project) notFound();
 
@@ -305,7 +143,6 @@ export default async function BuilderDetailPage({
               <div className="bg-white rounded-xl p-6 border border-outline-variant/20 shadow-sm">
                 <h3 className="font-headline text-lg text-primary mb-5">Investment Details</h3>
                 <div className="space-y-4">
-                  {/* Investment Range */}
                   <div>
                     <p className="text-xs text-on-surface-variant font-label uppercase tracking-wider mb-1">
                       Investment Range
@@ -315,7 +152,6 @@ export default async function BuilderDetailPage({
                     </p>
                   </div>
 
-                  {/* Min Entry Amount */}
                   {project.min_entry_amount && (
                     <div>
                       <p className="text-xs text-on-surface-variant font-label uppercase tracking-wider mb-1">
@@ -327,7 +163,6 @@ export default async function BuilderDetailPage({
                     </div>
                   )}
 
-                  {/* Collaboration Type */}
                   <div>
                     <p className="text-xs text-on-surface-variant font-label uppercase tracking-wider mb-1">
                       Collaboration Type
@@ -337,7 +172,6 @@ export default async function BuilderDetailPage({
                     </p>
                   </div>
 
-                  {/* Project Type */}
                   <div>
                     <p className="text-xs text-on-surface-variant font-label uppercase tracking-wider mb-1">
                       Project Type
@@ -345,7 +179,6 @@ export default async function BuilderDetailPage({
                     <p className="text-on-surface-variant text-sm">{project.project_type}</p>
                   </div>
 
-                  {/* Location */}
                   <div>
                     <p className="text-xs text-on-surface-variant font-label uppercase tracking-wider mb-1">
                       Location
@@ -353,7 +186,6 @@ export default async function BuilderDetailPage({
                     <p className="text-on-surface-variant text-sm">{project.location}</p>
                   </div>
 
-                  {/* Area */}
                   {project.area && (
                     <div>
                       <p className="text-xs text-on-surface-variant font-label uppercase tracking-wider mb-1">

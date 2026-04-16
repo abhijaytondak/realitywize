@@ -1,6 +1,7 @@
 import BuilderCard from "@/components/BuilderCard";
 import Link from "next/link";
 import type { Metadata } from "next";
+import { getBuilderProjects } from "@/lib/supabase/queries";
 
 export const metadata: Metadata = {
   title: "Builders & Investors | RealtyWize",
@@ -10,91 +11,8 @@ export const metadata: Metadata = {
 
 export const revalidate = 60;
 
-const DUMMY_PROJECTS = [
-  {
-    id: "1",
-    slug: "verdant-heights-township",
-    title: "Verdant Heights Township",
-    short_description: "A 50-acre integrated township with luxury villas, clubhouse, and commercial plaza on the Yamuna Expressway. Prime location near Jewar Airport.",
-    investment_range: "₹80 Cr - ₹120 Cr",
-    min_entry_amount: "₹10 Cr",
-    collaboration_type: "Joint Venture",
-    location: "Sector 22D, Yamuna Expressway",
-    project_type: "Integrated Township",
-    image_url: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800&q=80",
-    is_featured: true,
-  },
-  {
-    id: "2",
-    slug: "greeno-west-commercial-hub",
-    title: "GRENO West Commercial Hub",
-    short_description: "Premium commercial complex with Grade-A office spaces, retail outlets, and food court in the heart of Greater Noida West. High footfall guaranteed.",
-    investment_range: "₹50 Cr - ₹75 Cr",
-    min_entry_amount: "₹15 Cr",
-    collaboration_type: "Revenue Sharing",
-    location: "Tech Zone IV, Greater Noida West",
-    project_type: "Commercial Complex",
-    image_url: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80",
-    is_featured: true,
-  },
-  {
-    id: "3",
-    slug: "noida-150-luxury-residences",
-    title: "Sector 150 Luxury Residences",
-    short_description: "Ultra-luxury 3 & 4 BHK residences spread across 25 acres with sports facilities, infinity pool, and proximity to Noida Expressway.",
-    investment_range: "₹100 Cr - ₹150 Cr",
-    min_entry_amount: "₹20 Cr",
-    collaboration_type: "Joint Venture",
-    location: "Sector 150, Noida Expressway",
-    project_type: "Luxury Residential",
-    image_url: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800&q=80",
-    is_featured: false,
-  },
-  {
-    id: "4",
-    slug: "yamuna-logistics-park",
-    title: "Yamuna Logistics & Warehousing Park",
-    short_description: "State-of-the-art logistics and warehousing facility on 40 acres near Jewar Airport. Ideal for e-commerce and industrial tenants.",
-    investment_range: "₹60 Cr - ₹90 Cr",
-    min_entry_amount: "₹10 Cr",
-    collaboration_type: "Land Partnership",
-    location: "Yamuna Expressway, Near Jewar",
-    project_type: "Industrial / Logistics",
-    image_url: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=800&q=80",
-    is_featured: false,
-  },
-  {
-    id: "5",
-    slug: "greater-noida-it-park",
-    title: "Greater Noida IT Park & SEZ",
-    short_description: "IT/ITES SEZ project with plug-and-play office floors, data center, and campus-style development. Targeting top MNCs and Indian IT companies.",
-    investment_range: "₹120 Cr - ₹200 Cr",
-    min_entry_amount: "₹25 Cr",
-    collaboration_type: "Project Funding",
-    location: "Knowledge Park V, Greater Noida",
-    project_type: "IT Park / SEZ",
-    image_url: "https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80",
-    is_featured: true,
-  },
-  {
-    id: "6",
-    slug: "expressway-mixed-use-development",
-    title: "Expressway Mixed-Use Development",
-    short_description: "Premium mixed-use project combining retail mall, serviced apartments, and co-working spaces along the Yamuna Expressway with excellent connectivity.",
-    investment_range: "₹70 Cr - ₹100 Cr",
-    min_entry_amount: "₹12 Cr",
-    collaboration_type: "Revenue Sharing",
-    location: "Sector 18, Yamuna Expressway",
-    project_type: "Mixed Use",
-    image_url: "https://images.unsplash.com/photo-1577495508048-b635879837f1?w=800&q=80",
-    is_featured: false,
-  },
-];
-
 export default async function BuildersPage() {
-  // Use dummy data until Supabase tables are created
-  // TODO: Replace with getBuilderProjects() after running migration
-  const projects = DUMMY_PROJECTS;
+  const projects = await getBuilderProjects();
 
   return (
     <div className="min-h-screen bg-surface">
