@@ -25,7 +25,8 @@ export const metadata: Metadata = {
   },
 };
 
-export const revalidate = 60;
+// Properties list — revalidate every 5 minutes
+export const revalidate = 300;
 
 export default async function PropertiesPage({
   searchParams,

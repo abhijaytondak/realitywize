@@ -5,7 +5,8 @@ import ImageGallery from "@/components/ImageGallery";
 import InquiryForm from "@/components/InquiryForm";
 import { getPropertyBySlug, getAllPropertySlugs, getSiteConfig } from "@/lib/supabase/queries";
 
-export const revalidate = 60;
+// Property detail — revalidate every 10 minutes
+export const revalidate = 600;
 
 export async function generateStaticParams() {
   const slugs = await getAllPropertySlugs();

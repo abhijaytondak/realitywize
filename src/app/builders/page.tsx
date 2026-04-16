@@ -32,7 +32,8 @@ export const metadata: Metadata = {
   },
 };
 
-export const revalidate = 60;
+// Builder projects list — revalidate every 10 minutes
+export const revalidate = 600;
 
 export default async function BuildersPage() {
   const projects = await getBuilderProjects();

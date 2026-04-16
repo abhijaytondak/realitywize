@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { createClient } from "./server";
 import { createClient as createBrowserClient } from "@supabase/supabase-js";
 import type { Property, PropertyImage, Enquiry, SiteConfig, PropertyFilters, HomeHero, HomeWhyUs, HomeInquiry, AboutHero, AboutStory, AboutStat, AboutValues, TopPickItem, AllotmentItem, BuilderProject, Feedback, YeidaImage, LocationItem } from "../types";
@@ -12,13 +13,24 @@ function createAnonClient() {
   );
 }
 
+// Fetch the entire site_config table ONCE per request (React.cache dedupes).
+// This is used by getSiteConfig(), getConfigValue(), getHomeContent(), etc.
+// Minimizes Supabase egress: 1 query instead of 10+ per page render.
+const getAllSiteConfig = cache(async (): Promise<Record<string, unknown>> => {
+  const supabase = createAnonClient();
+  const { data } = await supabase.from("site_config").select("key, value");
+  const map: Record<string, unknown> = {};
+  for (const row of data || []) map[row.key as string] = row.value;
+  return map;
+});
+
 // Fetch all active properties with images, applying filters
 export async function getProperties(filters?: PropertyFilters): Promise<Property[]> {
   const supabase = createAnonClient();
 
   let query = supabase
     .from("properties")
-    .select("*, property_images(*)")
+    .select("id, slug, title, subtitle, type, subtype, transaction_type, price, area, area_type, bedrooms, address, city, tags, is_sold, is_featured, is_active, property_images(id, url, alt_text, sort_order, is_primary)")
     .eq("is_active", true)
     .eq("is_sold", false);
 
@@ -58,15 +70,16 @@ export async function getProperties(filters?: PropertyFilters): Promise<Property
   return (data || []).map(mapProperty);
 }
 
-// Fetch featured properties
+// Fetch featured properties (list view — limit to fields used in card)
 export async function getFeaturedProperties(): Promise<Property[]> {
   const supabase = createAnonClient();
   const { data, error } = await supabase
     .from("properties")
-    .select("*, property_images(*)")
+    .select("id, slug, title, subtitle, type, subtype, transaction_type, price, area, area_type, bedrooms, address, tags, is_sold, is_featured, is_active, property_images(id, url, alt_text, sort_order, is_primary)")
     .eq("is_active", true)
     .eq("is_featured", true)
-    .order("created_at", { ascending: false });
+    .order("created_at", { ascending: false })
+    .limit(6);
 
   if (error) {
     console.error("Error fetching featured properties:", error);
@@ -149,36 +162,25 @@ export async function getEnquiries(): Promise<Enquiry[]> {
   return data || [];
 }
 
-// Fetch site config
+// Fetch site config (reads from the shared all-config map)
 export async function getSiteConfig(): Promise<SiteConfig> {
-  const supabase = createAnonClient();
-  const { data } = await supabase.from("site_config").select("*");
-
+  const map = await getAllSiteConfig();
   const defaults: SiteConfig = {
     contact_phone: "+91-9876543210",
     contact_email: "info@realitywize.com",
     whatsapp_number: "919876543210",
     office_address: "Plot 22, Sector 150, Noida Expressway, UP 201310",
   };
-
-  if (!data) return defaults;
-  for (const row of data) {
-    if (row.key in defaults) {
-      (defaults as unknown as Record<string, string>)[row.key] = row.value;
-    }
+  for (const key of Object.keys(defaults) as (keyof SiteConfig)[]) {
+    if (map[key] != null) (defaults as unknown as Record<string, string>)[key] = map[key] as string;
   }
   return defaults;
 }
 
-// Fetch a single CMS config value
+// Fetch a single CMS config value (reads from the shared all-config map)
 export async function getConfigValue<T>(key: string, fallback: T): Promise<T> {
-  const supabase = createAnonClient();
-  const { data } = await supabase
-    .from("site_config")
-    .select("value")
-    .eq("key", key)
-    .single();
-  return data?.value ?? fallback;
+  const map = await getAllSiteConfig();
+  return (map[key] as T) ?? fallback;
 }
 
 // Fetch all page content for home page
@@ -236,12 +238,12 @@ export async function getAboutContent() {
   return { hero, story, stats, values };
 }
 
-// Fetch active builder projects
+// Fetch active builder projects (list view — only columns used in card)
 export async function getBuilderProjects(): Promise<BuilderProject[]> {
   const supabase = createAnonClient();
   const { data, error } = await supabase
     .from("builder_projects")
-    .select("*")
+    .select("id, slug, title, short_description, investment_range, min_entry_amount, collaboration_type, location, project_type, image_url, is_featured, updated_at")
     .eq("is_active", true)
     .order("created_at", { ascending: false });
 
@@ -249,7 +251,7 @@ export async function getBuilderProjects(): Promise<BuilderProject[]> {
     console.error("Error fetching builder projects:", error);
     return [];
   }
-  return data || [];
+  return (data || []) as unknown as BuilderProject[];
 }
 
 // Fetch all builder projects (admin)

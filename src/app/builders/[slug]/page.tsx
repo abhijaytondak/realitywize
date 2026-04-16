@@ -4,7 +4,8 @@ import Image from "next/image";
 import type { Metadata } from "next";
 import { getBuilderProjectBySlug, getBuilderProjects } from "@/lib/supabase/queries";
 
-export const revalidate = 60;
+// Builder detail — revalidate every 10 minutes
+export const revalidate = 600;
 
 export async function generateStaticParams() {
   const projects = await getBuilderProjects();
