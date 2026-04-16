@@ -2,9 +2,14 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import type { Metadata } from "next";
-import { getBuilderProjectBySlug } from "@/lib/supabase/queries";
+import { getBuilderProjectBySlug, getBuilderProjects } from "@/lib/supabase/queries";
 
 export const revalidate = 60;
+
+export async function generateStaticParams() {
+  const projects = await getBuilderProjects();
+  return projects.map((p) => ({ slug: p.slug }));
+}
 
 export async function generateMetadata({
   params,
