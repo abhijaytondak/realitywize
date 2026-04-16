@@ -2,7 +2,9 @@ import { createClient } from "./server";
 import { createClient as createBrowserClient } from "@supabase/supabase-js";
 import type { Property, PropertyImage, Enquiry, SiteConfig, PropertyFilters, HomeHero, HomeWhyUs, HomeInquiry, AboutHero, AboutStory, AboutStat, AboutValues, TopPickItem, AllotmentItem, BuilderProject, Feedback, YeidaImage, LocationItem } from "../types";
 
-// Client that doesn't need cookies (for build-time use like generateStaticParams)
+// Client that doesn't need cookies — use for public read-only queries.
+// Critical for caching: calling the cookie-based client forces dynamic rendering
+// which disables ISR (revalidate) and causes every request to hit the DB.
 function createAnonClient() {
   return createBrowserClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -12,7 +14,7 @@ function createAnonClient() {
 
 // Fetch all active properties with images, applying filters
 export async function getProperties(filters?: PropertyFilters): Promise<Property[]> {
-  const supabase = await createClient();
+  const supabase = createAnonClient();
 
   let query = supabase
     .from("properties")
@@ -58,7 +60,7 @@ export async function getProperties(filters?: PropertyFilters): Promise<Property
 
 // Fetch featured properties
 export async function getFeaturedProperties(): Promise<Property[]> {
-  const supabase = await createClient();
+  const supabase = createAnonClient();
   const { data, error } = await supabase
     .from("properties")
     .select("*, property_images(*)")
@@ -75,7 +77,7 @@ export async function getFeaturedProperties(): Promise<Property[]> {
 
 // Fetch single property by slug
 export async function getPropertyBySlug(slug: string): Promise<Property | null> {
-  const supabase = await createClient();
+  const supabase = createAnonClient();
   const { data, error } = await supabase
     .from("properties")
     .select("*, property_images(*)")
@@ -149,7 +151,7 @@ export async function getEnquiries(): Promise<Enquiry[]> {
 
 // Fetch site config
 export async function getSiteConfig(): Promise<SiteConfig> {
-  const supabase = await createClient();
+  const supabase = createAnonClient();
   const { data } = await supabase.from("site_config").select("*");
 
   const defaults: SiteConfig = {
@@ -170,7 +172,7 @@ export async function getSiteConfig(): Promise<SiteConfig> {
 
 // Fetch a single CMS config value
 export async function getConfigValue<T>(key: string, fallback: T): Promise<T> {
-  const supabase = await createClient();
+  const supabase = createAnonClient();
   const { data } = await supabase
     .from("site_config")
     .select("value")
@@ -236,7 +238,7 @@ export async function getAboutContent() {
 
 // Fetch active builder projects
 export async function getBuilderProjects(): Promise<BuilderProject[]> {
-  const supabase = await createClient();
+  const supabase = createAnonClient();
   const { data, error } = await supabase
     .from("builder_projects")
     .select("*")
@@ -264,7 +266,7 @@ export async function getAllBuilderProjects(): Promise<BuilderProject[]> {
 
 // Fetch single builder project by slug
 export async function getBuilderProjectBySlug(slug: string): Promise<BuilderProject | null> {
-  const supabase = await createClient();
+  const supabase = createAnonClient();
   const { data, error } = await supabase
     .from("builder_projects")
     .select("*")
