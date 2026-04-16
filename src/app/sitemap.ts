@@ -7,16 +7,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
   );
 
-  const { data: properties } = await supabase
-    .from("properties")
-    .select("slug, updated_at")
-    .eq("is_active", true);
+  const [{ data: properties }, { data: builders }] = await Promise.all([
+    supabase.from("properties").select("slug, updated_at").eq("is_active", true),
+    supabase.from("builder_projects").select("slug, updated_at").eq("is_active", true),
+  ]);
 
   const base = "https://realitywize.vercel.app";
 
   const staticPages: MetadataRoute.Sitemap = [
     { url: base, lastModified: new Date(), changeFrequency: "daily", priority: 1 },
     { url: `${base}/properties`, lastModified: new Date(), changeFrequency: "daily", priority: 0.9 },
+    { url: `${base}/builders`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.9 },
     { url: `${base}/about`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.7 },
   ];
 
@@ -27,5 +28,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.8,
   }));
 
-  return [...staticPages, ...propertyPages];
+  const builderPages: MetadataRoute.Sitemap = (builders || []).map((b) => ({
+    url: `${base}/builders/${b.slug}`,
+    lastModified: new Date(b.updated_at),
+    changeFrequency: "weekly" as const,
+    priority: 0.8,
+  }));
+
+  return [...staticPages, ...propertyPages, ...builderPages];
 }

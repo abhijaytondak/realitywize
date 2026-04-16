@@ -20,12 +20,24 @@ export async function generateMetadata({
   const { slug } = await params;
   const property = await getPropertyBySlug(slug);
   if (!property) return { title: "Property Not Found" };
+  const description = property.description?.slice(0, 160) || `${property.type} property in ${property.city}`;
   return {
-    title: `${property.title} | RealtyWize`,
-    description: property.description?.slice(0, 160),
+    title: property.title,
+    description,
+    alternates: { canonical: `/properties/${property.slug}` },
     openGraph: {
       title: property.title,
-      description: property.description?.slice(0, 160),
+      description,
+      url: `/properties/${property.slug}`,
+      type: "article",
+      images: property.images[0]?.url
+        ? [{ url: property.images[0].url, width: 1200, height: 630, alt: property.title }]
+        : [],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: property.title,
+      description,
       images: property.images[0]?.url ? [property.images[0].url] : [],
     },
   };

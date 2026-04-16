@@ -3,8 +3,16 @@ import { getSiteConfig, getAboutContent } from "@/lib/supabase/queries";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "About Us | RealtyWize",
-  description: "Learn about RealtyWize - your trusted partner for premium property listings in Noida and NCR.",
+  title: "About Us — Trusted Real Estate Partner in Noida",
+  description:
+    "RealtyWize is your trusted partner for premium property listings in Noida and the NCR region. Learn about our story, values, and commitment to elevating Indian living.",
+  alternates: { canonical: "/about" },
+  openGraph: {
+    title: "About RealtyWize",
+    description: "Your trusted partner for premium property listings in Noida and NCR.",
+    url: "/about",
+    type: "website",
+  },
 };
 
 export const revalidate = 60;

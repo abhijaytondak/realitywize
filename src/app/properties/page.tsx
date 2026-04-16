@@ -6,8 +6,23 @@ import { PropertyType, TransactionType, PropertyFilters as Filters } from "@/lib
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Properties | RealtyWize",
-  description: "Browse premium properties across Noida and NCR. Filter by type, location, price, and more.",
+  title: "Properties — Browse Listings in Noida & NCR",
+  description:
+    "Browse premium residential, commercial, and industrial properties across Noida, Greater Noida, and the Yamuna Expressway corridor. Filter by type, location, price, and more.",
+  keywords: [
+    "properties Noida",
+    "real estate listings",
+    "Noida apartments",
+    "commercial property NCR",
+    "luxury homes Sector 150",
+  ],
+  alternates: { canonical: "/properties" },
+  openGraph: {
+    title: "Properties — Browse Listings in Noida & NCR",
+    description: "Browse premium properties across Noida, Greater Noida, and the Yamuna Expressway corridor.",
+    url: "/properties",
+    type: "website",
+  },
 };
 
 export const revalidate = 60;

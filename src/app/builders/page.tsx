@@ -4,9 +4,32 @@ import type { Metadata } from "next";
 import { getBuilderProjects } from "@/lib/supabase/queries";
 
 export const metadata: Metadata = {
-  title: "Builders & Investors | RealtyWize",
+  title: "Builders & Investors — Premium Collaboration Opportunities",
   description:
-    "Premium collaboration opportunities starting from Rs 10 Crore. Partner with us on landmark projects across Noida, Greater Noida, and the Yamuna Expressway corridor.",
+    "Premium real estate collaboration opportunities starting from ₹10 Crore. Joint ventures, revenue sharing, land partnerships, and project funding across Noida, Greater Noida, and the Yamuna Expressway corridor.",
+  keywords: [
+    "builder collaboration Noida",
+    "real estate investment NCR",
+    "joint venture properties",
+    "Yamuna Expressway projects",
+    "GRENO West commercial",
+    "Sector 150 luxury",
+    "real estate partnership India",
+  ],
+  alternates: { canonical: "/builders" },
+  openGraph: {
+    title: "Builders & Investors — RealtyWize",
+    description:
+      "Premium collaboration opportunities from ₹10 Crore across Noida, Greater Noida, and Yamuna Expressway.",
+    url: "/builders",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Builders & Investors — RealtyWize",
+    description:
+      "Premium collaboration opportunities from ₹10 Crore across Noida and NCR.",
+  },
 };
 
 export const revalidate = 60;

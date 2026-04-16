@@ -19,9 +19,24 @@ export async function generateMetadata({
   const { slug } = await params;
   const project = await getBuilderProjectBySlug(slug);
   if (!project) return { title: "Project Not Found" };
+  const description = project.short_description || project.description?.slice(0, 160) || "";
   return {
-    title: `${project.title} | Builders & Investors | RealtyWize`,
-    description: project.short_description || project.description?.slice(0, 160),
+    title: `${project.title} — Builders & Investors`,
+    description,
+    alternates: { canonical: `/builders/${project.slug}` },
+    openGraph: {
+      title: `${project.title} | RealtyWize`,
+      description,
+      url: `/builders/${project.slug}`,
+      type: "article",
+      images: project.image_url ? [{ url: project.image_url, width: 1200, height: 630, alt: project.title }] : undefined,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: project.title,
+      description,
+      images: project.image_url ? [project.image_url] : undefined,
+    },
   };
 }
 
@@ -35,8 +50,38 @@ export default async function BuilderDetailPage({
 
   if (!project) notFound();
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "RealEstateListing",
+    name: project.title,
+    description: project.short_description || project.description?.slice(0, 200),
+    url: `https://realitywize.vercel.app/builders/${project.slug}`,
+    image: project.image_url || undefined,
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: project.location,
+      addressRegion: "Uttar Pradesh",
+      addressCountry: "IN",
+    },
+    offers: {
+      "@type": "Offer",
+      price: project.investment_range,
+      priceCurrency: "INR",
+      availability: "https://schema.org/InStock",
+    },
+    breadcrumb: {
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Home", item: "https://realitywize.vercel.app" },
+        { "@type": "ListItem", position: 2, name: "Builders", item: "https://realitywize.vercel.app/builders" },
+        { "@type": "ListItem", position: 3, name: project.title },
+      ],
+    },
+  };
+
   return (
     <div className="min-h-screen bg-surface">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       {/* Breadcrumbs */}
       <div className="bg-surface-container-low border-b border-outline-variant/20">
         <div className="max-w-screen-xl mx-auto px-6 md:px-10 py-3">
