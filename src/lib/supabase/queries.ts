@@ -78,8 +78,7 @@ export async function getFeaturedProperties(): Promise<Property[]> {
     .select("id, slug, title, subtitle, type, subtype, transaction_type, price, area, area_type, bedrooms, address, tags, is_sold, is_featured, is_active, property_images(id, url, alt_text, sort_order, is_primary)")
     .eq("is_active", true)
     .eq("is_featured", true)
-    .order("created_at", { ascending: false })
-    .limit(6);
+    .order("created_at", { ascending: false });
 
   if (error) {
     console.error("Error fetching featured properties:", error);
